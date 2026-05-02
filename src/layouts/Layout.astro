@@ -1,0 +1,214 @@
+---
+const { title = '佐賀通史アーカイブ — ある土地の伝記' } = Astro.props;
+---
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>{title}</title>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700;900&family=Kaisei+Decol:wght@400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<style is:global>
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --paper:    #f4f0e6;
+  --paper-2:  #ece6d6;
+  --ink:      #1a1713;
+  --ink-2:    #3e3830;
+  --ink-3:    #8a8070;
+  --white:    #fdfaf4;
+  --navy:     #1f3052;
+  --rule:     rgba(26,23,19,.18);
+
+  --c-geo:       #6b7280;
+  --c-yayoi:     #a87a3f;
+  --c-ancient:   #b8843a;
+  --c-medieval:  #8a4a2e;
+  --c-ryuzoji:   #8a2a2a;
+  --c-edo:       #1f3052;
+  --c-bakumatsu: #b83a1f;
+  --c-modern:    #8a7a3a;
+
+  --f-mincho: 'Shippori Mincho B1','Kaisei Decol',serif;
+  --f-sans:   'Zen Kaku Gothic New',system-ui,sans-serif;
+  --f-en:     'Cormorant Garamond',Georgia,serif;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+html { scroll-behavior:smooth; }
+body {
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-sans);
+  font-feature-settings:"palt";
+  -webkit-font-smoothing:antialiased;
+  line-height:1.8;
+}
+
+/* ============================================================
+   GNAV
+   ============================================================ */
+.gnav {
+  position:fixed; top:0; left:0; right:0; z-index:100;
+  display:flex; align-items:center; padding:0 40px; height:64px;
+  transition:background .4s, box-shadow .4s;
+}
+.gnav.scrolled {
+  background:rgba(26,23,19,.93);
+  backdrop-filter:blur(8px);
+  box-shadow:0 1px 0 rgba(255,255,255,.07);
+}
+.gnav-logo {
+  font-family:var(--f-mincho); font-size:18px; font-weight:700;
+  color:#fff; text-decoration:none; letter-spacing:.04em; flex-shrink:0;
+}
+.gnav-logo span {
+  font-family:var(--f-en); font-style:italic; font-weight:400;
+  font-size:12px; color:rgba(255,255,255,.5); margin-left:10px; letter-spacing:.1em;
+}
+.gnav-links { display:flex; align-items:center; gap:2px; margin-left:auto; list-style:none; }
+.gnav-links a {
+  padding:6px 14px; font-size:13px; font-weight:500;
+  color:rgba(255,255,255,.78); text-decoration:none; letter-spacing:.04em;
+  transition:color .2s;
+}
+.gnav-links a:hover { color:#fff; }
+
+/* ============================================================
+   SECTION COMMON
+   ============================================================ */
+.section-head { text-align:center; margin-bottom:52px; }
+.section-head .en {
+  font-family:var(--f-en); font-style:italic; font-size:13px;
+  letter-spacing:.22em; color:var(--ink-3); margin-bottom:10px; display:block;
+}
+.section-head h2 {
+  font-family:var(--f-mincho); font-size:clamp(26px,3.2vw,38px);
+  font-weight:700; line-height:1.3; letter-spacing:.04em;
+}
+.section-rule { display:flex; align-items:center; justify-content:center; gap:14px; margin-top:14px; }
+.section-rule::before,.section-rule::after { content:''; display:block; width:44px; height:1px; background:var(--ink-3); }
+.section-rule-dot { width:5px; height:5px; border-radius:50%; background:var(--ink-3); }
+
+/* scroll-in */
+.scrollActive { opacity:0; transform:translateY(24px); transition:opacity .75s, transform .75s; }
+.scrollActive.active { opacity:1; transform:none; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.site-footer {
+  background:var(--ink); color:rgba(255,255,255,.55);
+  padding:36px 40px; font-size:12px;
+  display:flex; align-items:center; gap:24px;
+}
+.site-footer .logo-f { font-family:var(--f-mincho); font-size:16px; font-weight:700; color:#fff; margin-right:auto; }
+
+/* Mega menu */
+.has-mega { position:static; }
+.mega-menu {
+  position:fixed; top:64px; left:0; right:0;
+  background:rgba(20,16,12,.97);
+  backdrop-filter:blur(12px);
+  border-top:1px solid rgba(255,255,255,.08);
+  padding:24px 40px;
+  display:none; z-index:199;
+}
+.mega-menu.open { display:block; animation:megaIn .2s ease; }
+@keyframes megaIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
+.mega-inner {
+  max-width:1160px; margin:0 auto;
+  display:grid; grid-template-columns:repeat(5,1fr); gap:2px;
+}
+.mega-era {
+  display:flex; flex-direction:column; gap:4px;
+  padding:14px 16px; cursor:pointer;
+  border-left:3px solid var(--ec,#888);
+  background:rgba(255,255,255,.03);
+  transition:background .2s;
+}
+.mega-era:hover { background:rgba(255,255,255,.08); }
+.mega-era i { display:block; width:24px; height:3px; background:var(--ec,#888); border-radius:2px; margin-bottom:4px; }
+.mega-era .mn { font-family:var(--f-mincho); font-size:14px; font-weight:700; color:#fff; }
+.mega-era .mp { font-family:'JetBrains Mono',monospace; font-size:10px; color:rgba(255,255,255,.45); letter-spacing:.04em; }
+.gnav-search { border-left:1px solid rgba(255,255,255,.15); margin-left:4px; }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="gnav" id="gnav">
+    <a class="gnav-logo" href="/">佐賀通史アーカイブ<span>SAGA HISTORICAL ARCHIVE</span></a>
+    <ul class="gnav-links">
+      <li><a href="/">トップ</a></li>
+      <li class="has-mega">
+        <a href="/eras" class="gnav-era-trigger">時代<svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5l3 3 3-3"/></svg></a>
+        <div class="mega-menu" id="megaMenu">
+          <div class="mega-inner">
+            <div class="mega-era" data-href="/eras#geo"       style="--ec:var(--c-geo)"><i></i><span class="mn">地質</span><span class="mp">〜BC10,000</span></div>
+            <div class="mega-era" data-href="/eras#jomon"     style="--ec:var(--c-jomon)"><i></i><span class="mn">縄文</span><span class="mp">BC10,000–BC300</span></div>
+            <div class="mega-era" data-href="/eras#yayoi"     style="--ec:var(--c-yayoi)"><i></i><span class="mn">弥生</span><span class="mp">BC300–AD300</span></div>
+            <div class="mega-era" data-href="/eras#ancient"   style="--ec:var(--c-ancient)"><i></i><span class="mn">古代（火国）</span><span class="mp">600–1100</span></div>
+            <div class="mega-era" data-href="/eras#medieval"  style="--ec:var(--c-medieval)"><i></i><span class="mn">中世武士団</span><span class="mp">1100–1300</span></div>
+            <div class="mega-era" data-href="/eras#shoni"     style="--ec:var(--c-shoni)"><i></i><span class="mn">少弐氏</span><span class="mp">1200–1500</span></div>
+            <div class="mega-era" data-href="/eras#ryuzoji"   style="--ec:var(--c-ryuzoji)"><i></i><span class="mn">龍造寺氏</span><span class="mp">1500–1584</span></div>
+            <div class="mega-era" data-href="/eras#edo"       style="--ec:var(--c-edo)"><i></i><span class="mn">佐賀藩（江戸）</span><span class="mp">1607–1868</span></div>
+            <div class="mega-era" data-href="/eras#bakumatsu" style="--ec:var(--c-bakumatsu)"><i></i><span class="mn">幕末維新</span><span class="mp">1840–1877</span></div>
+            <div class="mega-era" data-href="/eras#modern"    style="--ec:var(--c-modern)"><i></i><span class="mn">近代〜現代</span><span class="mp">1877–</span></div>
+          </div>
+        </div>
+      </li>
+      <li><a href="/parts">部・章</a></li>
+      <li><a href="/keywords">テーマ</a></li>
+      <li><a href="/characters">人物・組織</a></li>
+      <li><a href="/search" class="gnav-search"><svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3 3"/></svg> 検索</a></li>
+      <li><a href="/about" style="color:rgba(255,255,255,.5);font-size:12px;">このサイトについて</a></li>
+    </ul>
+  </nav>
+</header>
+
+<slot />
+
+<footer class="site-footer">
+  <span class="logo-f">佐賀通史アーカイブ</span>
+  <span>地質〜現代 / 10の時代レイヤー / Layer 0–9</span>
+  <span style="margin-left:auto;">© 2026 佐賀通史アーカイブ</span>
+</footer>
+
+<script>
+/* Sticky nav */
+const gnav = document.getElementById('gnav');
+window.addEventListener('scroll', () => {
+  gnav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive:true });
+
+/* Mega menu */
+(function(){
+  const mega = document.getElementById('megaMenu');
+  const trigger = document.querySelector('.gnav-era-trigger');
+  if (!trigger || !mega) return;
+  let leaveTimer;
+  const open  = () => { clearTimeout(leaveTimer); mega.classList.add('open'); };
+  const close = () => { leaveTimer = setTimeout(() => mega.classList.remove('open'), 120); };
+  trigger.addEventListener('mouseenter', open);
+  trigger.addEventListener('focus', open);
+  mega.addEventListener('mouseenter', () => clearTimeout(leaveTimer));
+  trigger.closest('li').addEventListener('mouseleave', close);
+  mega.addEventListener('mouseleave', close);
+  trigger.addEventListener('click', e => { e.preventDefault(); mega.classList.toggle('open'); });
+  document.querySelectorAll('.mega-era').forEach(el => {
+    el.addEventListener('click', () => { if (el.dataset.href) window.location.href = el.dataset.href; });
+  });
+  document.addEventListener('click', e => {
+    if (!document.querySelector('.gnav').contains(e.target) && !mega.contains(e.target)) mega.classList.remove('open');
+  });
+})();
+</script>
+
+</body>
+</html>

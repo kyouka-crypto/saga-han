@@ -1,17 +1,603 @@
 ---
-
+import Layout from '../layouts/Layout.astro';
 ---
+<Layout title="佐賀通史アーカイブ — ある土地の伝記">
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<style is:global>
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  position:relative; width:100%; height:100svh;
+  min-height:640px; overflow:hidden; background:#0c0a08;
+}
+.hero-mosaic {
+  position:absolute; inset:0;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  grid-template-rows:1fr 1fr;
+  gap:2px;
+}
+.hero-mosaic .cell { position:relative; overflow:hidden; }
+.hero-mosaic .cell:first-child { grid-column:1/3; grid-row:1/3; }
+
+.hero-ph {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+}
+.hero-ph::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(0deg,transparent 0 38px,rgba(255,255,255,.02) 38px 40px),
+             repeating-linear-gradient(90deg,transparent 0 38px,rgba(255,255,255,.02) 38px 40px);
+}
+.cell:nth-child(1) .hero-ph { background:linear-gradient(160deg,#1a1408 0%,#0c0c1a 100%); }
+.cell:nth-child(2) .hero-ph { background:linear-gradient(160deg,#2a1508 0%,#180806 100%); }
+.cell:nth-child(3) .hero-ph { background:linear-gradient(160deg,#0a1828 0%,#060a14 100%); }
+.cell:nth-child(4) .hero-ph { background:linear-gradient(160deg,#1a0c1a 0%,#0a0610 100%); }
+
+.hero-ph-label {
+  position:relative; font-family:var(--f-mincho); font-size:11px;
+  color:rgba(255,255,255,.3); letter-spacing:.15em; text-align:center; line-height:2;
+}
+.hero-ph-label strong { display:block; font-size:13px; color:rgba(255,255,255,.5); }
+
+.hero-overlay {
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(to right, rgba(12,10,8,.85) 0%, rgba(12,10,8,.3) 55%, rgba(12,10,8,.08) 100%),
+    linear-gradient(to top, rgba(0,0,0,.45) 0%, transparent 38%);
+}
+
+.hero-content {
+  position:absolute; top:50%; left:8%;
+  transform:translateY(-50%); max-width:600px;
+}
+.hero-eyebrow {
+  font-family:var(--f-en); font-style:italic; font-size:15px;
+  color:rgba(255,255,255,.55); letter-spacing:.14em;
+  display:flex; align-items:center; gap:12px; margin-bottom:16px;
+}
+.hero-eyebrow::before {
+  content:''; display:block; width:30px; height:1px; background:rgba(255,255,255,.4);
+}
+.hero-title {
+  font-family:var(--f-mincho); font-size:clamp(36px,5vw,68px);
+  font-weight:800; color:#fff; line-height:1.2;
+  letter-spacing:.03em; text-shadow:0 2px 40px rgba(0,0,0,.55); margin-bottom:18px;
+}
+.hero-title em {
+  font-style:normal; color:rgba(255,255,255,.5);
+  font-size:.55em; font-weight:400; display:block;
+  margin-bottom:4px; letter-spacing:.08em;
+  font-family:var(--f-en); font-style:italic;
+}
+.hero-sub {
+  font-size:15px; color:rgba(255,255,255,.7);
+  line-height:1.9; max-width:440px; text-wrap:pretty;
+}
+.hero-cta {
+  display:inline-flex; align-items:center; gap:10px;
+  margin-top:28px; padding:12px 28px;
+  background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.32);
+  color:#fff; font-size:13px; font-weight:500; letter-spacing:.08em;
+  text-decoration:none; transition:background .25s, border-color .25s;
+}
+.hero-cta:hover { background:rgba(255,255,255,.2); border-color:rgba(255,255,255,.65); }
+.hero-cta svg { transition:transform .25s; }
+.hero-cta:hover svg { transform:translateX(4px); }
+
+.hero-scroll {
+  position:absolute; bottom:30px; left:50%; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:8px;
+  color:rgba(255,255,255,.4); font-family:var(--f-en); font-size:10px; letter-spacing:.2em;
+}
+.scroll-line {
+  width:1px; height:40px;
+  background:linear-gradient(to bottom,rgba(255,255,255,.5),transparent);
+  animation:scrollpulse 2s ease-in-out infinite;
+}
+@keyframes scrollpulse {
+  0%,100%{ opacity:.4; transform:scaleY(1); }
+  50%{ opacity:1; transform:scaleY(.7); }
+}
+
+/* ============================================================
+   CON_ABOUT
+   ============================================================ */
+.con_about { padding:100px 0; background:var(--white); overflow:hidden; }
+.con_about-inner {
+  max-width:1160px; margin:0 auto; padding:0 40px;
+  display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center;
+}
+.con_about-visual { position:relative; }
+.con_about-img-main { width:100%; aspect-ratio:4/3; position:relative; overflow:hidden; }
+.con_about-img-main .ph-img {
+  position:absolute; inset:0; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#e8d8a8 0%,#c4a870 40%,#8a6030 100%);
+}
+.con_about-img-main .ph-img::before {
+  content:''; position:absolute; inset:0;
+  background:repeating-linear-gradient(45deg,transparent 0 20px,rgba(0,0,0,.04) 20px 21px);
+}
+.ph-img-label {
+  position:relative; font-family:var(--f-mincho); font-size:13px;
+  color:rgba(255,255,255,.8); letter-spacing:.14em;
+  text-align:center; text-shadow:0 1px 4px rgba(0,0,0,.4);
+}
+.con_about-img-sub {
+  position:absolute; bottom:-24px; right:-24px;
+  width:44%; aspect-ratio:1; overflow:hidden;
+  background:var(--paper); border:4px solid var(--white);
+}
+.con_about-img-sub .ph-img { background:linear-gradient(135deg,#1a2a4a 0%,#0f1e38 100%); }
+
+.con_about-text { padding-bottom:24px; }
+.con_about-label {
+  font-family:var(--f-en); font-style:italic; font-size:13px;
+  letter-spacing:.2em; color:var(--navy); margin-bottom:14px;
+  display:flex; align-items:center; gap:12px;
+}
+.con_about-label::before { content:''; display:block; width:28px; height:1px; background:var(--navy); }
+.con_about-title {
+  font-family:var(--f-mincho); font-size:clamp(26px,2.8vw,38px);
+  font-weight:700; line-height:1.3; letter-spacing:.04em; margin-bottom:26px;
+}
+.con_about-title small {
+  display:block; font-size:.44em; font-weight:500;
+  color:var(--ink-2); letter-spacing:.08em; margin-bottom:5px;
+}
+.con_about-body { font-size:15px; line-height:2; color:var(--ink-2); margin-bottom:26px; text-wrap:pretty; }
+.con_about-body p+p { margin-top:1em; }
+.con_about-stats {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--rule); margin-bottom:30px;
+}
+.stat { padding:15px 12px; border-right:1px solid var(--rule); text-align:center; }
+.stat:last-child { border-right:none; }
+.stat-num { font-family:var(--f-mincho); font-size:22px; font-weight:700; color:var(--navy); line-height:1; }
+.stat-num sup { font-size:.48em; vertical-align:top; margin-top:3px; }
+.stat-label { font-size:11px; color:var(--ink-3); margin-top:5px; letter-spacing:.04em; }
+.btn-more {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:12px 28px; background:var(--navy); color:#fff;
+  font-size:13px; font-weight:500; letter-spacing:.06em;
+  text-decoration:none; transition:background .2s;
+}
+.btn-more:hover { background:#2a4070; }
+
+/* ============================================================
+   CON_TIMELINE
+   ============================================================ */
+.con_timeline { padding:100px 0 120px; background:var(--paper); overflow:hidden; }
+.timeline-wrap { max-width:1160px; margin:0 auto; padding:0 40px; }
+.timeline-hint {
+  margin-top:16px; font-size:13px; color:var(--ink-3);
+  display:flex; align-items:center; justify-content:center; gap:24px;
+}
+.timeline-hint .arrow { font-family:var(--f-en); font-size:18px; }
+
+.timeline-scroll-area {
+  overflow-x:auto; overflow-y:visible;
+  padding:64px 0 80px; cursor:grab; user-select:none;
+}
+.timeline-scroll-area:active { cursor:grabbing; }
+.timeline-scroll-area::-webkit-scrollbar { height:4px; }
+.timeline-scroll-area::-webkit-scrollbar-thumb { background:var(--ink-3); border-radius:2px; }
+.timeline-scroll-area::-webkit-scrollbar-track { background:var(--paper-2); }
+
+.timeline-stage { position:relative; width:1600px; height:300px; }
+
+.timeline-rail {
+  position:absolute; top:50%; left:0; right:0; height:10px;
+  transform:translateY(-50%); display:flex;
+  border-radius:5px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,.14);
+}
+.rail-seg { height:100%; flex:var(--w,1); background:var(--c,#888); }
+
+.tl-edge {
+  position:absolute; top:50%; transform:translateY(-50%);
+  font-family:var(--f-en); font-style:italic; font-size:10px;
+  letter-spacing:.16em; color:rgba(255,255,255,.75);
+  background:var(--ink); padding:2px 9px; white-space:nowrap; z-index:20;
+  pointer-events:none;
+}
+.tl-edge.right { right:0; }
+.tl-edge.left  { left:0; }
+
+.yr-tick {
+  position:absolute; bottom:4px; transform:translateX(-50%);
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.yr-tick-line { width:1px; height:11px; background:var(--ink-3); }
+.yr-tick-label { font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--ink-3); white-space:nowrap; }
+
+.evt { position:absolute; top:50%; transform:translateX(-50%); cursor:pointer; }
+.evt-dot {
+  position:absolute; left:50%; transform:translate(-50%,-50%);
+  width:14px; height:14px; border-radius:50%;
+  background:var(--paper); border:2.5px solid var(--c,#888);
+  box-shadow:0 0 0 3px rgba(0,0,0,.1); z-index:5; transition:transform .2s, background .2s;
+}
+.evt:hover .evt-dot { transform:translate(-50%,-50%) scale(1.5); background:var(--c,#888); }
+.evt-line { position:absolute; left:50%; width:1px; background:var(--c,#888); opacity:.5; z-index:2; }
+.evt.up .evt-line { bottom:50%; transform:translateX(-50%); }
+.evt.dn .evt-line { top:50%;   transform:translateX(-50%); }
+.evt-card {
+  position:absolute; left:50%; transform:translateX(-50%);
+  min-width:84px; max-width:130px; background:var(--white);
+  border:1px solid var(--c,#888); padding:5px 8px;
+  text-align:center; box-shadow:2px 2px 0 rgba(0,0,0,.05);
+  transition:box-shadow .2s; z-index:4;
+}
+.evt:hover .evt-card { box-shadow:3px 3px 0 rgba(0,0,0,.1); }
+.evt.up .evt-card { bottom:calc(50% + var(--lh,48px) + 2px); }
+.evt.dn .evt-card { top:calc(50%  + var(--lh,48px) + 2px); }
+.evt-year  { font-family:'JetBrains Mono',monospace; font-size:9px; color:var(--c,#888); letter-spacing:.06em; margin-bottom:2px; }
+.evt-title { font-family:var(--f-mincho); font-size:11px; font-weight:600; color:var(--ink); line-height:1.35; }
+.evt-era   { font-family:var(--f-sans); font-size:9px; color:var(--ink-3); margin-top:3px; }
+
+.evt.dim .evt-dot { width:8px; height:8px; opacity:.45; }
+.evt.dim .evt-card { opacity:.45; }
+.evt.dim .evt-line { opacity:.22; }
+.evt.dim:hover .evt-dot { opacity:1; }
+.evt.dim:hover .evt-card { opacity:1; }
+
+.timeline-legend {
+  display:flex; flex-wrap:wrap; gap:6px 18px;
+  margin-top:24px; padding-top:18px; border-top:1px solid var(--rule);
+}
+.tl-leg-item { display:flex; align-items:center; gap:6px; font-size:11px; color:var(--ink-2); }
+.tl-leg-sw { width:20px; height:5px; border-radius:2px; }
+
+/* ============================================================
+   CON_STORY
+   ============================================================ */
+.con_story { padding:100px 0 120px; background:var(--white); }
+.con_story-inner { max-width:1160px; margin:0 auto; padding:0 40px; }
+
+.story-shell {
+  display:grid;
+  grid-template-columns: 1fr 380px;
+  gap:2px;
+  min-height:560px;
+  margin-bottom:48px;
+}
+
+.story-featured { position:relative; overflow:hidden; background:#0c0a08; }
+
+.story-feat-item {
+  position:absolute; inset:0;
+  display:flex; flex-direction:column; justify-content:flex-end;
+  opacity:0; transition:opacity .45s ease; pointer-events:none;
+}
+.story-feat-item.active { opacity:1; pointer-events:auto; }
+
+.story-feat-bg {
+  position:absolute; inset:0;
+  background:var(--bg, #1a1a2a); transition:opacity .45s;
+}
+.story-feat-bg::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.2) 55%, transparent 100%);
+}
+.story-feat-bg .ph-img { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
+
+.story-feat-body { position:relative; z-index:2; padding:40px 44px 44px; }
+.story-feat-cat { display:inline-flex; align-items:center; gap:7px; margin-bottom:12px; }
+.story-feat-cat-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.story-feat-cat-label { font-size:10px; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.7); }
+.story-feat-title {
+  font-family:var(--f-mincho); font-size:clamp(20px,2.2vw,30px);
+  font-weight:700; line-height:1.3; letter-spacing:.03em;
+  color:#fff; margin-bottom:14px; text-wrap:pretty;
+}
+.story-feat-desc { font-size:14px; line-height:1.85; color:rgba(255,255,255,.72); max-width:420px; text-wrap:pretty; margin-bottom:22px; }
+.story-feat-meta { font-size:11px; color:rgba(255,255,255,.45); letter-spacing:.06em; margin-bottom:20px; }
+.story-feat-link {
+  display:inline-flex; align-items:center; gap:8px;
+  font-size:13px; font-weight:600; letter-spacing:.06em;
+  color:#fff; text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,.45); padding-bottom:2px;
+  width:fit-content; transition:gap .2s, border-color .2s;
+}
+.story-feat-link:hover { gap:14px; border-color:rgba(255,255,255,.9); }
+
+.story-rail { display:flex; flex-direction:column; gap:2px; background:var(--paper-2); }
+.story-thumb {
+  position:relative; flex:1; display:flex; align-items:flex-end;
+  overflow:hidden; cursor:pointer; background:#0c0a08;
+  transition:flex .35s ease; min-height:0;
+}
+.story-thumb:hover { flex:1.7; }
+.story-thumb.active { flex:1.7; }
+
+.story-thumb-bg { position:absolute; inset:0; background:var(--bg, #1a1a2a); }
+.story-thumb-bg .ph-img { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:.6; transition:opacity .3s; }
+.story-thumb:hover .ph-img,
+.story-thumb.active .ph-img { opacity:.85; }
+
+.story-thumb-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.75) 0%, transparent 55%); transition:opacity .3s; }
+.story-thumb::before {
+  content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+  background:var(--era-c, #fff); transform:scaleY(0); transform-origin:bottom;
+  transition:transform .35s ease; z-index:5;
+}
+.story-thumb.active::before { transform:scaleY(1); }
+
+.story-thumb-body { position:relative; z-index:2; padding:14px 16px; width:100%; }
+.story-thumb-era { display:flex; align-items:center; gap:5px; margin-bottom:5px; }
+.story-thumb-era-dot { width:5px; height:5px; border-radius:50%; }
+.story-thumb-era-label { font-size:9px; letter-spacing:.14em; color:rgba(255,255,255,.55); }
+.story-thumb-title { font-family:var(--f-mincho); font-size:13px; font-weight:700; color:#fff; line-height:1.35; text-wrap:pretty; }
+.story-thumb-arrow { position:absolute; right:12px; top:50%; transform:translateY(-50%); font-size:16px; color:rgba(255,255,255,.5); opacity:0; transition:opacity .25s; z-index:3; }
+.story-thumb.active .story-thumb-arrow { opacity:1; }
+
+.story-more-wrap { text-align:center; padding-top:8px; }
+.story-more {
+  display:inline-flex; align-items:center; gap:10px;
+  padding:14px 44px; border:1.5px solid var(--ink);
+  font-size:13px; font-weight:500; letter-spacing:.1em;
+  color:var(--ink); text-decoration:none; transition:background .2s, color .2s;
+}
+.story-more:hover { background:var(--ink); color:#fff; }
+</style>
+
+<!-- HERO -->
+<section class="hero" aria-label="メインビジュアル">
+  <div class="hero-mosaic">
+    <div class="cell">
+      <div class="hero-ph"><div class="hero-ph-label"><strong>吉野ヶ里遺跡</strong>弥生の環濠集落 · BC100</div></div>
+    </div>
+    <div class="cell">
+      <div class="hero-ph"><div class="hero-ph-label"><strong>有田焼</strong>1616〜</div></div>
+    </div>
+    <div class="cell">
+      <div class="hero-ph"><div class="hero-ph-label"><strong>築地反射炉</strong>1850</div></div>
+    </div>
+    <div class="cell">
+      <div class="hero-ph"><div class="hero-ph-label"><strong>佐賀城</strong>1607〜</div></div>
+    </div>
+  </div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">A Complete Biography of a Land</p>
+    <h1 class="hero-title">
+      <em>佐賀 — ある土地の伝記</em>
+      大地の形成から、<br/>現代に至るまで。
+    </h1>
+    <p class="hero-sub">
+      地質・縄文から江戸260年、幕末・明治まで。<br/>
+      佐賀という土地の通史を、時代を横断して読む。
+    </p>
+    <a href="#con_about" class="hero-cta">
+      佐賀藩を知る
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+    </a>
+  </div>
+  <div class="hero-scroll"><div class="scroll-line"></div><span>scroll</span></div>
+</section>
+
+<!-- CON_ABOUT -->
+<section class="con_about scrollActive" id="con_about">
+  <div class="con_about-inner">
+    <div class="con_about-visual scrollActive">
+      <div class="con_about-img-main">
+        <div class="ph-img"><div class="ph-img-label"><strong>[ 佐賀城本丸御殿 ]</strong>写真を配置</div></div>
+      </div>
+      <div class="con_about-img-sub">
+        <div class="ph-img"><div class="ph-img-label" style="font-size:10px; color:rgba(255,255,255,.6);">有田焼<br/>図版</div></div>
+      </div>
+    </div>
+    <div class="con_about-text scrollActive">
+      <p class="con_about-label">About Saga Han</p>
+      <h2 class="con_about-title"><small>肥前国 · 外様大名</small>佐賀藩とは</h2>
+      <div class="con_about-body">
+        <p>佐賀藩（さがはん）は、肥前国佐賀郡（現在の佐賀県）を領した藩。藩庁は佐賀城。外様大名の鍋島氏が藩主を務め、石高は35万7千石。九州では薩摩藩・福岡藩に次ぐ規模を持った。</p>
+        <p>地質の形成から縄文・弥生、古代国家の成立、少弐氏・龍造寺氏の台頭を経て江戸時代に花開いた260年。幕末には反射炉・海軍所を擁する雄藩として、明治維新に決定的な役割を果たした。</p>
+        <p>このサイトでは、佐賀という土地の「完全な伝記」を、大地の形成（Layer 0）から現代（Layer 9）まで10の時代レイヤーで記述する。</p>
+      </div>
+      <div class="con_about-stats">
+        <div class="stat"><div class="stat-num">35.7<sup>万石</sup></div><div class="stat-label">石高</div></div>
+        <div class="stat"><div class="stat-num">260<sup>年</sup></div><div class="stat-label">藩政の期間</div></div>
+        <div class="stat"><div class="stat-num">10</div><div class="stat-label">時代レイヤー</div></div>
+      </div>
+      <a href="#" class="btn-more">詳しく読む <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<!-- CON_TIMELINE -->
+<section class="con_timeline" id="timeline">
+  <div class="timeline-wrap">
+    <div class="section-head scrollActive">
+      <span class="en">Historical Timeline</span>
+      <h2>佐賀の通史年表</h2>
+      <div class="section-rule"><div class="section-rule-dot"></div></div>
+    </div>
+    <div class="timeline-hint scrollActive">
+      <span class="arrow">←</span><span>過去へスクロール — 今の佐賀市の地層を掘り下げる</span><span class="arrow">→</span>
+    </div>
+    <div class="timeline-scroll-area" id="tlScroll">
+      <div class="timeline-stage">
+        <div class="tl-edge left">BC 10,000 ←</div>
+        <div class="tl-edge right">→ 現在</div>
+        <div class="timeline-rail">
+          <div class="rail-seg" style="--c:var(--c-geo);--w:2;opacity:.3"></div>
+          <div class="rail-seg" style="--c:var(--c-yayoi);--w:20;background:linear-gradient(90deg,rgba(168,122,63,.35),rgba(180,140,70,.55))"></div>
+          <div class="rail-seg" style="--c:var(--c-ancient);--w:8;opacity:.55"></div>
+          <div class="rail-seg" style="--c:var(--c-medieval);--w:5"></div>
+          <div class="rail-seg" style="--c:var(--c-ryuzoji);--w:5"></div>
+          <div class="rail-seg" style="--c:var(--c-edo);--w:14;background:linear-gradient(90deg,#1f3052,#2a4070)"></div>
+          <div class="rail-seg" style="--c:var(--c-bakumatsu);--w:4"></div>
+          <div class="rail-seg" style="--c:var(--c-modern);--w:5"></div>
+        </div>
+        <div class="yr-tick" style="left:1%"><div class="yr-tick-line"></div><span class="yr-tick-label">BC 10,000</span></div>
+        <div class="yr-tick" style="left:32%"><div class="yr-tick-line"></div><span class="yr-tick-label">BC 300</span></div>
+        <div class="yr-tick" style="left:37%"><div class="yr-tick-line"></div><span class="yr-tick-label">AD 300</span></div>
+        <div class="yr-tick" style="left:44%"><div class="yr-tick-line"></div><span class="yr-tick-label">700</span></div>
+        <div class="yr-tick" style="left:55%"><div class="yr-tick-line"></div><span class="yr-tick-label">1200</span></div>
+        <div class="yr-tick" style="left:63%"><div class="yr-tick-line"></div><span class="yr-tick-label">1500</span></div>
+        <div class="yr-tick" style="left:73%"><div class="yr-tick-line"></div><span class="yr-tick-label">1600</span></div>
+        <div class="yr-tick" style="left:87%"><div class="yr-tick-line"></div><span class="yr-tick-label">1800</span></div>
+        <div class="yr-tick" style="left:99%"><div class="yr-tick-line"></div><span class="yr-tick-label">現在</span></div>
+        <div class="evt up dim" style="left:11%;--c:var(--c-yayoi);--lh:44px;"><div class="evt-dot"></div><div class="evt-line" style="height:44px;"></div><div class="evt-card"><div class="evt-year">BC 6000</div><div class="evt-title">東名遺跡</div><div class="evt-era">縄文</div></div></div>
+        <div class="evt dn dim" style="left:34%;--c:var(--c-yayoi);--lh:36px;"><div class="evt-dot"></div><div class="evt-line" style="height:36px;"></div><div class="evt-card"><div class="evt-year">BC 100</div><div class="evt-title">吉野ヶ里遺跡</div><div class="evt-era">弥生</div></div></div>
+        <div class="evt up dim" style="left:44%;--c:var(--c-ancient);--lh:48px;"><div class="evt-dot"></div><div class="evt-line" style="height:48px;"></div><div class="evt-card"><div class="evt-year">702</div><div class="evt-title">肥前国成立</div><div class="evt-era">古代（火国）</div></div></div>
+        <div class="evt dn" style="left:56%;--c:var(--c-medieval);--lh:40px;"><div class="evt-dot"></div><div class="evt-line" style="height:40px;"></div><div class="evt-card"><div class="evt-year">1196</div><div class="evt-title">少弐氏下向</div><div class="evt-era">中世</div></div></div>
+        <div class="evt up" style="left:63.5%;--c:var(--c-ryuzoji);--lh:44px;"><div class="evt-dot"></div><div class="evt-line" style="height:44px;"></div><div class="evt-card"><div class="evt-year">1570</div><div class="evt-title">今山の戦い</div><div class="evt-era">龍造寺</div></div></div>
+        <div class="evt dn" style="left:67%;--c:var(--c-ryuzoji);--lh:36px;"><div class="evt-dot"></div><div class="evt-line" style="height:36px;"></div><div class="evt-card"><div class="evt-year">1584</div><div class="evt-title">沖田畷の戦い</div><div class="evt-era">龍造寺</div></div></div>
+        <div class="evt up" style="left:73.5%;--c:var(--c-edo);--lh:52px;"><div class="evt-dot"></div><div class="evt-line" style="height:52px;"></div><div class="evt-card" style="min-width:90px;"><div class="evt-year">1607</div><div class="evt-title">佐賀藩成立</div><div class="evt-era">江戸</div></div></div>
+        <div class="evt dn" style="left:77%;--c:var(--c-edo);--lh:36px;"><div class="evt-dot"></div><div class="evt-line" style="height:36px;"></div><div class="evt-card"><div class="evt-year">1616</div><div class="evt-title">有田焼の成立</div><div class="evt-era">江戸</div></div></div>
+        <div class="evt up" style="left:81.5%;--c:var(--c-edo);--lh:44px;"><div class="evt-dot"></div><div class="evt-line" style="height:44px;"></div><div class="evt-card"><div class="evt-year">1716</div><div class="evt-title">葉隠 成書</div><div class="evt-era">江戸</div></div></div>
+        <div class="evt dn" style="left:87%;--c:var(--c-bakumatsu);--lh:40px;"><div class="evt-dot"></div><div class="evt-line" style="height:40px;"></div><div class="evt-card"><div class="evt-year">1850</div><div class="evt-title">反射炉完成</div><div class="evt-era">幕末</div></div></div>
+        <div class="evt up" style="left:89.5%;--c:var(--c-bakumatsu);--lh:52px;"><div class="evt-dot"></div><div class="evt-line" style="height:52px;"></div><div class="evt-card"><div class="evt-year">1858</div><div class="evt-title">三重津海軍所</div><div class="evt-era">幕末</div></div></div>
+        <div class="evt dn" style="left:93%;--c:var(--c-modern);--lh:36px;"><div class="evt-dot"></div><div class="evt-line" style="height:36px;"></div><div class="evt-card"><div class="evt-year">1874</div><div class="evt-title">佐賀の乱</div><div class="evt-era">近代</div></div></div>
+      </div>
+    </div>
+    <div class="timeline-legend scrollActive">
+      <div class="tl-leg-item" style="opacity:.5"><div class="tl-leg-sw" style="background:var(--c-geo)"></div>地質・縄文（遠景）</div>
+      <div class="tl-leg-item" style="opacity:.5"><div class="tl-leg-sw" style="background:var(--c-yayoi)"></div>弥生・古墳（遠景）</div>
+      <div class="tl-leg-item"><div class="tl-leg-sw" style="background:var(--c-medieval)"></div>中世・少弐氏</div>
+      <div class="tl-leg-item"><div class="tl-leg-sw" style="background:var(--c-ryuzoji)"></div>龍造寺氏</div>
+      <div class="tl-leg-item"><div class="tl-leg-sw" style="background:var(--c-edo)"></div>佐賀藩（江戸）</div>
+      <div class="tl-leg-item"><div class="tl-leg-sw" style="background:var(--c-bakumatsu)"></div>幕末維新</div>
+      <div class="tl-leg-item"><div class="tl-leg-sw" style="background:var(--c-modern)"></div>近代〜現代</div>
+    </div>
+  </div>
+</section>
+
+<!-- CON_STORY -->
+<section class="con_story scrollActive" id="con_story">
+  <div class="con_story-inner">
+    <div class="section-head scrollActive">
+      <span class="en">Featured Articles</span>
+      <h2>注目の記事</h2>
+      <div class="section-rule"><div class="section-rule-dot"></div></div>
+    </div>
+    <div class="story-shell scrollActive">
+      <div class="story-featured" id="storyFeatured">
+        <div class="story-feat-item active" data-idx="0"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#5a1008,#1a0402)"><div class="ph-img"><div class="ph-img-label"><strong>[ 鍋島直正と反射炉 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-bakumatsu)"></div><span class="story-feat-cat-label">幕末維新 · 1850</span></div><h3 class="story-feat-title">鍋島直正と反射炉<br/>— 佐賀藩の近代化戦略</h3><p class="story-feat-desc">幕末、佐賀藩主・鍋島直正は日本で初めて反射炉の建造に成功した。西洋の冶金技術を独力で習得し、大砲鋳造を実現した「幕末の科学者藩主」の全貌。</p><div class="story-feat-meta">テーマ：テクノロジー · ものづくり · 挑戦</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+        <div class="story-feat-item" data-idx="1"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#8a6020,#3a2008)"><div class="ph-img"><div class="ph-img-label"><strong>[ 有田焼 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-edo)"></div><span class="story-feat-cat-label">佐賀藩（江戸）· 1616</span></div><h3 class="story-feat-title">有田焼の成立と展開</h3><p class="story-feat-desc">泉山磁石場の発見から始まった磁器革命。なぜ佐賀の山から世界へ渡る陶磁器が生まれたのか。李参平伝承の虚実と、藩による産業統制の全貌。</p><div class="story-feat-meta">テーマ：ものづくり · アート · 貿易</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+        <div class="story-feat-item" data-idx="2"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#2a4010,#0c1806)"><div class="ph-img"><div class="ph-img-label"><strong>[ 吉野ヶ里遺跡 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-yayoi)"></div><span class="story-feat-cat-label">弥生 · BC 100</span></div><h3 class="story-feat-title">吉野ヶ里遺跡<br/>— 弥生の環濠集落</h3><p class="story-feat-desc">2,000年以上前、佐賀平野に巨大な環濠集落が栄えた。国防・まちづくり・くらしの原点。発掘成果が示す弥生社会の実像とは。</p><div class="story-feat-meta">テーマ：まちづくり · 国防 · くらし</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+        <div class="story-feat-item" data-idx="3"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#5a1010,#200404)"><div class="ph-img"><div class="ph-img-label"><strong>[ 龍造寺隆信 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-ryuzoji)"></div><span class="story-feat-cat-label">龍造寺氏 · 1570</span></div><h3 class="story-feat-title">龍造寺隆信の<br/>肥前統一戦</h3><p class="story-feat-desc">農民出身から九州の覇者へ。「肥前の熊」と恐れられた隆信の逆転劇。今山の戦いと沖田畷——勝利と敗北の全記録。</p><div class="story-feat-meta">テーマ：権力闘争 · サバイバル · 逆転劇</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+        <div class="story-feat-item" data-idx="4"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#1a2840,#060e18)"><div class="ph-img"><div class="ph-img-label"><strong>[ 葉隠 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-edo)"></div><span class="story-feat-cat-label">佐賀藩（江戸）· 1716</span></div><h3 class="story-feat-title">葉隠<br/>— 武士の哲学書が生まれた理由</h3><p class="story-feat-desc">「武士道といふは死ぬ事と見つけたり」。江戸中期の佐賀藩でなぜこの書が生まれたのか。山本常朝の思想と、藩政の時代背景から読み解く。</p><div class="story-feat-meta">テーマ：くらし · 思想 · 武士</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+        <div class="story-feat-item" data-idx="5"><div class="story-feat-bg" style="--bg:linear-gradient(160deg,#0e2038,#04080e)"><div class="ph-img"><div class="ph-img-label"><strong>[ 三重津海軍所 ]</strong>写真を配置</div></div></div><div class="story-feat-body"><div class="story-feat-cat"><div class="story-feat-cat-dot" style="background:var(--c-bakumatsu)"></div><span class="story-feat-cat-label">幕末 · 1858</span></div><h3 class="story-feat-title">三重津海軍所<br/>— 日本初の蒸気船修理場</h3><p class="story-feat-desc">日本最古の洋式ドックが佐賀にあった。世界遺産「明治日本の産業革命遺産」の原点。有明海に沈む遺構が語る幕末の技術革命。</p><div class="story-feat-meta">テーマ：テクノロジー · 海 · 世界遺産</div><a href="#" class="story-feat-link">記事を読む <svg width="13" height="13" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a></div></div>
+      </div>
+      <div class="story-rail" id="storyRail">
+        <div class="story-thumb active" data-idx="0" style="--era-c:var(--c-bakumatsu)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#5a1008,#1a0402)"><div class="ph-img-label" style="font-size:10px;">反射炉</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-bakumatsu)"></div><span class="story-thumb-era-label">幕末 · 1850</span></div><div class="story-thumb-title">鍋島直正と反射炉</div></div><div class="story-thumb-arrow">›</div></div>
+        <div class="story-thumb" data-idx="1" style="--era-c:var(--c-edo)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#8a6020,#3a2008)"><div class="ph-img-label" style="font-size:10px;">有田焼</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-edo)"></div><span class="story-thumb-era-label">江戸 · 1616</span></div><div class="story-thumb-title">有田焼の成立と展開</div></div><div class="story-thumb-arrow">›</div></div>
+        <div class="story-thumb" data-idx="2" style="--era-c:var(--c-yayoi)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#2a4010,#0c1806)"><div class="ph-img-label" style="font-size:10px;">吉野ヶ里</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-yayoi)"></div><span class="story-thumb-era-label">弥生 · BC100</span></div><div class="story-thumb-title">吉野ヶ里遺跡 — 弥生の環濠集落</div></div><div class="story-thumb-arrow">›</div></div>
+        <div class="story-thumb" data-idx="3" style="--era-c:var(--c-ryuzoji)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#5a1010,#200404)"><div class="ph-img-label" style="font-size:10px;">龍造寺</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-ryuzoji)"></div><span class="story-thumb-era-label">龍造寺 · 1570</span></div><div class="story-thumb-title">龍造寺隆信の肥前統一戦</div></div><div class="story-thumb-arrow">›</div></div>
+        <div class="story-thumb" data-idx="4" style="--era-c:var(--c-edo)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#1a2840,#060e18)"><div class="ph-img-label" style="font-size:10px;">葉隠</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-edo)"></div><span class="story-thumb-era-label">江戸 · 1716</span></div><div class="story-thumb-title">葉隠 — 武士の哲学書</div></div><div class="story-thumb-arrow">›</div></div>
+        <div class="story-thumb" data-idx="5" style="--era-c:var(--c-bakumatsu)"><div class="story-thumb-bg"><div class="ph-img" style="background:linear-gradient(160deg,#0e2038,#04080e)"><div class="ph-img-label" style="font-size:10px;">三重津</div></div></div><div class="story-thumb-overlay"></div><div class="story-thumb-body"><div class="story-thumb-era"><div class="story-thumb-era-dot" style="background:var(--c-bakumatsu)"></div><span class="story-thumb-era-label">幕末 · 1858</span></div><div class="story-thumb-title">三重津海軍所</div></div><div class="story-thumb-arrow">›</div></div>
+      </div>
+    </div>
+    <div class="story-more-wrap scrollActive">
+      <a href="#" class="story-more">記事をすべて見る <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M2 7h10M8 3l4 4-4 4"/></svg></a>
+    </div>
+  </div>
+</section>
+
+<script>
+/* Scroll-in */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const siblings = [...e.target.parentElement.querySelectorAll('.scrollActive')];
+    const idx = siblings.indexOf(e.target);
+    e.target.style.transitionDelay = `${idx * 0.11}s`;
+    e.target.classList.add('active');
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.scrollActive').forEach(el => io.observe(el));
+
+/* Timeline drag */
+const tlScroll = document.getElementById('tlScroll');
+window.addEventListener('load', () => { tlScroll.scrollLeft = tlScroll.scrollWidth; });
+let isDrag = false, startX, scrollLeft0;
+tlScroll.addEventListener('mousedown', e => { isDrag = true; startX = e.pageX - tlScroll.offsetLeft; scrollLeft0 = tlScroll.scrollLeft; });
+tlScroll.addEventListener('mouseleave', () => isDrag = false);
+tlScroll.addEventListener('mouseup',    () => isDrag = false);
+tlScroll.addEventListener('mousemove',  e => { if (!isDrag) return; e.preventDefault(); tlScroll.scrollLeft = scrollLeft0 - (e.pageX - tlScroll.offsetLeft - startX); });
+
+/* Story hover-preview + auto-rotate */
+(function() {
+  const POOL = [
+    { title: '鍋島直正と反射炉<br/>— 佐賀藩の近代化戦略', era: '幕末維新', year: '1850', eraColor: 'var(--c-bakumatsu)', bg: 'linear-gradient(160deg,#5a1008,#1a0402)', ph: '反射炉', desc: '幕末、佐賀藩主・鍋島直正は日本で初めて反射炉の建造に成功した。西洋の冶金技術を独力で習得し、大砲鋳造を実現した「幕末の科学者藩主」の全貌。', theme: 'テクノロジー · ものづくり · 挑戦' },
+    { title: '有田焼の成立と展開', era: '佐賀藩（江戸）', year: '1616', eraColor: 'var(--c-edo)', bg: 'linear-gradient(160deg,#8a6020,#3a2008)', ph: '有田焼', desc: '泉山磁石場の発見から始まった磁器革命。なぜ佐賀の山から世界へ渡る陶磁器が生まれたのか。李参平伝承の虚実と、藩による産業統制の全貌。', theme: 'ものづくり · アート · 貿易' },
+    { title: '吉野ヶ里遺跡<br/>— 弥生の環濠集落', era: '弥生', year: 'BC 100', eraColor: 'var(--c-yayoi)', bg: 'linear-gradient(160deg,#2a4010,#0c1806)', ph: '吉野ヶ里', desc: '2,000年以上前、佐賀平野に巨大な環濠集落が栄えた。国防・まちづくり・くらしの原点。発掘成果が示す弥生社会の実像とは。', theme: 'まちづくり · 国防 · くらし' },
+    { title: '龍造寺隆信の<br/>肥前統一戦', era: '龍造寺氏', year: '1570', eraColor: 'var(--c-ryuzoji)', bg: 'linear-gradient(160deg,#5a1010,#200404)', ph: '龍造寺', desc: '農民出身から九州の覇者へ。「肥前の熊」と恐れられた隆信の逆転劇。今山の戦いと沖田畷——勝利と敗北の全記録。', theme: '権力闘争 · サバイバル · 逆転劇' },
+    { title: '葉隠<br/>— 武士の哲学書が生まれた理由', era: '佐賀藩（江戸）', year: '1716', eraColor: 'var(--c-edo)', bg: 'linear-gradient(160deg,#1a2840,#060e18)', ph: '葉隠', desc: '「武士道といふは死ぬ事と見つけたり」。江戸中期の佐賀藩でなぜこの書が生まれたのか。山本常朝の思想と、藩政の時代背景から読み解く。', theme: 'くらし · 思想 · 武士' },
+    { title: '三重津海軍所<br/>— 日本初の蒸気船修理場', era: '幕末', year: '1858', eraColor: 'var(--c-bakumatsu)', bg: 'linear-gradient(160deg,#0e2038,#04080e)', ph: '三重津', desc: '日本最古の洋式ドックが佐賀にあった。世界遺産「明治日本の産業革命遺産」の原点。有明海に沈む遺構が語る幕末の技術革命。', theme: 'テクノロジー · 海 · 世界遺産' },
+    { title: '佐賀平野はどうやって<br/>できたのか', era: '地質', year: 'BC 10,000〜', eraColor: 'var(--c-geo)', bg: 'linear-gradient(160deg,#4a4e58,#1e2028)', ph: '有明海と佐賀平野', desc: '有明海の干拓と堆積が生んだ佐賀平野。この大地の形成が、のちの農業・経済・政治の土台となった。地質から歴史を読む。', theme: '海 · まちづくり · 地理' },
+    { title: '東名遺跡<br/>— 世界最古級の編み籠', era: '縄文', year: 'BC 6000', eraColor: 'var(--c-yayoi)', bg: 'linear-gradient(160deg,#3a4a20,#141a0c)', ph: '東名遺跡', desc: '佐賀市東名に眠る縄文時代の低湿地遺跡。世界最古級の編み籠が出土し、日本の先史文化の水準を塗り替えた発見の全貌。', theme: 'ものづくり · 世界最古 · くらし' },
+    { title: '少弐氏と大宰府<br/>— 九州の守護', era: '中世', year: '1196', eraColor: 'var(--c-medieval)', bg: 'linear-gradient(160deg,#3a2818,#160e08)', ph: '少弐氏', desc: '鎌倉時代、少弐資頼が肥前に下向し大宰少弐として九州を統治した。中央と地方、武士団の形成を佐賀から読む。', theme: '権力 · 国防 · 制度' },
+    { title: '沖田畷の戦い<br/>— 隆信の死と鍋島の台頭', era: '龍造寺氏', year: '1584', eraColor: 'var(--c-ryuzoji)', bg: 'linear-gradient(160deg,#6a2010,#280c04)', ph: '沖田畷', desc: '九州制覇を目前に龍造寺隆信が島津軍に敗死。この一戦が龍造寺から鍋島への権力移行を決定的にした転換点。', theme: '権力闘争 · 逆転劇 · サバイバル' },
+    { title: '鍋島氏への権力移行<br/>— 龍造寺から佐賀藩へ', era: '龍造寺氏', year: '1600頃', eraColor: 'var(--c-ryuzoji)', bg: 'linear-gradient(160deg,#2a1a3a,#0e0814)', ph: '鍋島直茂', desc: '龍造寺の後見から実質支配へ。鍋島直茂はいかにして「禅譲」を成し遂げたのか。権力移行の内幕と正統性の構築。', theme: '権力闘争 · 制度 · 思想' },
+    { title: '長崎警備と<br/>佐賀藩の国防', era: '佐賀藩（江戸）', year: '1641〜', eraColor: 'var(--c-edo)', bg: 'linear-gradient(160deg,#1a2a40,#080e1a)', ph: '長崎警備', desc: '江戸幕府から命じられた長崎警備は、佐賀藩に莫大な費用と技術革新の機会をもたらした。鎖国体制と外圧の最前線。', theme: '国防 · 貿易 · 海' },
+    { title: '佐賀の乱<br/>— 江藤新平の敗北', era: '近代', year: '1874', eraColor: 'var(--c-modern)', bg: 'linear-gradient(160deg,#5a4a10,#1e1804)', ph: '佐賀の乱', desc: '明治7年、司法卿・江藤新平が佐賀で挙兵し敗れた。西南の役に先立つ士族反乱の実像と、近代国家形成の暴力。', theme: '権力闘争 · サバイバル · 近代' },
+    { title: '佐賀の七賢人<br/>— 明治維新を動かした人々', era: '幕末維新', year: '1860年代', eraColor: 'var(--c-bakumatsu)', bg: 'linear-gradient(160deg,#b83a1f,#3a0a06)', ph: '七賢人', desc: '大隈重信・江藤新平・副島種臣ら「佐賀の七賢人」が明治政府の中枢を担った。なぜ人口わずかな佐賀から多くの指導者が輩出されたのか。', theme: '権力 · 教育 · 近代' },
+    { title: '有田焼の海外輸出<br/>— VOCと磁器貿易', era: '佐賀藩（江戸）', year: '1650〜', eraColor: 'var(--c-edo)', bg: 'linear-gradient(160deg,#6a5010,#281e04)', ph: '海外輸出', desc: 'オランダ東インド会社（VOC）を通じ、有田焼はヨーロッパの宮廷を席巻した。世界市場に進出した江戸日本の磁器産業。', theme: '貿易 · ものづくり · 国際' },
+  ];
+
+  let slotAssign = [0,1,2,3,4,5], active = 0, timer = null;
+  const thumbs = document.querySelectorAll('.story-thumb');
+  const featItems = document.querySelectorAll('.story-feat-item');
+
+  function renderSlot(si, pi) {
+    const a = POOL[pi], fi = featItems[si], th = thumbs[si];
+    fi.querySelector('.story-feat-bg').style.background = a.bg;
+    fi.querySelector('.ph-img-label').innerHTML = `<strong>[ ${a.ph} ]</strong>写真を配置`;
+    fi.querySelector('.story-feat-cat-dot').style.background = a.eraColor;
+    fi.querySelector('.story-feat-cat-label').textContent = `${a.era} · ${a.year}`;
+    fi.querySelector('.story-feat-title').innerHTML = a.title;
+    fi.querySelector('.story-feat-desc').textContent = a.desc;
+    fi.querySelector('.story-feat-meta').textContent = `テーマ：${a.theme}`;
+    th.style.setProperty('--era-c', a.eraColor);
+    th.querySelector('.story-thumb-bg .ph-img').style.background = a.bg;
+    th.querySelector('.ph-img-label').textContent = a.ph;
+    th.querySelector('.story-thumb-era-dot').style.background = a.eraColor;
+    th.querySelector('.story-thumb-era-label').textContent = `${a.era} · ${a.year}`;
+    th.querySelector('.story-thumb-title').innerHTML = a.title.replace('<br/>', ' ');
+    slotAssign[si] = pi;
+  }
+
+  function randomFreshIdx() {
+    const used = new Set(slotAssign);
+    const avail = POOL.map((_,i)=>i).filter(i=>!used.has(i));
+    return avail.length ? avail[Math.floor(Math.random()*avail.length)] : Math.floor(Math.random()*POOL.length);
+  }
+
+  let hoverActive = null;
+  function applyActive(idx) {
+    featItems.forEach(el => el.classList.toggle('active', +el.dataset.idx === idx));
+    thumbs.forEach(el => el.classList.toggle('active', +el.dataset.idx === idx));
+  }
+  function activate(idx) {
+    if (idx === active) return;
+    const prev = active; active = idx;
+    if (hoverActive === null) applyActive(idx);
+    setTimeout(() => renderSlot(prev, randomFreshIdx()), 500);
+  }
+  function startTimer() { clearInterval(timer); timer = setInterval(() => activate((active+1)%thumbs.length), 7000); }
+
+  thumbs.forEach(th => {
+    th.addEventListener('click', () => activate(+th.dataset.idx));
+    th.addEventListener('pointerenter', () => { hoverActive = +th.dataset.idx; applyActive(hoverActive); });
+    th.addEventListener('pointerleave', () => { hoverActive = null; applyActive(active); });
+  });
+  startTimer();
+})();
+
+/* Smooth anchor scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) { e.preventDefault(); t.scrollIntoView({ behavior:'smooth', block:'start' }); }
+  });
+});
+</script>
+
+</Layout>
