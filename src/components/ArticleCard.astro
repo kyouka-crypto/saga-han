@@ -1,0 +1,26 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { eraById, CONFIDENCE } from '../data/eras';
+
+interface Props {
+  article: CollectionEntry<'articles'>;
+}
+const { article } = Astro.props;
+const { title, era, year, summary, sources, confidence } = article.data;
+const eraDef = eraById(era);
+const conf = CONFIDENCE[confidence];
+---
+
+<a class="a-card reveal" href={`/articles/${article.id}/`} style={`--ec:var(${eraDef.color})`}>
+  <span class="a-card-meta">
+    <i></i>
+    {eraDef.name}
+    {year && <span>· {year}</span>}
+  </span>
+  <h3>{title}</h3>
+  <p>{summary}</p>
+  <span class="a-card-foot">
+    <span class={`badge ${conf.cls}`}>{conf.label}</span>
+    <span>出典 {sources.length}件</span>
+  </span>
+</a>

@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import { ERAS, eraById, CONFIDENCE } from '../data/eras';
+
+const articles = (await getCollection('articles')).sort((a, b) => a.data.sortYear - b.data.sortYear);
+
+// 時代順に記事をグループ化（記事のある時代のみ表示）
+const groups = ERAS
+  .map((era) => ({ era, items: articles.filter((a) => a.data.era === era.id) }))
+  .filter((g) => g.items.length > 0);
+---
+
+<Base title="年表" description="収録記事を時系列に並べた佐賀通史の年表。">
+  <div class="inner-narrow">
+    <header class="tlp-head">
+      <p class="en-label">CHRONOLOGY / 全記事年表</p>
+      <h1>佐賀の通史を、時間の順に。</h1>
+      <p class="tlp-lede">
+        収録記事{articles.length}本を代表年順に配置。時代の帯をまたいで、大地の形成から現代までを一本の線で辿る。
+      </p>
+    </header>
+
+    <div class="tlp">
+      {groups.map((g) => (
+        <section class="tlp-era" style={`--ec:var(${g.era.color})`}>
+          <header class="tlp-era-head">
+            <span class="tlp-era-dot" aria-hidden="true"></span>
+            <h2>{g.era.name}</h2>
+            <span class="tlp-era-period num">{g.era.period}</span>
+            <a class="tlp-era-link" href={`/era/${g.era.id}/`}>時代ハブ →</a>
+          </header>
+          <ol class="tlp-list">
+            {g.items.map((a) => (
+              <li>
+                <a class="tlp-item reveal" href={`/articles/${a.id}/`}>
+                  <span class="tlp-year num">{a.data.year ?? a.data.sortYear}</span>
+                  <span class="tlp-node" aria-hidden="true"></span>
+                  <span class="tlp-body">
+                    <span class="tlp-title">{a.data.title}</span>
+                    <span class="tlp-summary">{a.data.summary}</span>
+                    <span class="tlp-meta">
+                      <span class={`badge ${CONFIDENCE[a.data.confidence].cls}`}>{CONFIDENCE[a.data.confidence].label}</span>
+                      <span>出典 {a.data.sources.length}件</span>
+                    </span>
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </section>
+      ))}
+    </div>
+  </div>
+</Base>
+
+<style>
+  .tlp-head { padding: clamp(48px, 7vw, 90px) 0 clamp(36px, 5vw, 56px); }
+  .tlp-head .en-label { display: block; margin-bottom: 14px; }
+  .tlp-head h1 {
+    font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800;
+    letter-spacing: .03em; font-feature-settings: "palt"; line-height: 1.3;
+    margin-bottom: 14px;
+  }
+  .tlp-lede { max-width: 36em; font-size: 14.5px; color: var(--ink-3); line-height: 2; }
+
+  .tlp-era { margin-bottom: clamp(40px, 6vw, 64px); }
+  .tlp-era-head {
+    display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
+    padding-bottom: 12px; margin-bottom: 8px;
+    border-bottom: 2px solid var(--ec);
+  }
+  .tlp-era-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--ec); align-self: center; }
+  .tlp-era-head h2 { font-family: var(--f-mincho); font-size: 24px; font-weight: 700; letter-spacing: .04em; }
+  .tlp-era-period { font-size: 12px; color: var(--ink-3); letter-spacing: .08em; }
+  .tlp-era-link { margin-left: auto; font-size: 12px; color: var(--ink-3); text-decoration: none; }
+  .tlp-era-link:hover { color: var(--ink); }
+
+  .tlp-list { list-style: none; }
+  .tlp-item {
+    display: grid;
+    grid-template-columns: 92px 20px 1fr;
+    gap: 0 16px;
+    padding: 20px 0;
+    text-decoration: none;
+    border-bottom: 1px solid var(--rule-2);
+    position: relative;
+  }
+  /* 縦の接続線 */
+  .tlp-list li { position: relative; }
+  .tlp-list li::before {
+    content: '';
+    position: absolute; left: calc(92px + 16px + 9px); top: 0; bottom: 0;
+    width: 2px; background: color-mix(in srgb, var(--ec) 25%, transparent);
+  }
+  .tlp-list li:first-child::before { top: 28px; }
+  .tlp-list li:last-child::before { bottom: calc(100% - 40px); }
+
+  .tlp-year {
+    font-family: var(--f-mono); font-size: 13px; letter-spacing: .04em;
+    color: var(--ec); text-align: right; padding-top: 3px;
+    font-weight: 500;
+  }
+  .tlp-node {
+    width: 12px; height: 12px; border-radius: 50%;
+    margin-top: 6px; justify-self: center;
+    background: var(--paper); border: 2.5px solid var(--ec);
+    position: relative; z-index: 1;
+    transition: background .2s, transform .2s;
+  }
+  .tlp-item:hover .tlp-node { background: var(--ec); transform: scale(1.25); }
+  .tlp-body { min-width: 0; }
+  .tlp-title {
+    display: block;
+    font-family: var(--f-mincho); font-size: 18px; font-weight: 700;
+    line-height: 1.5; letter-spacing: .03em; font-feature-settings: "palt";
+    color: var(--ink);
+    margin-bottom: 6px;
+    transition: color .2s;
+  }
+  .tlp-item:hover .tlp-title { color: var(--ec); }
+  .tlp-summary {
+    display: block;
+    font-size: 13px; line-height: 1.9; color: var(--ink-3);
+    margin-bottom: 10px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .tlp-meta { display: flex; align-items: center; gap: 14px; font-size: 11px; color: var(--ink-4); }
+
+  @media (max-width: 620px) {
+    .tlp-item { grid-template-columns: 64px 16px 1fr; gap: 0 10px; }
+    .tlp-list li::before { left: calc(64px + 10px + 7px); }
+    .tlp-year { font-size: 11px; }
+  }
+</style>

@@ -1,0 +1,81 @@
+---
+import { ClientRouter } from 'astro:transitions';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** 記事ページで時代カラーを差し込む（例: 'var(--c-edo)'） */
+  eraColor?: string;
+}
+
+const { title, description, eraColor } = Astro.props;
+const siteName = '佐賀通史アーカイブ';
+const pageTitle = title ? `${title} — ${siteName}` : `${siteName} | SAGA HISTORICAL ARCHIVE`;
+const desc = description ?? '大地の形成から現代まで、佐賀という土地の「完全な伝記」を目指す個人研究アーカイブ。すべての記述に出典を、未詳には未詳の表示を。';
+---
+
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={desc} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={desc} />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline>
+      // FOUC 回避：描画前にテーマを確定（View Transitions 後も再適用）
+      (function () {
+        const apply = () => {
+          const saved = localStorage.getItem('saga-theme');
+          const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+          document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+        };
+        apply();
+        document.addEventListener('astro:after-swap', apply);
+      })();
+    </script>
+    <ClientRouter />
+  </head>
+  <body style={eraColor ? `--era:${eraColor}` : undefined}>
+    <a class="skip-link" href="#main">本文へスキップ</a>
+    <Header />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer />
+
+    <script>
+      // スクロール出現（reduced-motion では global.css 側で無効化）
+      function initReveal() {
+        const targets = document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)');
+        if (!targets.length) return;
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const e of entries) {
+              if (e.isIntersecting) {
+                (e.target as HTMLElement).classList.add('is-visible');
+                io.unobserve(e.target);
+              }
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px' }
+        );
+        targets.forEach((t) => io.observe(t));
+      }
+      initReveal();
+      document.addEventListener('astro:page-load', initReveal);
+    </script>
+  </body>
+</html>

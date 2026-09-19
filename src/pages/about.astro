@@ -1,0 +1,93 @@
+---
+import Base from '../layouts/Base.astro';
+import { CONFIDENCE } from '../data/eras';
+---
+
+<Base title="このサイトについて" description="佐賀通史アーカイブの目的・設計原則・信頼度表示・出典方針。">
+  <div class="inner-narrow about">
+    <header class="about-head">
+      <p class="en-label">ABOUT THIS ARCHIVE</p>
+      <h1>このサイトについて</h1>
+    </header>
+
+    <section class="prose about-prose">
+      <p>
+        <strong>佐賀通史アーカイブ</strong>は、大地の形成（Layer 0）から現代（Layer 9）まで、
+        佐賀という土地の「完全な伝記」を目指す<strong>個人研究アーカイブ</strong>です。
+        主語は「佐賀藩」ではなく「佐賀という場所」。各時代を佐賀藩の前史としてではなく、
+        それ自体が主役の独立した地層として扱います。
+      </p>
+
+      <h2 id="goal">目的</h2>
+      <p>
+        多くの人に読まれることではなく、<strong>佐賀を調べて検索してきた誰かが、一次資料まで戻れる「道しるべ」を置くこと</strong>を目的とします。
+        したがってこのサイトが約束するのは次の三つだけです。
+      </p>
+      <ul>
+        <li>ニッチな主題（例：三部上地・請役所・与と備）でも辿り着けること</li>
+        <li>どのページからも出典に戻れること</li>
+        <li>更新が長期間止まっても、既にあるページの価値が減らないこと</li>
+      </ul>
+
+      <h2 id="principles">設計原則</h2>
+      <table>
+        <thead><tr><th>原則</th><th>適用</th></tr></thead>
+        <tbody>
+          <tr><td>出典の明示</td><td>すべての記事に出典・参考文献欄を置く。出典なき記述は載せない</td></tr>
+          <tr><td>未詳は未詳のまま</td><td>「諸説あり」「未詳」を明示し、無理な断定を避ける</td></tr>
+          <tr><td>構造の記述</td><td>善政／悪政の現代的評価ではなく、制度と構造の動きを記述する</td></tr>
+          <tr><td>1記事1テーマ</td><td>記事は独立モジュールとして書き、相互リンクで知識網をつくる</td></tr>
+          <tr><td>完成しない前提</td><td>常に加筆・修正可能な状態を保つ。更新頻度は約束しない</td></tr>
+        </tbody>
+      </table>
+
+      <h2 id="confidence">信頼度表示（全記事共通）</h2>
+      <p>
+        各記事の冒頭に、その記述がどの程度検証されているかを示すバッジを表示しています。
+        AIによる情報統合を工程に含むため、<strong>検証状態を隠さず明示する</strong>ことをサイトの信頼性の根拠とします。
+      </p>
+      <div class="conf-table">
+        {Object.values(CONFIDENCE).map((c) => (
+          <div class="conf-row">
+            <span class={`badge ${c.cls}`}>{c.label}</span>
+            <p>{c.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2 id="workflow">制作の仕組み</h2>
+      <p>
+        本サイトの記事は、個人の研究Vault（Obsidian・非公開）に蓄積した研究ノートのうち、
+        公開基準を満たしたものを選別・再構成して公開しています。
+        Vault側には佐賀地方史だけで約230ページのノートがあり、順次移送していきます。
+      </p>
+
+      <h2 id="sources-policy">出典の方針</h2>
+      <ul>
+        <li>国立国会図書館デジタルコレクション等の<strong>著作権保護期間満了資料</strong>に基づく記述は、原典へのリンクを付す</li>
+        <li>現代の刊行物（自治体史・研究書）に基づく記述は、<strong>事実の再構成＋出典明示</strong>の形をとり、原文の複製は行わない</li>
+        <li>誤りの指摘・出典の補足はいつでも歓迎します</li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .about-head { padding: clamp(48px, 7vw, 90px) 0 clamp(28px, 4vw, 44px); }
+  .about-head .en-label { display: block; margin-bottom: 14px; }
+  .about-head h1 {
+    font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800;
+    letter-spacing: .03em; font-feature-settings: "palt";
+  }
+  .about-prose { margin-bottom: 120px; }
+
+  .conf-table { display: flex; flex-direction: column; gap: 2px; margin-top: 1.5em; }
+  .conf-row {
+    display: grid; grid-template-columns: 150px 1fr; gap: 18px; align-items: start;
+    padding: 16px 20px;
+    background: var(--card); border: 1px solid var(--rule-2);
+  }
+  .conf-row .badge { justify-self: start; margin-top: 3px; }
+  .conf-row p { font-size: 13.5px; line-height: 1.9; color: var(--ink-2); }
+  @media (max-width: 560px) { .conf-row { grid-template-columns: 1fr; gap: 8px; } }
+</style>

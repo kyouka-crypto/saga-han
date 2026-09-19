@@ -1,0 +1,87 @@
+---
+import Base from '../layouts/Base.astro';
+---
+
+<Base title="検索" description="佐賀通史アーカイブの全文検索。">
+  <div class="inner-narrow">
+    <header class="search-head">
+      <p class="en-label">FULL-TEXT SEARCH / 全文検索</p>
+      <h1>アーカイブを検索</h1>
+      <p class="search-lede">記事タイトル・本文・出典を横断検索します（Pagefind による静的全文検索）。</p>
+    </header>
+
+    <div id="pagefind-ui"></div>
+
+    <noscript><p class="search-note">検索には JavaScript が必要です。</p></noscript>
+    <p class="search-note" id="devNote" hidden>
+      検索インデックスが見つかりません。開発サーバーでは検索は動作しません——
+      <code>npm run build</code> の後に <code>npm run preview</code> で確認してください。
+    </p>
+  </div>
+</Base>
+
+<style>
+  .search-head { padding: clamp(48px, 7vw, 90px) 0 clamp(28px, 4vw, 40px); }
+  .search-head .en-label { display: block; margin-bottom: 14px; }
+  .search-head h1 {
+    font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800;
+    letter-spacing: .03em; font-feature-settings: "palt"; margin-bottom: 12px;
+  }
+  .search-lede { font-size: 14px; color: var(--ink-3); }
+  .search-note { margin-top: 24px; font-size: 13px; color: var(--ink-3); }
+  .search-note code { font-family: var(--f-mono); font-size: 12px; background: var(--paper-2); padding: 2px 6px; }
+
+  /* Pagefind UI をデザインシステムに揃える */
+  #pagefind-ui { margin-bottom: 120px; }
+  :global(.pagefind-ui) {
+    --pagefind-ui-primary: var(--ink);
+    --pagefind-ui-text: var(--ink-2);
+    --pagefind-ui-background: var(--card);
+    --pagefind-ui-border: var(--rule);
+    --pagefind-ui-tag: var(--paper-2);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 2px;
+    --pagefind-ui-image-border-radius: 2px;
+    --pagefind-ui-font: var(--f-sans);
+  }
+  :global(.pagefind-ui__search-input) {
+    font-family: var(--f-sans) !important;
+    font-size: 16px !important;
+    letter-spacing: .04em;
+  }
+  :global(.pagefind-ui__result-title) {
+    font-family: var(--f-mincho) !important;
+    font-weight: 700 !important;
+  }
+</style>
+
+<script is:inline data-astro-rerun>
+  (function () {
+    const mount = () => {
+      const el = document.getElementById('pagefind-ui');
+      if (!el || el.dataset.mounted) return;
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = '/pagefind/pagefind-ui.css';
+      document.head.appendChild(link);
+      const s = document.createElement('script');
+      s.src = '/pagefind/pagefind-ui.js';
+      s.onload = () => {
+        el.dataset.mounted = '1';
+        new window.PagefindUI({
+          element: '#pagefind-ui',
+          showSubResults: true,
+          showImages: false,
+          translations: {
+            placeholder: '例：三部上地 / 鍋島直茂 / 請役所',
+            zero_results: '「[SEARCH_TERM]」に一致する記事はありません',
+          },
+        });
+      };
+      s.onerror = () => { document.getElementById('devNote')?.removeAttribute('hidden'); };
+      document.head.appendChild(s);
+    };
+    mount();
+    document.addEventListener('astro:page-load', mount);
+  })();
+</script>

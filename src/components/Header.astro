@@ -1,0 +1,249 @@
+---
+import { ERAS } from '../data/eras';
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="gnav-wrap">
+  <nav class="gnav inner" aria-label="グローバルナビゲーション">
+    <a class="gnav-logo" href="/">
+      佐賀通史アーカイブ
+      <span>SAGA HISTORICAL ARCHIVE</span>
+    </a>
+
+    <button class="gnav-burger" id="gnavBurger" aria-expanded="false" aria-controls="gnavMenu" aria-label="メニュー">
+      <i></i><i></i><i></i>
+    </button>
+
+    <div class="gnav-menu" id="gnavMenu">
+      <ul class="gnav-links">
+        <li><a href="/" aria-current={path === '/' ? 'page' : undefined} class:list={{ active: path === '/' }}>トップ</a></li>
+        <li class="has-mega">
+          <button class="gnav-era-trigger" id="megaTrigger" aria-expanded="false" aria-controls="megaMenu">
+            時代
+            <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5l3 3 3-3"/></svg>
+          </button>
+          <div class="mega" id="megaMenu">
+            <div class="mega-inner">
+              <p class="mega-lede en-label">LAYER 0 — 9 / 大地の形成から現代まで</p>
+              <div class="mega-grid">
+                {ERAS.map((era) => (
+                  <a class="mega-era" href={`/era/${era.id}/`} style={`--ec:var(${era.color})`}>
+                    <i></i>
+                    <span class="mn">{era.name}</span>
+                    <span class="mp">{era.period}</span>
+                  </a>
+                ))}
+              </div>
+            </div>
+          </div>
+        </li>
+        <li><a href="/timeline/" class:list={{ active: isActive('/timeline') }}>年表</a></li>
+        <li><a href="/search/" class:list={{ active: isActive('/search') }} class="gnav-search">
+          <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3.5 3.5"/></svg>
+          検索
+        </a></li>
+        <li><a href="/about/" class:list={{ active: isActive('/about') }} class="gnav-about">このサイトについて</a></li>
+        <li>
+          <button class="theme-toggle" id="themeToggle" aria-label="ライト／ダーク切り替え" title="ライト／ダーク切り替え">
+            <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M19.1 4.9l-1.8 1.8M6.7 17.3l-1.8 1.8"/></svg>
+            <svg class="icon-moon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+          </button>
+        </li>
+      </ul>
+    </div>
+  </nav>
+</header>
+<div class="gnav-spacer" aria-hidden="true"></div>
+
+<style>
+  .gnav-wrap {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: color-mix(in srgb, #16130e 88%, transparent);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(245, 241, 230, .1);
+  }
+  .gnav-spacer { height: 62px; }
+
+  .gnav {
+    display: flex; align-items: center; justify-content: space-between;
+    height: 62px; gap: 24px;
+  }
+
+  .gnav-logo {
+    font-family: var(--f-mincho);
+    font-size: 17px; font-weight: 700; letter-spacing: .14em;
+    color: #f2ecdd; text-decoration: none;
+    display: flex; flex-direction: column; line-height: 1.2;
+    white-space: nowrap;
+  }
+  .gnav-logo span {
+    font-family: var(--f-mono); font-size: 7.5px; font-weight: 400;
+    letter-spacing: .38em; color: rgba(242, 236, 221, .48);
+    margin-top: 3px;
+  }
+
+  .gnav-links {
+    display: flex; align-items: center; gap: 4px;
+    list-style: none;
+  }
+  .gnav-links > li > a,
+  .gnav-era-trigger {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 14px;
+    font-size: 13px; font-weight: 500; letter-spacing: .08em;
+    color: rgba(242, 236, 221, .8); text-decoration: none;
+    transition: color .2s;
+  }
+  .gnav-links > li > a:hover,
+  .gnav-links > li > a.active,
+  .gnav-era-trigger:hover { color: #fff; }
+  .gnav-links > li > a.active { text-decoration: underline; text-underline-offset: 6px; text-decoration-color: rgba(242,236,221,.5); }
+  .gnav-about { font-size: 11.5px !important; color: rgba(242, 236, 221, .55) !important; }
+  .gnav-about:hover { color: #fff !important; }
+
+  .theme-toggle {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 34px; height: 34px; margin-left: 6px;
+    border: 1px solid rgba(242, 236, 221, .25); border-radius: 50%;
+    color: rgba(242, 236, 221, .85);
+    transition: border-color .2s, background .2s;
+  }
+  .theme-toggle:hover { border-color: rgba(242, 236, 221, .7); background: rgba(242,236,221,.08); }
+  :global(:root[data-theme="dark"]) .icon-moon { display: none; }
+  :global(:root:not([data-theme="dark"])) .icon-sun { display: none; }
+
+  /* --- メガメニュー（時代） --- */
+  .has-mega { position: relative; }
+  .mega {
+    position: absolute; top: calc(100% + 14px); left: 50%;
+    transform: translateX(-50%) translateY(-6px);
+    width: min(720px, calc(100vw - 32px));
+    background: color-mix(in srgb, #1a1610 97%, transparent);
+    border: 1px solid rgba(245, 241, 230, .12);
+    box-shadow: 0 24px 64px -16px rgba(0, 0, 0, .55);
+    opacity: 0; visibility: hidden; pointer-events: none;
+    transition: opacity .25s var(--ease-out), transform .25s var(--ease-out), visibility .25s;
+  }
+  .has-mega.open .mega,
+  .has-mega:focus-within .mega {
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+  }
+  .mega-inner { padding: 22px 24px 24px; }
+  .mega-lede { margin-bottom: 14px; color: rgba(242, 236, 221, .45); }
+  .mega-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 4px;
+  }
+  .mega-era {
+    display: grid; grid-template-columns: 10px 1fr; grid-template-rows: auto auto;
+    column-gap: 10px; align-items: center;
+    padding: 9px 12px;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: background .2s, border-color .2s;
+  }
+  .mega-era:hover { background: rgba(242, 236, 221, .07); border-left-color: var(--ec); }
+  .mega-era i {
+    grid-row: 1 / 3;
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--ec);
+  }
+  .mega-era .mn {
+    font-family: var(--f-mincho); font-size: 13.5px; font-weight: 700;
+    letter-spacing: .05em; color: #f2ecdd; line-height: 1.4;
+  }
+  .mega-era .mp {
+    font-family: var(--f-mono); font-size: 9px; letter-spacing: .06em;
+    color: rgba(242, 236, 221, .45);
+  }
+
+  /* --- モバイル --- */
+  .gnav-burger { display: none; }
+  @media (max-width: 900px) {
+    .gnav-burger {
+      display: flex; flex-direction: column; justify-content: center; gap: 5px;
+      width: 44px; height: 44px; padding: 10px;
+    }
+    .gnav-burger i {
+      display: block; height: 1.5px; background: #f2ecdd;
+      transition: transform .3s var(--ease-out), opacity .2s;
+    }
+    .gnav-burger[aria-expanded="true"] i:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .gnav-burger[aria-expanded="true"] i:nth-child(2) { opacity: 0; }
+    .gnav-burger[aria-expanded="true"] i:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    .gnav-menu {
+      position: fixed; top: 62px; left: 0; right: 0; bottom: 0;
+      background: color-mix(in srgb, #16130e 97%, transparent);
+      -webkit-backdrop-filter: blur(14px);
+      backdrop-filter: blur(14px);
+      padding: 20px 24px 40px;
+      overflow-y: auto;
+      display: none;
+    }
+    .gnav-menu.open { display: block; }
+    .gnav-links { flex-direction: column; align-items: stretch; gap: 0; }
+    .gnav-links > li { border-bottom: 1px solid rgba(242, 236, 221, .1); }
+    .gnav-links > li > a, .gnav-era-trigger {
+      width: 100%; padding: 16px 4px; font-size: 15px;
+      justify-content: space-between;
+    }
+    .mega {
+      position: static; transform: none; width: 100%;
+      border: none; box-shadow: none; background: transparent;
+      display: none; opacity: 1; visibility: visible; pointer-events: auto;
+    }
+    .has-mega.open .mega { display: block; }
+    .mega-inner { padding: 0 0 16px; }
+    .theme-toggle { margin: 16px 4px; }
+  }
+</style>
+
+<script>
+  function initHeader() {
+    // テーマ切り替え
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
+      const root = document.documentElement;
+      const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      localStorage.setItem('saga-theme', next);
+    });
+
+    // メガメニュー（クリック開閉 + 外側クリック/Escで閉じる）
+    const li = document.querySelector('.has-mega');
+    const trigger = document.getElementById('megaTrigger');
+    if (li && trigger) {
+      trigger.addEventListener('click', () => {
+        const open = li.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!li.contains(e.target as Node)) {
+          li.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          li.classList.remove('open');
+          trigger.setAttribute('aria-expanded', 'false');
+        }
+      });
+    }
+
+    // モバイルドロワー
+    const burger = document.getElementById('gnavBurger');
+    const menu = document.getElementById('gnavMenu');
+    if (burger && menu) {
+      burger.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        burger.setAttribute('aria-expanded', String(open));
+      });
+    }
+  }
+  initHeader();
+  document.addEventListener('astro:page-load', initHeader);
+</script>

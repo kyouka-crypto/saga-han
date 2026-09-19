@@ -1,0 +1,350 @@
+---
+import { getCollection, render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import EraChip from '../../components/EraChip.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { eraById, PARTS, CONFIDENCE } from '../../data/eras';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('articles');
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await render(article);
+
+const data = article.data;
+const era = eraById(data.era);
+const part = PARTS.find((p) => p.id === era.part)!;
+const conf = CONFIDENCE[data.confidence];
+
+// 読了時間（日本語 約550字/分）
+const charCount = article.body?.replace(/\s/g, '').length ?? 0;
+const readMin = Math.max(1, Math.ceil(charCount / 550));
+
+// 目次は h2 のみ（h3 は本文内の道標に留める）。脚注の自動見出しは除外
+const toc = headings.filter((h) => h.depth === 2 && h.slug !== 'footnote-label');
+
+// 前後記事（代表年順）
+const all = (await getCollection('articles')).sort((a, b) => a.data.sortYear - b.data.sortYear);
+const idx = all.findIndex((a) => a.id === article.id);
+const prev = idx > 0 ? all[idx - 1] : null;
+const next = idx < all.length - 1 ? all[idx + 1] : null;
+
+// 関連記事：frontmatter 指定 → 不足分は同時代で補完
+const relatedSpecified = all.filter((a) => data.related.includes(a.id));
+const relatedFallback = all.filter(
+  (a) => a.id !== article.id && a.data.era === data.era && !data.related.includes(a.id)
+);
+const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
+---
+
+<Base title={data.title} description={data.summary} eraColor={`var(${era.color})`}>
+  <div class="progress-bar" aria-hidden="true"><i id="progressFill"></i></div>
+
+  <div class="inner">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href={`/era/${era.id}/`}>{part.num} {part.title}</a><span class="sep">/</span>
+      <a href={`/era/${era.id}/`}>{era.name}</a><span class="sep">/</span>
+      <span aria-current="page">{data.title}</span>
+    </nav>
+  </div>
+
+  <div class="article-grid inner" data-pagefind-body>
+    <!-- 左：目次サイドバー -->
+    <aside class="article-toc" aria-label="目次">
+      <div class="toc-sticky">
+        <p class="en-label">CONTENTS / 目次</p>
+        <ol id="tocList">
+          {toc.map((h, i) => (
+            <li>
+              <a href={`#${h.slug}`} data-toc={h.slug}>
+                <span class="toc-num">{String(i + 1).padStart(2, '0')}</span>
+                {h.text}
+              </a>
+            </li>
+          ))}
+          <li><a href="#sources" data-toc="sources"><span class="toc-num">§</span>出典・参考文献</a></li>
+        </ol>
+        <div class="toc-era">
+          <p class="en-label">ERA</p>
+          <EraChip eraId={era.id} showPeriod />
+          <p class="toc-layer">LAYER {String(era.layer).padStart(2, '0')}</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 中央：本文 -->
+    <div class="article-main" id="articleMain">
+      <header class="article-header">
+        <p class="article-layer en-label" style={`color:var(${era.color})`}>
+          LAYER {String(era.layer).padStart(2, '0')} · {era.name} {data.year && `· ${data.year}`}
+        </p>
+        <h1 class="article-title">{data.title}</h1>
+        {data.subtitleEn && <p class="article-subtitle">{data.subtitleEn}</p>}
+        <div class="article-tags">
+          <EraChip eraId={era.id} />
+          {data.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+        <div class="article-meta">
+          <span class={`badge ${conf.cls}`} title={conf.desc}>{conf.label}</span>
+          <span>初版 <time class="num">{data.created}</time></span>
+          <span>最終更新 <time class="num">{data.updated}</time></span>
+          <span>約<span class="num">{charCount.toLocaleString()}</span>字 · <span class="num">{readMin}</span>分</span>
+          <span>出典 <span class="num">{data.sources.length}</span>件</span>
+        </div>
+      </header>
+
+      <div class="prose">
+        <Content />
+      </div>
+
+      <!-- 出典 -->
+      <section class="sources" id="sources" aria-label="出典・参考文献">
+        <p class="en-label">SOURCES / 出典・参考文献</p>
+        <ol>
+          {data.sources.map((s, i) => (
+            <li id={`src-${i + 1}`}><span class="src-num">[{i + 1}]</span>{s}</li>
+          ))}
+        </ol>
+        <p class="sources-note">{conf.desc}。誤りの指摘は歓迎します（→ <a href="/about/">このサイトについて</a>）。</p>
+      </section>
+
+      <!-- 前後の記事（時系列） -->
+      <nav class="pn" aria-label="時系列の前後の記事">
+        {prev ? (
+          <a class="pn-item pn-prev" href={`/articles/${prev.id}/`} style={`--ec:var(${eraById(prev.data.era).color})`}>
+            <span class="en-label">← 時系列で前</span>
+            <span class="pn-title">{prev.data.title}</span>
+            <span class="pn-year num">{prev.data.year}</span>
+          </a>
+        ) : <span class="pn-item pn-empty"></span>}
+        {next ? (
+          <a class="pn-item pn-next" href={`/articles/${next.id}/`} style={`--ec:var(${eraById(next.data.era).color})`}>
+            <span class="en-label">時系列で次 →</span>
+            <span class="pn-title">{next.data.title}</span>
+            <span class="pn-year num">{next.data.year}</span>
+          </a>
+        ) : <span class="pn-item pn-empty"></span>}
+      </nav>
+
+      <!-- 関連記事 -->
+      {related.length > 0 && (
+        <section class="related-sec" aria-label="関連記事">
+          <p class="en-label">RELATED / 関連記事</p>
+          <div class="related-grid">
+            {related.map((a) => <ArticleCard article={a} />)}
+          </div>
+        </section>
+      )}
+    </div>
+
+    <!-- 右：欄外注コラム（1440px以上でJSが脚注を移設） -->
+    <div class="article-margin" aria-hidden="true"></div>
+  </div>
+</Base>
+
+<style>
+  .article-grid {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 720px) 250px;
+    gap: 56px;
+    justify-content: center;
+    padding-top: 28px;
+  }
+  @media (max-width: 1439px) {
+    .article-grid { grid-template-columns: 220px minmax(0, 720px); }
+    .article-margin { display: none; }
+  }
+  @media (max-width: 1023px) {
+    .article-grid { grid-template-columns: minmax(0, 1fr); }
+    .article-toc { display: none; }
+  }
+
+  /* --- 目次 --- */
+  .toc-sticky { position: sticky; top: 92px; }
+  .toc-sticky > .en-label { display: block; margin-bottom: 14px; }
+  .toc-sticky ol { list-style: none; }
+  .toc-sticky a {
+    display: flex; gap: 9px; align-items: baseline;
+    padding: 7px 0 7px 14px;
+    border-left: 2px solid var(--rule);
+    font-size: 12.5px; line-height: 1.55; color: var(--ink-3);
+    text-decoration: none;
+    transition: color .2s, border-color .2s, background .2s;
+  }
+  .toc-sticky a:hover { color: var(--ink); }
+  .toc-sticky a.active {
+    border-left-color: var(--era);
+    color: var(--ink);
+    background: linear-gradient(90deg, var(--era-soft), transparent);
+  }
+  .toc-num { font-family: var(--f-mono); font-size: 9.5px; color: var(--era); flex: none; }
+  .toc-era { margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 10px; align-items: flex-start; }
+  .toc-layer { font-family: var(--f-mono); font-size: 9.5px; letter-spacing: .2em; color: var(--ink-4); }
+
+  /* --- 記事ヘッダー --- */
+  .article-main { position: relative; min-width: 0; }
+  .article-header {
+    padding-bottom: 30px; margin-bottom: 36px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .article-layer { display: block; margin-bottom: 16px; }
+  .article-title {
+    font-family: var(--f-mincho);
+    font-size: var(--fs-h1);
+    font-weight: 800;
+    line-height: 1.3;
+    letter-spacing: .03em;
+    font-feature-settings: "palt";
+    margin-bottom: 10px;
+    text-wrap: pretty;
+  }
+  .article-subtitle {
+    font-family: var(--f-en); font-style: italic;
+    font-size: 17px; color: var(--ink-3); letter-spacing: .05em;
+    margin-bottom: 20px;
+  }
+  .article-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 20px; }
+  .tag {
+    display: inline-flex; align-items: center;
+    padding: 3px 12px 4px;
+    border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--card);
+    font-size: var(--fs-xs); color: var(--ink-2); letter-spacing: .06em;
+  }
+  .article-meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px;
+    font-size: 12px; color: var(--ink-3); letter-spacing: .03em;
+  }
+
+  /* --- 出典 --- */
+  .sources {
+    margin-top: 64px;
+    padding: 24px 28px;
+    background: var(--card);
+    border: 1px solid var(--rule);
+    border-left: 3px solid var(--era);
+    box-shadow: var(--shadow);
+  }
+  .sources > .en-label { display: block; margin-bottom: 14px; }
+  .sources ol { list-style: none; }
+  .sources li {
+    font-size: 13.5px; line-height: 1.9; color: var(--ink-2);
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--rule-2);
+    scroll-margin-top: 100px;
+  }
+  .sources li:target { background: var(--era-soft); }
+  .src-num { font-family: var(--f-mono); font-size: 10.5px; color: var(--era); margin-right: 10px; }
+  .sources-note { margin-top: 14px; font-size: 11.5px; color: var(--ink-4); }
+  .sources-note a { color: var(--ink-3); }
+
+  /* --- 前後ナビ --- */
+  .pn {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    margin-top: 40px;
+  }
+  .pn-item {
+    display: flex; flex-direction: column; gap: 6px;
+    padding: 20px 22px;
+    background: var(--card);
+    border: 1px solid var(--rule-2);
+    border-top: 3px solid var(--ec, var(--rule));
+    text-decoration: none;
+    transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  }
+  a.pn-item:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+  .pn-next { text-align: right; align-items: flex-end; }
+  .pn-empty { background: transparent; border-color: transparent; }
+  .pn-title { font-family: var(--f-mincho); font-size: 15px; font-weight: 700; line-height: 1.5; color: var(--ink); }
+  .pn-year { font-size: 11px; color: var(--ink-4); }
+  @media (max-width: 640px) { .pn { grid-template-columns: 1fr; } }
+
+  /* --- 関連 --- */
+  .related-sec { margin-top: 56px; }
+  .related-sec > .en-label { display: block; margin-bottom: 18px; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+</style>
+
+<script>
+  function initArticle() {
+    const main = document.getElementById('articleMain');
+    if (!main) return;
+
+    // --- 読了プログレスバー ---
+    const fill = document.getElementById('progressFill');
+    const onScroll = () => {
+      if (!fill) return;
+      const rect = main.getBoundingClientRect();
+      const total = rect.height - innerHeight;
+      const p = total > 0 ? Math.min(1, Math.max(0, -rect.top / total)) : 1;
+      fill.style.setProperty('--progress', String(p));
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    // --- 目次スクロールスパイ ---
+    const tocLinks = new Map<string, HTMLAnchorElement>();
+    document.querySelectorAll<HTMLAnchorElement>('[data-toc]').forEach((a) => {
+      tocLinks.set(a.dataset.toc!, a);
+    });
+    const sections = document.querySelectorAll<HTMLElement>('.prose h2[id], #sources');
+    if (sections.length && tocLinks.size) {
+      const spy = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              tocLinks.forEach((a) => a.classList.remove('active'));
+              tocLinks.get(e.target.id)?.classList.add('active');
+            }
+          }
+        },
+        { rootMargin: '-15% 0px -70% 0px' }
+      );
+      sections.forEach((s) => spy.observe(s));
+    }
+
+    // --- 欄外注：脚注を右マージンへ移設（1440px以上） ---
+    const moveNotes = () => {
+      const foot = main.querySelector<HTMLElement>('.prose .footnotes');
+      if (!foot) return;
+      const wide = matchMedia('(min-width: 1440px)').matches;
+      main.querySelectorAll('.sidenote').forEach((n) => n.remove());
+      if (!wide) { foot.style.display = ''; return; }
+
+      const items = foot.querySelectorAll<HTMLElement>('li[id]');
+      let lastBottom = 0;
+      let moved = 0;
+      items.forEach((li) => {
+        const id = li.id; // user-content-fn-1 等
+        const ref = main.querySelector<HTMLElement>(`[href="#${CSS.escape(id)}"]`);
+        if (!ref) return;
+        const note = document.createElement('aside');
+        note.className = 'sidenote';
+        const num = ref.textContent?.replace(/\D/g, '') || '';
+        const body = li.cloneNode(true) as HTMLElement;
+        body.querySelectorAll('[data-footnote-backref]').forEach((b) => b.remove());
+        note.innerHTML = `<span class="sn-num">${num}</span>` + body.innerHTML;
+        note.style.left = 'calc(100% + 56px)';
+        const top = ref.getBoundingClientRect().top - main.getBoundingClientRect().top;
+        const y = Math.max(top, lastBottom + 12);
+        note.style.top = `${y}px`;
+        main.appendChild(note);
+        lastBottom = y + note.offsetHeight;
+        moved++;
+      });
+      foot.style.display = moved > 0 ? 'none' : '';
+    };
+    moveNotes();
+    addEventListener('resize', moveNotes, { passive: true });
+    // フォント読み込み後に位置を再計算
+    (document as any).fonts?.ready?.then(moveNotes);
+  }
+  initArticle();
+  document.addEventListener('astro:page-load', initArticle);
+</script>
