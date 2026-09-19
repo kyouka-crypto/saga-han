@@ -1,133 +1,178 @@
 /* ==========================================================================
-   トークン層 — デザインの差し替え口
+   トークン層 — れいわ武鑑 デザインシステム「罫と帯」 v1
    --------------------------------------------------------------------------
-   このファイルだけがブランドの見た目（色・書体・寸法・モーション）を決める。
-   他の CSS（base / components / prose / pages）と .astro は、必ずここで定義した
-   変数を経由して色や書体を参照し、生の値を書かない。
-
-   ★ Claude design で作ったデザインを取り込むときは、原則このファイルを
-     差し替える。変数名を保てば、サイト全体に一度で反映される。
-     新しい変数を足すのは自由。既存の変数名は消さずに値だけ変えること。
+   既存の変数名はすべて維持（値のみ変更）。新規変数は「＋」印。
+   方針：囲わずに仕切る。色は「時代＝帯（有彩）」「主題＝字標（低彩度）」
+   の二層に分け、14色を同じ土俵に立たせない。
    ========================================================================== */
 
+/* 書体の読み込みは src/layouts/Base.astro の <link> で行う（@import は描画を止めるため） */
+
 :root {
-  /* ── 面と文字 ───────────────────────────────── */
-  --paper:   #f5f1e6;
-  --paper-2: #ede6d4;
-  --paper-3: #e4dcc6;
-  --card:    #fdfaf2;
-  --ink:     #191611;
-  --ink-2:   #3d372d;
-  --ink-3:   #6f6757;
-  --ink-4:   #99907b;
-  --rule:    rgba(25, 22, 17, .16);
-  --rule-2:  rgba(25, 22, 17, .08);
-  --navy:    #1f3052;
-  --shadow:  0 1px 2px rgba(25,22,17,.05), 0 8px 32px -12px rgba(25,22,17,.18);
-  --shadow-lg: 0 2px 6px rgba(25,22,17,.06), 0 24px 64px -24px rgba(25,22,17,.32);
+  /* ── 面と文字 ───────────────────────────────
+     地は生成り（クリーム）をやめ、ほぼ白。紙らしさは色ではなく罫で出す。 */
+  --paper:   #fbfaf7;   /* ページの地 */
+  --paper-2: #f3f2ee;   /* 図版の台紙・地の色替え（断層） */
+  --paper-3: #e9e7e1;   /* 押した状態・研究メモの地 */
+  --card:    #ffffff;   /* 浮く面（ポップオーバー等）。カードの箱には使わない */
+  --ink:     #1c1d1f;   /* 本文。paper 上 16.2:1 */
+  --ink-2:   #3a3c40;   /* 副見出し・要約。10.6:1 */
+  --ink-3:   #5c5f65;   /* 注記・ラベル。paper 6.1:1 / paper-3 5.2:1 */
+  --ink-4:   #8b8d92;   /* 非文字専用（目盛・斜線）。3.2:1 — 24px未満の文字に使わない */
+  --rule:    #c9c7c0;   /* 細罫（区切り） */
+  --rule-2:  #e2e0da;   /* 極細罫（行の仕切り・格子） */
+  --navy:    #1f4079;   /* 藍。リンク・フォーカス */
+  --shadow:    0 1px 2px rgba(28, 29, 31, .06), 0 8px 24px -14px rgba(28, 29, 31, .22);
+  --shadow-lg: 0 2px 6px rgba(28, 29, 31, .06), 0 24px 56px -24px rgba(28, 29, 31, .30);
 
-  /* ── 時代軸の色（periods.ts の colorVar と対応） ── */
-  --c-shoni:     #40507c;
-  --c-ryuzoji:   #8f2a2a;
-  --c-seiritsu:  #1f3052;
-  --c-kakuritsu: #2f5d63;
-  --c-mosaku:    #6b5a8a;
-  --c-naomasa:   #9a5a1e;
-  --c-ishin:     #b83a1f;
-  --c-yoha:      #6f6a4a;
+  --rule-strong: var(--ink);   /* ＋ 太罫（天罫・表罫） */
+  --focus:       var(--navy);  /* ＋ フォーカスリング */
+  --lacuna:      var(--ink-4); /* ＋ 欠損の斜線 */
+  --hatch: repeating-linear-gradient(135deg, var(--lacuna) 0 1px, transparent 1px 6px); /* ＋ 記録なし */
 
-  /* ── 主題軸の色（themes.ts の colorVar と対応） ── */
-  --t-seido:  #3a5a8c;
-  --t-kashin: #7a4a7c;
-  --t-zaisei: #8a6a1e;
-  --t-gunji:  #8c3b3b;
-  --t-sangyo: #3f6b4a;
-  --t-bunka:  #6a5a3a;
+  /* ── 時代の色 — 藍から朱へ、そして灰へ ─────────────
+     OKLCH で色相を 290°→30° へ単調に回し、明度も 0.42→0.52 と単調に上げる。
+     色相環の「順番」がそのまま時間の順番として読める。全色 paper 上 4.5:1 以上。 */
+  --c-shoni:     #4d4478;  /* 紫紺   h290 */
+  --c-ryuzoji:   #2a4f86;  /* 藍     h258 */
+  --c-seiritsu:  #005c7b;  /* 納戸   h228 */
+  --c-kakuritsu: #086260;  /* 青碧   h192 */
+  --c-mosaku:    #34653c;  /* 木賊   h148 */
+  --c-naomasa:   #745a08;  /* 黄橡   h88  */
+  --c-ishin:     #a73b15;  /* 朱     h38  */
+  --c-yoha:      #81605a;  /* 灰桜   h30・低彩度＝余燼 */
 
-  /* 記事ページで時代ごとに差し替わるアクセント */
+  /* ── 主題の色 — 低彩度・同明度 ───────────────
+     すべて明度 0.43・彩度 0.05 に揃え、色相だけを散らす（順序を感じさせない）。
+     時代色より一段くすませ、画面上では「墨の色味違い」として退く。
+     識別の主役は色ではなく字標（制・家・財・軍・土・学）。 */
+  --t-seido:  #3a526a;  /* 制 */
+  --t-kashin: #60465d;  /* 家 */
+  --t-zaisei: #5e4d2f;  /* 財 */
+  --t-gunji:  #694543;  /* 軍 */
+  --t-sangyo: #3e573f;  /* 土 */
+  --t-bunka:  #2b5858;  /* 学 */
+
+  /* ── そのページのアクセント ─────────────────
+     body に --era を差し込むと --era-soft も追従する（下の body 規則を参照）。 */
   --era: var(--navy);
-  --era-soft: color-mix(in srgb, var(--era) 9%, transparent);
+  --era-soft: #e6effc;
 
-  /* ── 信頼度バッジ ─────────────────────────── */
-  --conf-sourced-fg: #3e6b45;
-  --conf-sourced-bg: rgba(74, 124, 89, .13);
-  --conf-ai-fg:      #8a6116;
-  --conf-ai-bg:      rgba(178, 128, 31, .14);
-  --conf-note-fg:    #6f6757;
-  --conf-note-bg:    rgba(25, 22, 17, .08);
+  /* ── 信頼度バッジ ─────────────────────────
+     色だけでなく「三本の目盛の数」で段階を示す（3/2/1本）。 */
+  --conf-sourced-fg: #13543d;  /* bg上 7.8:1 */
+  --conf-sourced-bg: #e3f5ec;
+  --conf-ai-fg:      #855412;  /* bg上 5.6:1 */
+  --conf-ai-bg:      #fdeed6;
+  --conf-note-fg:    #5c5f65;  /* bg上 5.2:1 */
+  --conf-note-bg:    #e9e7e1;
 
-  /* ── タイポグラフィ ───────────────────────── */
-  --f-mincho: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif;
-  --f-sans:   'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', system-ui, sans-serif;
-  --f-en:     'Cormorant Garamond', Georgia, serif;
-  --f-mono:   'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+  /* ── 書体 ─────────────────────────────────
+     明朝＝記述（見出し・本文）、ゴシック＝操作と分類、等幅＝データ（年・石高・番号）。 */
+  --f-mincho: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif CJK JP', 'Noto Serif JP', serif;
+  --f-sans:   'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans CJK JP', system-ui, sans-serif;
+  --f-en:     'IBM Plex Sans Condensed', 'Arial Narrow', sans-serif;
+  --f-mono:   'IBM Plex Mono', ui-monospace, 'Cascadia Mono', monospace;
 
-  --fs-xs:   11px;
-  --fs-sm:   12.5px;
-  --fs-base: 16px;
-  --fs-body: 16.5px;
-  --fs-lg:   clamp(19px, 2vw, 22px);
-  --fs-h2:   clamp(22px, 2.6vw, 27px);
-  --fs-h1:   clamp(30px, 4.4vw, 48px);
-  --fs-hero: clamp(42px, 6.4vw, 84px);
+  --fs-xs:   12px;                         /* ラベル・出典。これ未満は作らない */
+  --fs-sm:   13.5px;                       /* 注記・カード要約 */
+  --fs-base: 15px;                         /* UI・表 */
+  --fs-body: 17px;                         /* 本文（明朝 500） */
+  --fs-lg:   clamp(18px, 1.6vw, 21px);     /* リード */
+  --fs-h3:   18px;                         /* ＋ */
+  --fs-h2:   clamp(22px, 2.4vw, 28px);
+  --fs-h1:   clamp(30px, 4.2vw, 50px);
+  --fs-hero: clamp(40px, 7vw, 96px);
+  --fs-num-xl: clamp(40px, 5.6vw, 76px);   /* ＋ 年号・石高を「図」として置くとき */
 
-  --leading-body: 2.05;
-  --measure: 42em;
+  --leading-body: 1.95;
+  --leading-tight: 1.3;                    /* ＋ 見出し */
+  --leading-ui: 1.6;                       /* ＋ UI・カード */
+  --tracking-body: .03em;                  /* ＋ */
+  --measure: 44em;                         /* 17px × 字送り1.03em → 一行 約42字 */
+
+  /* ── 罫と余白 ───────────────────────────── */
+  --hair:   1px;                           /* ＋ 細罫 */
+  --keisen: 2px;                           /* ＋ 太罫 */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;   /* ＋ 部品の内側 */
+  --sp-5: 24px; --sp-6: 32px;                               /* ＋ 部品の間 */
+  --sp-7: 48px; --sp-8: 72px; --sp-9: 112px;                /* ＋ 断層（節・部の切れ目） */
+  --r-0: 0;  --r-1: 2px;  --r-round: 999px;                 /* ＋ 角は原則 0。丸は字標のみ */
 
   /* ── レイアウト ──────────────────────────── */
-  --w-wide:   1200px;
+  --w-wide:   1440px;   /* 1200 → 1440。増えた幅は本文ではなく図版の「抜き」に回す */
   --w-narrow: 880px;
-  --gutter:   clamp(20px, 4vw, 48px);
+  --gutter:   clamp(16px, 4vw, 56px);
+  --col-toc:    232px;  /* ＋ 記事：目次 */
+  --col-margin: 264px;  /* ＋ 記事：欄外注 */
+  --bleed: 0px;         /* ＋ 図版が本文幅からはみ出す量（記事グリッドが設定） */
 
-  /* ── モーション ──────────────────────────── */
-  --ease-out: cubic-bezier(.22, 1, .36, 1);
-  --dur: .55s;
-  /* 出現アニメの段階遅延。要素側に style="--cue: 3" を付けて使う
-     （matsurito.jp の --transition-cue と同じ考え方） */
+  /* ── 動き ──────────────────────────────── */
+  --ease-out: cubic-bezier(.2, .8, .2, 1);
+  --dur: .42s;
   --cue: 0;
-  --cue-step: 80ms;
+  --cue-step: 60ms;
 
   color-scheme: light;
 }
 
-/* ── 行灯モード（dark） ───────────────────────── */
+/* ── 墨（dark） ─────────────────────────────────
+   行灯の茶色をやめ、青みのある墨。時代色・主題色は同じ色相のまま明度を反転。 */
 :root[data-theme="dark"] {
-  --paper:   #15120d;
-  --paper-2: #1c1811;
-  --paper-3: #241f15;
-  --card:    #1e1a12;
-  --ink:     #ede4d0;
-  --ink-2:   #cfc4ab;
-  --ink-3:   #9a8f77;
-  --ink-4:   #6e6551;
-  --rule:    rgba(237, 228, 208, .17);
-  --rule-2:  rgba(237, 228, 208, .08);
-  --navy:    #8ba3d4;
-  --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 32px -12px rgba(0,0,0,.6);
-  --shadow-lg: 0 2px 6px rgba(0,0,0,.4), 0 24px 64px -24px rgba(0,0,0,.8);
+  --paper:   #131417;
+  --paper-2: #1b1c20;
+  --paper-3: #25262b;
+  --card:    #1d1e22;
+  --ink:     #ebe8e2;   /* paper 上 15.1:1 */
+  --ink-2:   #cbc8c1;
+  --ink-3:   #a19e98;   /* paper 6.9:1 / paper-3 5.7:1 */
+  --ink-4:   #6f6d69;   /* 非文字専用 */
+  --rule:    #45464c;
+  --rule-2:  #2b2c31;
+  --navy:    #9fbcec;
+  --shadow:    0 1px 2px rgba(0, 0, 0, .4), 0 8px 24px -14px rgba(0, 0, 0, .7);
+  --shadow-lg: 0 2px 6px rgba(0, 0, 0, .4), 0 24px 56px -24px rgba(0, 0, 0, .85);
 
-  --c-shoni:     #7d90c4;
-  --c-ryuzoji:   #cf6a5e;
-  --c-seiritsu:  #8ba3d4;
-  --c-kakuritsu: #6fb0b8;
-  --c-mosaku:    #a795c6;
-  --c-naomasa:   #d99a52;
-  --c-ishin:     #e07a58;
-  --c-yoha:      #b0aa82;
+  --c-shoni:     #b0a9e1;
+  --c-ryuzoji:   #8db3ea;
+  --c-seiritsu:  #78bfdf;
+  --c-kakuritsu: #7cc7c4;
+  --c-mosaku:    #93cb9a;
+  --c-naomasa:   #d9ba70;
+  --c-ishin:     #f08c6d;
+  --c-yoha:      #bc9c96;
 
-  --t-seido:  #7e9dd4;
-  --t-kashin: #bd8dbe;
-  --t-zaisei: #d0ab5a;
-  --t-gunji:  #d07a7a;
-  --t-sangyo: #7fb890;
-  --t-bunka:  #b6a377;
+  --t-seido:  #a2bad4;
+  --t-kashin: #c9adc5;
+  --t-zaisei: #c7b597;
+  --t-gunji:  #d3adaa;
+  --t-sangyo: #a6bfa6;
+  --t-bunka:  #96c1c0;
 
-  --conf-sourced-fg: #86c095;
-  --conf-sourced-bg: rgba(74, 124, 89, .2);
-  --conf-ai-fg:      #d9ae5c;
-  --conf-ai-bg:      rgba(178, 128, 31, .2);
-  --conf-note-fg:    #9a8f77;
-  --conf-note-bg:    rgba(237, 228, 208, .08);
+  --era-soft: #192230;
+
+  --conf-sourced-fg: #92d5b7;
+  --conf-sourced-bg: #182b23;
+  --conf-ai-fg:      #edc47d;
+  --conf-ai-bg:      #332615;
+  --conf-note-fg:    #a19e98;
+  --conf-note-bg:    #25262b;
 
   color-scheme: dark;
+}
+
+/* --era を body（または任意の要素）で差し替えたとき、薄い版もその場で作り直す。
+   :root で var(--era) から作ると、:root の値で固定されてしまうため。 */
+body, [data-era] {
+  --era-soft: color-mix(in srgb, var(--era) 9%, var(--paper));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur: 0s; --cue-step: 0ms; }
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0s !important;
+    scroll-behavior: auto !important;
+  }
 }

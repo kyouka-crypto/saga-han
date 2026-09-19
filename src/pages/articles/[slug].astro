@@ -201,15 +201,18 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
   }
   .disputes-note { margin-top: 14px; font-size: var(--fs-xs); color: var(--ink-4); }
 
+  /* 幅はトークン層が決める。--w-wide が 1440px に広がった分は
+     本文の行長ではなく、図版が本文からはみ出す余地（--bleed）に回す。
+     ページ単位の設計（課題3）が戻ってきたら、ここを作り直す。 */
   .article-grid {
     display: grid;
-    grid-template-columns: 220px minmax(0, 720px) 250px;
-    gap: 56px;
+    grid-template-columns: var(--col-toc) minmax(0, 1fr) var(--col-margin);
+    gap: var(--sp-7, 48px);
     justify-content: center;
     padding-top: 28px;
   }
   @media (max-width: 1439px) {
-    .article-grid { grid-template-columns: 220px minmax(0, 720px); }
+    .article-grid { grid-template-columns: var(--col-toc) minmax(0, 1fr); }
     .article-margin { display: none; }
   }
   @media (max-width: 1023px) {

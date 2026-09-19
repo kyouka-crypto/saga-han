@@ -1,0 +1,133 @@
+/* ==========================================================================
+   トークン層 — デザインの差し替え口
+   --------------------------------------------------------------------------
+   このファイルだけがブランドの見た目（色・書体・寸法・モーション）を決める。
+   他の CSS（base / components / prose / pages）と .astro は、必ずここで定義した
+   変数を経由して色や書体を参照し、生の値を書かない。
+
+   ★ Claude design で作ったデザインを取り込むときは、原則このファイルを
+     差し替える。変数名を保てば、サイト全体に一度で反映される。
+     新しい変数を足すのは自由。既存の変数名は消さずに値だけ変えること。
+   ========================================================================== */
+
+:root {
+  /* ── 面と文字 ───────────────────────────────── */
+  --paper:   #f5f1e6;
+  --paper-2: #ede6d4;
+  --paper-3: #e4dcc6;
+  --card:    #fdfaf2;
+  --ink:     #191611;
+  --ink-2:   #3d372d;
+  --ink-3:   #6f6757;
+  --ink-4:   #99907b;
+  --rule:    rgba(25, 22, 17, .16);
+  --rule-2:  rgba(25, 22, 17, .08);
+  --navy:    #1f3052;
+  --shadow:  0 1px 2px rgba(25,22,17,.05), 0 8px 32px -12px rgba(25,22,17,.18);
+  --shadow-lg: 0 2px 6px rgba(25,22,17,.06), 0 24px 64px -24px rgba(25,22,17,.32);
+
+  /* ── 時代軸の色（periods.ts の colorVar と対応） ── */
+  --c-shoni:     #40507c;
+  --c-ryuzoji:   #8f2a2a;
+  --c-seiritsu:  #1f3052;
+  --c-kakuritsu: #2f5d63;
+  --c-mosaku:    #6b5a8a;
+  --c-naomasa:   #9a5a1e;
+  --c-ishin:     #b83a1f;
+  --c-yoha:      #6f6a4a;
+
+  /* ── 主題軸の色（themes.ts の colorVar と対応） ── */
+  --t-seido:  #3a5a8c;
+  --t-kashin: #7a4a7c;
+  --t-zaisei: #8a6a1e;
+  --t-gunji:  #8c3b3b;
+  --t-sangyo: #3f6b4a;
+  --t-bunka:  #6a5a3a;
+
+  /* 記事ページで時代ごとに差し替わるアクセント */
+  --era: var(--navy);
+  --era-soft: color-mix(in srgb, var(--era) 9%, transparent);
+
+  /* ── 信頼度バッジ ─────────────────────────── */
+  --conf-sourced-fg: #3e6b45;
+  --conf-sourced-bg: rgba(74, 124, 89, .13);
+  --conf-ai-fg:      #8a6116;
+  --conf-ai-bg:      rgba(178, 128, 31, .14);
+  --conf-note-fg:    #6f6757;
+  --conf-note-bg:    rgba(25, 22, 17, .08);
+
+  /* ── タイポグラフィ ───────────────────────── */
+  --f-mincho: 'Shippori Mincho B1', 'Hiragino Mincho ProN', serif;
+  --f-sans:   'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', system-ui, sans-serif;
+  --f-en:     'Cormorant Garamond', Georgia, serif;
+  --f-mono:   'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+
+  --fs-xs:   11px;
+  --fs-sm:   12.5px;
+  --fs-base: 16px;
+  --fs-body: 16.5px;
+  --fs-lg:   clamp(19px, 2vw, 22px);
+  --fs-h2:   clamp(22px, 2.6vw, 27px);
+  --fs-h1:   clamp(30px, 4.4vw, 48px);
+  --fs-hero: clamp(42px, 6.4vw, 84px);
+
+  --leading-body: 2.05;
+  --measure: 42em;
+
+  /* ── レイアウト ──────────────────────────── */
+  --w-wide:   1200px;
+  --w-narrow: 880px;
+  --gutter:   clamp(20px, 4vw, 48px);
+
+  /* ── モーション ──────────────────────────── */
+  --ease-out: cubic-bezier(.22, 1, .36, 1);
+  --dur: .55s;
+  /* 出現アニメの段階遅延。要素側に style="--cue: 3" を付けて使う
+     （matsurito.jp の --transition-cue と同じ考え方） */
+  --cue: 0;
+  --cue-step: 80ms;
+
+  color-scheme: light;
+}
+
+/* ── 行灯モード（dark） ───────────────────────── */
+:root[data-theme="dark"] {
+  --paper:   #15120d;
+  --paper-2: #1c1811;
+  --paper-3: #241f15;
+  --card:    #1e1a12;
+  --ink:     #ede4d0;
+  --ink-2:   #cfc4ab;
+  --ink-3:   #9a8f77;
+  --ink-4:   #6e6551;
+  --rule:    rgba(237, 228, 208, .17);
+  --rule-2:  rgba(237, 228, 208, .08);
+  --navy:    #8ba3d4;
+  --shadow:  0 1px 2px rgba(0,0,0,.4), 0 8px 32px -12px rgba(0,0,0,.6);
+  --shadow-lg: 0 2px 6px rgba(0,0,0,.4), 0 24px 64px -24px rgba(0,0,0,.8);
+
+  --c-shoni:     #7d90c4;
+  --c-ryuzoji:   #cf6a5e;
+  --c-seiritsu:  #8ba3d4;
+  --c-kakuritsu: #6fb0b8;
+  --c-mosaku:    #a795c6;
+  --c-naomasa:   #d99a52;
+  --c-ishin:     #e07a58;
+  --c-yoha:      #b0aa82;
+
+  --t-seido:  #7e9dd4;
+  --t-kashin: #bd8dbe;
+  --t-zaisei: #d0ab5a;
+  --t-gunji:  #d07a7a;
+  --t-sangyo: #7fb890;
+  --t-bunka:  #b6a377;
+
+  --conf-sourced-fg: #86c095;
+  --conf-sourced-bg: rgba(74, 124, 89, .2);
+  --conf-ai-fg:      #d9ae5c;
+  --conf-ai-bg:      rgba(178, 128, 31, .2);
+  --conf-note-fg:    #9a8f77;
+  --conf-note-bg:    rgba(237, 228, 208, .08);
+
+  color-scheme: dark;
+}
