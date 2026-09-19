@@ -1,0 +1,68 @@
+---
+import Base from '../layouts/Base.astro';
+import { PERIODS, THEMES } from '../lib/archive';
+---
+
+<Base title="ページが見つかりません" description="お探しのページは見つかりませんでした。">
+  <section class="inner nf">
+    <p class="nf-code">404</p>
+    <h1>そのページはありません</h1>
+    <p class="nf-lede">
+      URL が変わったか、まだ書かれていないページかもしれません。
+      このアーカイブは記事をこれから増やしている途中で、空白のところが多くあります。
+    </p>
+
+    <p class="nf-actions">
+      <a class="btn btn-era" href="/matrix/">48マスで俯瞰する</a>
+      <a class="btn" href="/search/">検索する</a>
+    </p>
+
+    <div class="nf-axes">
+      <div>
+        <p class="en-label">時代から</p>
+        <ul>
+          {PERIODS.map((p) => (
+            <li style={`--ec: var(${p.colorVar})`}>
+              <a href={`/period/${p.id}/`}><i></i>{p.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <p class="en-label">主題から</p>
+        <ul>
+          {THEMES.map((t) => (
+            <li style={`--ec: var(${t.colorVar})`}>
+              <a href={`/theme/${t.id}/`}><i class="sq"></i>{t.name}</a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding-block: clamp(56px, 9vw, 120px) clamp(56px, 8vw, 96px); max-width: 52em; }
+  .nf-code {
+    font-family: var(--f-mono); font-size: 56px; color: var(--ink-4); line-height: 1;
+    letter-spacing: .06em;
+  }
+  .nf h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 16px; }
+  .nf-lede { margin-top: 18px; line-height: 2.05; color: var(--ink-2); }
+  .nf-actions { margin-top: 28px; display: flex; flex-wrap: wrap; gap: 12px; }
+
+  .nf-axes {
+    margin-top: clamp(40px, 6vw, 64px); padding-top: 28px; border-top: 1px solid var(--rule);
+    display: grid; gap: 28px;
+  }
+  @media (min-width: 720px) { .nf-axes { grid-template-columns: 1fr 1fr; } }
+  .nf-axes ul { list-style: none; margin-top: 12px; display: grid; gap: 7px; }
+  .nf-axes a {
+    display: inline-flex; align-items: center; gap: 8px;
+    color: var(--ink-2); text-decoration: none; font-size: var(--fs-sm);
+  }
+  .nf-axes a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+  .nf-axes i { width: 7px; height: 7px; border-radius: 50%; background: var(--ec); flex: none; }
+  .nf-axes i.sq { border-radius: 2px; }
+</style>

@@ -1,0 +1,17 @@
+# Netlify のビルド設定
+#
+# package.json の engines が Node 22.12 以上を要求するため、ここで固定する。
+# 既定の Node が古いと astro build が動かない。
+
+[build]
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22.12.0"
+
+# 静的サイトなので、見つからない URL は 404 ページを返す
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404

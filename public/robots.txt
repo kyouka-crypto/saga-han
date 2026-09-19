@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://saga-han.example.com/sitemap-index.xml
