@@ -1,0 +1,5714 @@
+{
+ "license": "CC BY-SA 4.0",
+ "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/deed.ja",
+ "source": "近世村領域データ（Kyudaka_agrivillage）v2.01",
+ "sourceUrl": "https://github.com/yaoyue00085856/Kyudaka_agrivillage",
+ "citation": "本田謙一・夏目宗幸・根元裕樹「幕末期近世村領域データの作成―旧高旧領取調帳および農業集落境界データを活用して―」GIS-理論と応用 34巻1号 p.1-10、地理情報システム学会、2026年",
+ "doi": "https://doi.org/10.5638/thagis.34.1.1",
+ "srcId": "kyudaka-village",
+ "upstream": [
+  "国立歴史民俗博物館「旧高旧領取調帳データベース」",
+  "農林水産省「農業集落境界データ」（農林業センサス2015年版）"
+ ],
+ "asOf": "慶応4年（1868）1月1日時点の領主",
+ "caveat": "これは幕末一時点の姿であり、藩政期を通じた領域ではない。三部上地（1610・1621）の前後や、干拓の進行による村の増減は反映されていない。",
+ "generated": "2026-09-19",
+ "counts": {
+  "villages": 399,
+  "withCoord": 398,
+  "withoutCoord": 1,
+  "shared": 40
+ },
+ "bbox": {
+  "minLng": 129.713,
+  "maxLng": 130.5028,
+  "minLat": 32.57891,
+  "maxLat": 33.45807
+ },
+ "byDomain": {
+  "saga": {
+   "name": "佐賀藩",
+   "kind": "本藩",
+   "villages": 325,
+   "soleHeld": 285,
+   "shared": 40,
+   "gun": {
+    "佐賀郡": 93,
+    "杵島郡": 50,
+    "高来郡": 39,
+    "神埼郡": 39,
+    "松浦郡": 36,
+    "小城郡": 22,
+    "藤津郡": 18,
+    "三根郡": 11,
+    "養父郡": 11,
+    "彼杵郡": 6
+   }
+  },
+  "ogi": {
+   "name": "小城藩",
+   "kind": "支藩",
+   "villages": 68,
+   "soleHeld": 42,
+   "shared": 26,
+   "gun": {
+    "小城郡": 46,
+    "松浦郡": 18,
+    "佐賀郡": 4
+   }
+  },
+  "hasuike": {
+   "name": "蓮池藩",
+   "kind": "支藩",
+   "villages": 34,
+   "soleHeld": 22,
+   "shared": 12,
+   "gun": {
+    "藤津郡": 13,
+    "神埼郡": 10,
+    "杵島郡": 8,
+    "佐賀郡": 2,
+    "松浦郡": 1
+   }
+  },
+  "kashima": {
+   "name": "鹿島藩",
+   "kind": "支藩",
+   "villages": 11,
+   "soleHeld": 10,
+   "shared": 1,
+   "gun": {
+    "藤津郡": 11
+   }
+  }
+ },
+ "villages": [
+  {
+   "vid": "K64G07S00032",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "芦原村",
+   "reading": "あしはら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20976,
+   "lng": 130.0765
+  },
+  {
+   "vid": "K64G07S00037",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "永島村",
+   "reading": "ながしま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18386,
+   "lng": 130.0393
+  },
+  {
+   "vid": "K64G07S00046",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "永野村",
+   "reading": "ながの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26635,
+   "lng": 130.016
+  },
+  {
+   "vid": "K64G07S00025",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "遠江村",
+   "reading": "とおのえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.16933,
+   "lng": 130.1482
+  },
+  {
+   "vid": "K64G07S00024",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "横手村",
+   "reading": "よこて",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.1614,
+   "lng": 130.137
+  },
+  {
+   "vid": "K64G07S00002",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "下小田村",
+   "reading": "しもおだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21017,
+   "lng": 130.1432
+  },
+  {
+   "vid": "K64G07S00039",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "甘久村",
+   "reading": "あまぐ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20497,
+   "lng": 130.0321
+  },
+  {
+   "vid": "K64G07S00049",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "宮野村",
+   "reading": "みやの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20767,
+   "lng": 129.9284
+  },
+  {
+   "vid": "K64G07S00023",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "牛屋村",
+   "reading": "うしや",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.15138,
+   "lng": 130.1391
+  },
+  {
+   "vid": "K64G07S00043",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "犬走村",
+   "reading": "いぬばしり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.1791,
+   "lng": 129.9723
+  },
+  {
+   "vid": "K64G07S00017",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "戸ヶ里村",
+   "reading": "とがり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.15221,
+   "lng": 130.1269
+  },
+  {
+   "vid": "K64G07S00044",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "袴野村",
+   "reading": "はかまの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.15379,
+   "lng": 129.9922
+  },
+  {
+   "vid": "K64G07S00013",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "今泉村",
+   "reading": "いまいずみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19442,
+   "lng": 130.1238
+  },
+  {
+   "vid": "K64G07S00005",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "佐留志村",
+   "reading": "さるし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22047,
+   "lng": 130.1688
+  },
+  {
+   "vid": "K64G07S00020",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "坂田村",
+   "reading": "さかだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.14594,
+   "lng": 130.1048
+  },
+  {
+   "vid": "K64G07S00050",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "三間坂村",
+   "reading": "みまさか",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19521,
+   "lng": 129.9472
+  },
+  {
+   "vid": "K64G07S00007",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "山口村",
+   "reading": "やまぐち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23302,
+   "lng": 130.1507
+  },
+  {
+   "vid": "K64G07S00053",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "山中村",
+   "reading": "やまなか",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24613,
+   "lng": 130.0054
+  },
+  {
+   "vid": "K64G07S00031",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "志久村",
+   "reading": "しく",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21844,
+   "lng": 130.076
+  },
+  {
+   "vid": "K64G07S00001",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "上小田村",
+   "reading": "かみおだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22662,
+   "lng": 130.1387
+  },
+  {
+   "vid": "K64G07S00055",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "上滝村",
+   "reading": "わたき",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.213,
+   "lng": 130.0448
+  },
+  {
+   "vid": "K64G07S00054",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "上野村",
+   "reading": "かみの",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.16678,
+   "lng": 130.0492
+  },
+  {
+   "vid": "K64G07S00021",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "深浦村",
+   "reading": "ふかうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.13639,
+   "lng": 130.113
+  },
+  {
+   "vid": "K64G07S00045",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "真手野村",
+   "reading": "まての",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23057,
+   "lng": 129.9642
+  },
+  {
+   "vid": "K64G07S00048",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "神六村",
+   "reading": "じんろく",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.14234,
+   "lng": 129.9583
+  },
+  {
+   "vid": "K64G07S00058",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "成瀬村",
+   "reading": "なるせ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2016,
+   "lng": 130.0558
+  },
+  {
+   "vid": "K64G07S00035",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "川古村",
+   "reading": "かわご",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25287,
+   "lng": 129.9932
+  },
+  {
+   "vid": "K64G07S00051",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "川上村",
+   "reading": "かわかみ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22726,
+   "lng": 130.0243
+  },
+  {
+   "vid": "K64G07S00006",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "総領分村",
+   "reading": "そうりょうぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21706,
+   "lng": 130.1796
+  },
+  {
+   "vid": "K64G07S00026",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "大崎村",
+   "reading": "おおさき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22073,
+   "lng": 130.0591
+  },
+  {
+   "vid": "K64G07S00004",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "大町村",
+   "reading": "おおまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21369,
+   "lng": 130.1205
+  },
+  {
+   "vid": "K64G07S00027",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "大渡村",
+   "reading": "おおわたり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20815,
+   "lng": 130.0925
+  },
+  {
+   "vid": "K64G07S00040",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "大日村",
+   "reading": "だいにち",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.19094,
+   "lng": 130.0463
+  },
+  {
+   "vid": "K64G07S00047",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "大野村",
+   "reading": "おおの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2092,
+   "lng": 129.9343
+  },
+  {
+   "vid": "K64G07S00022",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "築切村",
+   "reading": "ついきり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.16545,
+   "lng": 130.1529
+  },
+  {
+   "vid": "K64G07S00034",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "中野村",
+   "reading": "なかの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21416,
+   "lng": 130.0278
+  },
+  {
+   "vid": "K64G07S00042",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "鳥海村",
+   "reading": "とのみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18196,
+   "lng": 129.9536
+  },
+  {
+   "vid": "K64G07S00030",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "堤村",
+   "reading": "つつみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18158,
+   "lng": 130.106
+  },
+  {
+   "vid": "K64G07S00019",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "田野上村",
+   "reading": "たのうえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.15847,
+   "lng": 130.0996
+  },
+  {
+   "vid": "K64G07S00012",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "東郷村",
+   "reading": "ひがしごう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19087,
+   "lng": 130.1379
+  },
+  {
+   "vid": "K64G07S00029",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "湯崎村",
+   "reading": "ゆざき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.17419,
+   "lng": 130.0994
+  },
+  {
+   "vid": "K64G07S00014",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "廿治村",
+   "reading": "はたち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.17956,
+   "lng": 130.1369
+  },
+  {
+   "vid": "K64G07S00028",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "馬洗村",
+   "reading": "もうらい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18752,
+   "lng": 130.0996
+  },
+  {
+   "vid": "K64G07S00003",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "八町村",
+   "reading": "はっちょう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19784,
+   "lng": 130.1508
+  },
+  {
+   "vid": "K64G07S00036",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "富岡村",
+   "reading": "とみおか",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19722,
+   "lng": 130.0208
+  },
+  {
+   "vid": "K64G07S00038",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "武雄村",
+   "reading": "たけお",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.1937,
+   "lng": 130.0162
+  },
+  {
+   "vid": "K64G07S00011",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福吉村",
+   "reading": "ふくよし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18967,
+   "lng": 130.1723
+  },
+  {
+   "vid": "K64G07S00009",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福田村",
+   "reading": "ふくた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18366,
+   "lng": 130.1385
+  },
+  {
+   "vid": "K64G07S00010",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福富下分村",
+   "reading": "ふくどみしもぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18857,
+   "lng": 130.2035
+  },
+  {
+   "vid": "K64G07S00016",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福富西分村",
+   "reading": "ふくどみにしぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18522,
+   "lng": 130.1869
+  },
+  {
+   "vid": "K64G07S00015",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福富東分村",
+   "reading": "ふくどみひがしぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18488,
+   "lng": 130.1893
+  },
+  {
+   "vid": "K64G07S00008",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "福母村",
+   "reading": "ふくも",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21402,
+   "lng": 130.1055
+  },
+  {
+   "vid": "K64G07S00041",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "片白村",
+   "reading": "かたじろ",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.19166,
+   "lng": 130.0576
+  },
+  {
+   "vid": "K64G07S00018",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "辺田村",
+   "reading": "へた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.16318,
+   "lng": 130.1052
+  },
+  {
+   "vid": "K64G07S00033",
+   "kuni": "肥前",
+   "gun": "杵島郡",
+   "name": "本部村",
+   "reading": "もとべ",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.26074,
+   "lng": 129.9741
+  },
+  {
+   "vid": "K64G11S00016",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "伊古村",
+   "reading": "いこ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [
+    "肥前島原藩"
+   ],
+   "isShared": true,
+   "lat": 32.86608,
+   "lng": 130.2375
+  },
+  {
+   "vid": "K64G11S00078",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "為石村",
+   "reading": "ためいし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.64259,
+   "lng": 129.8399
+  },
+  {
+   "vid": "K64G11S00072",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "井崎村",
+   "reading": "いざき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.93179,
+   "lng": 130.1954
+  },
+  {
+   "vid": "K64G11S00048",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "井牟田村",
+   "reading": "いむた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.82528,
+   "lng": 130.1117
+  },
+  {
+   "vid": "K64G11S00069",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "宇良村",
+   "reading": "うら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.9102,
+   "lng": 130.1453
+  },
+  {
+   "vid": "K64G11S00054",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "栄田村",
+   "reading": "えいだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85708,
+   "lng": 130.0379
+  },
+  {
+   "vid": "K64G11S00058",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "下本明村",
+   "reading": "しもほんみょう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.86831,
+   "lng": 130.0379
+  },
+  {
+   "vid": "K64G11S00055",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "貝津村",
+   "reading": "かいづ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83671,
+   "lng": 130.0172
+  },
+  {
+   "vid": "K64G11S00041",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "諌早市中",
+   "reading": "いさはやしちゅう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.84401,
+   "lng": 130.0534
+  },
+  {
+   "vid": "K64G11S00057",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "久山村",
+   "reading": "くやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83342,
+   "lng": 130.0028
+  },
+  {
+   "vid": "K64G11S00043",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "栗面村",
+   "reading": "くれも",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.82997,
+   "lng": 130.0455
+  },
+  {
+   "vid": "K64G11S00067",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "犬木村",
+   "reading": "いぬき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.89702,
+   "lng": 130.122
+  },
+  {
+   "vid": "K64G11S00076",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "古部村",
+   "reading": "こべ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85304,
+   "lng": 130.2135
+  },
+  {
+   "vid": "K64G11S00053",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "戸石村",
+   "reading": "といし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.76438,
+   "lng": 129.9795
+  },
+  {
+   "vid": "K64G11S00077",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "御崎村",
+   "reading": null,
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.57891,
+   "lng": 129.7779
+  },
+  {
+   "vid": "K64G11S00051",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "江ノ浦村",
+   "reading": "えのうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.76868,
+   "lng": 130.027
+  },
+  {
+   "vid": "K64G11S00066",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "小江村",
+   "reading": "おえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.89219,
+   "lng": 130.1153
+  },
+  {
+   "vid": "K64G11S00071",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "小川原浦村",
+   "reading": "おがわはらうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.92931,
+   "lng": 130.1862
+  },
+  {
+   "vid": "K64G11S00042",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "小川村",
+   "reading": "おがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83014,
+   "lng": 130.0566
+  },
+  {
+   "vid": "K64G11S00044",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "小野村",
+   "reading": "おの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83395,
+   "lng": 130.0901
+  },
+  {
+   "vid": "K64G11S00046",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "小野島村",
+   "reading": "おのじま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.8406,
+   "lng": 130.0905
+  },
+  {
+   "vid": "K64G11S00047",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "森山村",
+   "reading": "もりやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.82998,
+   "lng": 130.1306
+  },
+  {
+   "vid": "K64G11S00064",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "深海村",
+   "reading": "ふかのみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.8926,
+   "lng": 130.1023
+  },
+  {
+   "vid": "K64G11S00056",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "真崎村",
+   "reading": "まさき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85302,
+   "lng": 130.0179
+  },
+  {
+   "vid": "K64G11S00074",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "西村",
+   "reading": "にし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.86939,
+   "lng": 130.2749
+  },
+  {
+   "vid": "K64G11S00063",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "西長田村",
+   "reading": "にしながた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85895,
+   "lng": 130.0746
+  },
+  {
+   "vid": "K64G11S00045",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "川内町村",
+   "reading": "かわちまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83831,
+   "lng": 130.0796
+  },
+  {
+   "vid": "K64G11S00040",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "船越村",
+   "reading": "ふなこし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83806,
+   "lng": 130.0586
+  },
+  {
+   "vid": "K64G11S00060",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "大渡野村",
+   "reading": "おおわたの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.88481,
+   "lng": 130.0217
+  },
+  {
+   "vid": "K64G11S00059",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "中本明村",
+   "reading": "なかほんみょう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.89994,
+   "lng": 130.0383
+  },
+  {
+   "vid": "K64G11S00070",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "長里村",
+   "reading": null,
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.91705,
+   "lng": 130.1604
+  },
+  {
+   "vid": "K64G11S00052",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "田結村",
+   "reading": "たゆい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.77219,
+   "lng": 129.9971
+  },
+  {
+   "vid": "K64G11S00050",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "唐比村",
+   "reading": "からこ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.79942,
+   "lng": 130.1296
+  },
+  {
+   "vid": "K64G11S00073",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "東村",
+   "reading": "ひがし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.86827,
+   "lng": 130.2794
+  },
+  {
+   "vid": "K64G11S00062",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "東長田村",
+   "reading": "ひがしながた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.8671,
+   "lng": 130.0825
+  },
+  {
+   "vid": "K64G11S00068",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "湯江村",
+   "reading": "ゆえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.90441,
+   "lng": 130.1383
+  },
+  {
+   "vid": "K64G11S00065",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "藤田尾村",
+   "reading": "ふじたお",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.88386,
+   "lng": 130.1066
+  },
+  {
+   "vid": "K64G11S00061",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "福田村",
+   "reading": "ふくだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85118,
+   "lng": 130.0595
+  },
+  {
+   "vid": "K64G11S00049",
+   "kuni": "肥前",
+   "gun": "高来郡",
+   "name": "有喜村",
+   "reading": "うき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.79606,
+   "lng": 130.0858
+  },
+  {
+   "vid": "K64G01S00028",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "伊勢屋町",
+   "reading": "いせやまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25283,
+   "lng": 130.2898
+  },
+  {
+   "vid": "K64G01S00029",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "伊勢屋本町",
+   "reading": "いせやほんまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25244,
+   "lng": 130.2887
+  },
+  {
+   "vid": "K64G01S00002",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "為重村",
+   "reading": "ためしげ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21524,
+   "lng": 130.35
+  },
+  {
+   "vid": "K64G01S00076",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "荻野村",
+   "reading": "おぎの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25527,
+   "lng": 130.2506
+  },
+  {
+   "vid": "K64G01S00063",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "下古賀村",
+   "reading": "しもこが",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21303,
+   "lng": 130.2918
+  },
+  {
+   "vid": "K64G01S00044",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "下和泉村",
+   "reading": "しもいずみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30507,
+   "lng": 130.3372
+  },
+  {
+   "vid": "K64G01S00080",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "蛎久村",
+   "reading": "かきひさ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28797,
+   "lng": 130.2768
+  },
+  {
+   "vid": "K64G01S00035",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "瓦町村",
+   "reading": "かわらまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26912,
+   "lng": 130.3329
+  },
+  {
+   "vid": "K64G01S00054",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "関屋村",
+   "reading": "せきや",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.4262,
+   "lng": 130.242
+  },
+  {
+   "vid": "K64G01S00031",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "岸川町",
+   "reading": "きしかわまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25358,
+   "lng": 130.2908
+  },
+  {
+   "vid": "K64G01S00050",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "久池井村",
+   "reading": "くちい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31759,
+   "lng": 130.279
+  },
+  {
+   "vid": "K64G01S00086",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "久富村",
+   "reading": "ひさどみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2187,
+   "lng": 130.2494
+  },
+  {
+   "vid": "K64G01S00084",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "久保田村",
+   "reading": "くぼた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24915,
+   "lng": 130.2264
+  },
+  {
+   "vid": "K64G01S00091",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "久留間村",
+   "reading": "くるま",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.30355,
+   "lng": 130.2441
+  },
+  {
+   "vid": "K64G01S00034",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "牛島村",
+   "reading": "うしじま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25609,
+   "lng": 130.3194
+  },
+  {
+   "vid": "K64G01S00020",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "牛島町",
+   "reading": "うしじままち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25554,
+   "lng": 130.3121
+  },
+  {
+   "vid": "K64G01S00049",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "金立村",
+   "reading": "きんりゅう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32261,
+   "lng": 130.3002
+  },
+  {
+   "vid": "K64G01S00057",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "犬井道村",
+   "reading": "いぬいどう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18639,
+   "lng": 130.3195
+  },
+  {
+   "vid": "K64G01S00013",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "呉服町",
+   "reading": "ごふくまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25501,
+   "lng": 130.3037
+  },
+  {
+   "vid": "K64G01S00001",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "光法村",
+   "reading": "みつのり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23526,
+   "lng": 130.332
+  },
+  {
+   "vid": "K64G01S00088",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "江上村",
+   "reading": "えがみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24117,
+   "lng": 130.3277
+  },
+  {
+   "vid": "K64G01S00066",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "高太郎村",
+   "reading": "たかたろう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22427,
+   "lng": 130.273
+  },
+  {
+   "vid": "K64G01S00089",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "高尾村",
+   "reading": "たかお",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25597,
+   "lng": 130.324
+  },
+  {
+   "vid": "K64G01S00041",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "高木村",
+   "reading": "たかぎ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28437,
+   "lng": 130.2902
+  },
+  {
+   "vid": "K64G01S00017",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "高来町",
+   "reading": "たかぎまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25439,
+   "lng": 130.3046
+  },
+  {
+   "vid": "K64G01S00018",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "紺屋町",
+   "reading": "こんやまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25017,
+   "lng": 130.3116
+  },
+  {
+   "vid": "K64G01S10001",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "佐賀城下",
+   "reading": null,
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24679,
+   "lng": 130.2988
+  },
+  {
+   "vid": "K64G01S00011",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "材木町",
+   "reading": "ざいもくまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25254,
+   "lng": 130.31
+  },
+  {
+   "vid": "K64G01S00008",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "山領村",
+   "reading": "やまりょう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23036,
+   "lng": 130.3438
+  },
+  {
+   "vid": "K64G01S00009",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "寺井津",
+   "reading": "てらいつ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21092,
+   "lng": 130.3503
+  },
+  {
+   "vid": "K64G01S00021",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "寺町",
+   "reading": "てらまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25801,
+   "lng": 130.2997
+  },
+  {
+   "vid": "K64G01S00062",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "鹿江村",
+   "reading": "かのえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19226,
+   "lng": 130.3118
+  },
+  {
+   "vid": "K64G01S00069",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "鹿子村",
+   "reading": "かのこ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22528,
+   "lng": 130.2945
+  },
+  {
+   "vid": "K64G01S00036",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "若宮村",
+   "reading": "わかみや",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27631,
+   "lng": 130.3253
+  },
+  {
+   "vid": "K64G01S00033",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "修理田村",
+   "reading": "しゅりた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26308,
+   "lng": 130.3252
+  },
+  {
+   "vid": "K64G01S00075",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "十五村",
+   "reading": "じゅうご",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23691,
+   "lng": 130.256
+  },
+  {
+   "vid": "K64G01S00010",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "諸富津",
+   "reading": "もろどみつ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2223,
+   "lng": 130.3598
+  },
+  {
+   "vid": "K64G01S00056",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "小々森村",
+   "reading": "こごもり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19578,
+   "lng": 130.3054
+  },
+  {
+   "vid": "K64G01S00052",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "小副川村",
+   "reading": "おそえがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.39392,
+   "lng": 130.2479
+  },
+  {
+   "vid": "K64G01S00053",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "松瀬村",
+   "reading": "まつせ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36754,
+   "lng": 130.2739
+  },
+  {
+   "vid": "K64G01S00045",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "上和泉村",
+   "reading": "かみいずみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31544,
+   "lng": 130.3257
+  },
+  {
+   "vid": "K64G01S00005",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "新戸村",
+   "reading": null,
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23357,
+   "lng": 130.3196
+  },
+  {
+   "vid": "K64G01S00085",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "新田村",
+   "reading": "しんでん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23325,
+   "lng": 130.24
+  },
+  {
+   "vid": "K64G01S00079",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "森田村",
+   "reading": "もりた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27106,
+   "lng": 130.2558
+  },
+  {
+   "vid": "K64G01S00039",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "神浦村",
+   "reading": "こうのうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26594,
+   "lng": 130.2905
+  },
+  {
+   "vid": "K64G01S00025",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "西魚町",
+   "reading": "にしうおまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24851,
+   "lng": 130.2907
+  },
+  {
+   "vid": "K64G01S00060",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "西古賀村",
+   "reading": "にしこが",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20812,
+   "lng": 130.3171
+  },
+  {
+   "vid": "K64G01S00048",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "千布村",
+   "reading": "ちふ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30861,
+   "lng": 130.3019
+  },
+  {
+   "vid": "K64G01S00046",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "川久保村",
+   "reading": "かわくぼ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32526,
+   "lng": 130.3266
+  },
+  {
+   "vid": "K64G01S00092",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "川上村",
+   "reading": "かわかみ",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.32344,
+   "lng": 130.2669
+  },
+  {
+   "vid": "K64G01S00058",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "早津江村",
+   "reading": "はやつえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20577,
+   "lng": 130.3319
+  },
+  {
+   "vid": "K64G01S00061",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "早津江村",
+   "reading": "はやつえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20533,
+   "lng": 130.3378
+  },
+  {
+   "vid": "K64G01S00067",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "相応村",
+   "reading": "そうおう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22009,
+   "lng": 130.265
+  },
+  {
+   "vid": "K64G01S00077",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "多布施村",
+   "reading": "たふせ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25596,
+   "lng": 130.2906
+  },
+  {
+   "vid": "K64G01S00083",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "袋村",
+   "reading": "ふくろ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23808,
+   "lng": 130.3067
+  },
+  {
+   "vid": "K64G01S00082",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "大財村",
+   "reading": "おおたから",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26,
+   "lng": 130.3054
+  },
+  {
+   "vid": "K64G01S00004",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "大堂村",
+   "reading": "おおどう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23777,
+   "lng": 130.3655
+  },
+  {
+   "vid": "K64G01S00059",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "大詫間村",
+   "reading": "おおだくま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.17783,
+   "lng": 130.3424
+  },
+  {
+   "vid": "K64G01S00090",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "池上村",
+   "reading": "いけのうえ",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.28672,
+   "lng": 130.2496
+  },
+  {
+   "vid": "K64G01S00074",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "中原村",
+   "reading": "なかばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23539,
+   "lng": 130.2616
+  },
+  {
+   "vid": "K64G01S00016",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "中町",
+   "reading": "なかまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25333,
+   "lng": 130.3012
+  },
+  {
+   "vid": "K64G01S00042",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "長瀬村",
+   "reading": "ながせ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.29094,
+   "lng": 130.2836
+  },
+  {
+   "vid": "K64G01S00022",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "長瀬町",
+   "reading": "ながせまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24928,
+   "lng": 130.283
+  },
+  {
+   "vid": "K64G01S00032",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "天祐寺町",
+   "reading": "てんゆうじまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25809,
+   "lng": 130.2817
+  },
+  {
+   "vid": "K64G01S00064",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "田中村",
+   "reading": "たなか",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2028,
+   "lng": 130.2824
+  },
+  {
+   "vid": "K64G01S00012",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "唐人町",
+   "reading": "とうじんまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25822,
+   "lng": 130.2985
+  },
+  {
+   "vid": "K64G01S00015",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "東魚町",
+   "reading": "ひがしうおまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25385,
+   "lng": 130.3031
+  },
+  {
+   "vid": "K64G01S00040",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "東高木村",
+   "reading": "ひがしたかぎ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28446,
+   "lng": 130.3065
+  },
+  {
+   "vid": "K64G01S00095",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "東山田村",
+   "reading": "ひがしやまだ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31149,
+   "lng": 130.2673
+  },
+  {
+   "vid": "K64G01S00093",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "東西村",
+   "reading": "とうさい",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24985,
+   "lng": 130.3404
+  },
+  {
+   "vid": "K64G01S00038",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "藤木村",
+   "reading": "ふじのき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26686,
+   "lng": 130.3093
+  },
+  {
+   "vid": "K64G01S00023",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "道祖元町",
+   "reading": "さやのもとまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24782,
+   "lng": 130.2851
+  },
+  {
+   "vid": "K64G01S00007",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "徳富村",
+   "reading": "とくどみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22951,
+   "lng": 130.3661
+  },
+  {
+   "vid": "K64G01S00087",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "徳万村",
+   "reading": "とくまん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2466,
+   "lng": 130.2419
+  },
+  {
+   "vid": "K64G01S00081",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "鍋島村",
+   "reading": "なべしま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27635,
+   "lng": 130.267
+  },
+  {
+   "vid": "K64G01S00003",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "南里村",
+   "reading": "なんり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22264,
+   "lng": 130.3122
+  },
+  {
+   "vid": "K64G01S00043",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "尼寺村",
+   "reading": "にいじ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31313,
+   "lng": 130.2868
+  },
+  {
+   "vid": "K64G01S00051",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "梅野村",
+   "reading": "うめの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36242,
+   "lng": 130.2546
+  },
+  {
+   "vid": "K64G01S00014",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "白山町",
+   "reading": "しらやままち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25468,
+   "lng": 130.2967
+  },
+  {
+   "vid": "K64G01S00078",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "八戸溝村",
+   "reading": "やえみぞ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26142,
+   "lng": 130.2737
+  },
+  {
+   "vid": "K64G01S00073",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "八戸村",
+   "reading": "やえ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24929,
+   "lng": 130.2749
+  },
+  {
+   "vid": "K64G01S00027",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "八戸町",
+   "reading": "やえまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24682,
+   "lng": 130.2769
+  },
+  {
+   "vid": "K64G01S00026",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "八丁馬場",
+   "reading": "はっちょうばば",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26989,
+   "lng": 130.2985
+  },
+  {
+   "vid": "K64G01S00065",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "飯盛村",
+   "reading": "いさがい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.20231,
+   "lng": 130.274
+  },
+  {
+   "vid": "K64G01S00055",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "福富村",
+   "reading": "ふくどみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21233,
+   "lng": 130.3292
+  },
+  {
+   "vid": "K64G01S00037",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "淵村",
+   "reading": "ふち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27657,
+   "lng": 130.317
+  },
+  {
+   "vid": "K64G01S00071",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "本庄村",
+   "reading": "ほんじょう",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24129,
+   "lng": 130.2886
+  },
+  {
+   "vid": "K64G01S00030",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "本庄町",
+   "reading": "ほんじょうまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24218,
+   "lng": 130.2866
+  },
+  {
+   "vid": "K64G01S00068",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "末次村",
+   "reading": "すえつぐ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23299,
+   "lng": 130.3003
+  },
+  {
+   "vid": "K64G01S00006",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "木原村",
+   "reading": "きはら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24561,
+   "lng": 130.3206
+  },
+  {
+   "vid": "K64G01S00047",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "薬師丸村",
+   "reading": "やくしまる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30025,
+   "lng": 130.3214
+  },
+  {
+   "vid": "K64G01S00019",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "柳町",
+   "reading": "やなぎまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25422,
+   "lng": 130.3082
+  },
+  {
+   "vid": "K64G01S00070",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "厘外村",
+   "reading": "りんげ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23345,
+   "lng": 130.2729
+  },
+  {
+   "vid": "K64G01S00072",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "厘外村",
+   "reading": "りんげ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24362,
+   "lng": 130.2801
+  },
+  {
+   "vid": "K64G01S00094",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "蓮池村",
+   "reading": "はすいけ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24639,
+   "lng": 130.3539
+  },
+  {
+   "vid": "K64G01S00024",
+   "kuni": "肥前",
+   "gun": "佐賀郡",
+   "name": "六座町",
+   "reading": "ろくざまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25007,
+   "lng": 130.2869
+  },
+  {
+   "vid": "K64G05S00010",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "寄人村",
+   "reading": "よりうと",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28372,
+   "lng": 130.4127
+  },
+  {
+   "vid": "K64G05S00004",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "江迎村",
+   "reading": "えむかい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3096,
+   "lng": 130.4313
+  },
+  {
+   "vid": "K64G05S00011",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "江口村",
+   "reading": "えぐち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30863,
+   "lng": 130.457
+  },
+  {
+   "vid": "K64G05S00001",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "坂口村",
+   "reading": "さかぐち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27089,
+   "lng": 130.4449
+  },
+  {
+   "vid": "K64G05S00008",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "市武村",
+   "reading": "いちたけ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.29366,
+   "lng": 130.422
+  },
+  {
+   "vid": "K64G05S00003",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "西島村",
+   "reading": "にしじま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.29749,
+   "lng": 130.4371
+  },
+  {
+   "vid": "K64G05S00007",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "前牟田村",
+   "reading": "まえむた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3068,
+   "lng": 130.4127
+  },
+  {
+   "vid": "K64G05S00005",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "堤村",
+   "reading": "つつみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34597,
+   "lng": 130.4214
+  },
+  {
+   "vid": "K64G05S00002",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "天建寺村",
+   "reading": "てんけんじ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28939,
+   "lng": 130.4504
+  },
+  {
+   "vid": "K64G05S00009",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "東津村",
+   "reading": "ひがしづ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27922,
+   "lng": 130.4234
+  },
+  {
+   "vid": "K64G05S00006",
+   "kuni": "肥前",
+   "gun": "三根郡",
+   "name": "坊所村",
+   "reading": "ぼうしょ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31926,
+   "lng": 130.423
+  },
+  {
+   "vid": "K64G06S00065",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "芦刈村",
+   "reading": "あしかり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.22025,
+   "lng": 130.2011
+  },
+  {
+   "vid": "K64G06S00025",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "乙柳刈",
+   "reading": "おとやなぎがり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.26737,
+   "lng": 130.2117
+  },
+  {
+   "vid": "K64G06S00002",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下熊川村",
+   "reading": "しもくまのかわ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34293,
+   "lng": 130.2457
+  },
+  {
+   "vid": "K64G06S00038",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下古賀村",
+   "reading": "しもこが",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23318,
+   "lng": 130.2194
+  },
+  {
+   "vid": "K64G06S00020",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下合瀬村",
+   "reading": "しもおうせ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.4442,
+   "lng": 130.263
+  },
+  {
+   "vid": "K64G06S00052",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下多久村",
+   "reading": "しもたく",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27497,
+   "lng": 130.1304
+  },
+  {
+   "vid": "K64G06S00067",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下砥川村",
+   "reading": "しもとがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23044,
+   "lng": 130.182
+  },
+  {
+   "vid": "K64G06S00017",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "下無津呂村",
+   "reading": "しもむつろ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.44217,
+   "lng": 130.211
+  },
+  {
+   "vid": "K64G06S00031",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "柿樋瀬村",
+   "reading": "かきひせ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25454,
+   "lng": 130.2073
+  },
+  {
+   "vid": "K64G06S00007",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "鎌原村",
+   "reading": "かまばる",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.35666,
+   "lng": 130.1959
+  },
+  {
+   "vid": "K64G06S00033",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "岩蔵村",
+   "reading": "いわくら",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.31473,
+   "lng": 130.1911
+  },
+  {
+   "vid": "K64G06S00036",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "久米刈",
+   "reading": "くめかり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.28334,
+   "lng": 130.2032
+  },
+  {
+   "vid": "K64G06S00022",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "牛津本町",
+   "reading": "うしづほんまち",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2474,
+   "lng": 130.2056
+  },
+  {
+   "vid": "K64G06S00023",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "金田刈",
+   "reading": "かなだ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25761,
+   "lng": 130.2266
+  },
+  {
+   "vid": "K64G06S00046",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "栗原刈",
+   "reading": "くりはらかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28404,
+   "lng": 130.1774
+  },
+  {
+   "vid": "K64G06S00011",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "栗並村",
+   "reading": "くりなみ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.40899,
+   "lng": 130.198
+  },
+  {
+   "vid": "K64G06S00018",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "古場村",
+   "reading": "こば",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.44369,
+   "lng": 130.2402
+  },
+  {
+   "vid": "K64G06S00005",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "古湯村",
+   "reading": "ふるゆ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.37194,
+   "lng": 130.2069
+  },
+  {
+   "vid": "K64G06S00040",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "甲柳原刈",
+   "reading": "こうやなぎばらかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27433,
+   "lng": 130.2109
+  },
+  {
+   "vid": "K64G06S00062",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "三間寺分",
+   "reading": "さんげんじぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30085,
+   "lng": 130.1999
+  },
+  {
+   "vid": "K64G06S00043",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "三島刈",
+   "reading": "みかしまかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2803,
+   "lng": 130.2279
+  },
+  {
+   "vid": "K64G06S00008",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "市川村",
+   "reading": "いちかわ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.35724,
+   "lng": 130.1642
+  },
+  {
+   "vid": "K64G06S00027",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "勝ヶ里",
+   "reading": "かすかり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.26739,
+   "lng": 130.1963
+  },
+  {
+   "vid": "K64G06S00049",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "小侍村",
+   "reading": "こさむらい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30052,
+   "lng": 130.0957
+  },
+  {
+   "vid": "K64G06S00032",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "小城町",
+   "reading": "おぎまち",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.29376,
+   "lng": 130.1982
+  },
+  {
+   "vid": "K64G06S00034",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "松尾村",
+   "reading": "まつお",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30115,
+   "lng": 130.1964
+  },
+  {
+   "vid": "K64G06S00057",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "松尾村",
+   "reading": "まつお",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": null,
+   "lng": null
+  },
+  {
+   "vid": "K64G06S00004",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "上熊川村",
+   "reading": "かみくまのかわ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3623,
+   "lng": 130.232
+  },
+  {
+   "vid": "K64G06S00019",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "上合瀬村",
+   "reading": "かみおうせ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.45049,
+   "lng": 130.2682
+  },
+  {
+   "vid": "K64G06S00066",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "上砥川村",
+   "reading": "かみとがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24527,
+   "lng": 130.1904
+  },
+  {
+   "vid": "K64G06S00016",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "上無津呂村",
+   "reading": "かみむつろ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.45807,
+   "lng": 130.1965
+  },
+  {
+   "vid": "K64G06S00035",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "織島刈",
+   "reading": "おりしまかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2995,
+   "lng": 130.2247
+  },
+  {
+   "vid": "K64G06S00009",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "杉山村",
+   "reading": "すぎやま",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.39134,
+   "lng": 130.1631
+  },
+  {
+   "vid": "K64G06S00055",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "晴気村",
+   "reading": "はるけ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.29409,
+   "lng": 130.1741
+  },
+  {
+   "vid": "K64G06S00041",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "石木刈",
+   "reading": "いしきかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27203,
+   "lng": 130.2012
+  },
+  {
+   "vid": "K64G06S00029",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "川越村",
+   "reading": "かわごえ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23264,
+   "lng": 130.1945
+  },
+  {
+   "vid": "K64G06S00039",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "船田刈",
+   "reading": "ふなだかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27595,
+   "lng": 130.188
+  },
+  {
+   "vid": "K64G06S00050",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "多久原村",
+   "reading": "たくばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28904,
+   "lng": 130.119
+  },
+  {
+   "vid": "K64G06S00047",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "多久町村",
+   "reading": "たくまち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26124,
+   "lng": 130.0871
+  },
+  {
+   "vid": "K64G06S00015",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "大串村",
+   "reading": "おおくし",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.42174,
+   "lng": 130.1916
+  },
+  {
+   "vid": "K64G06S00014",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "大野村",
+   "reading": "おおの",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.42916,
+   "lng": 130.2022
+  },
+  {
+   "vid": "K64G06S00045",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "池上刈",
+   "reading": "いけのうえかり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.26413,
+   "lng": 130.1888
+  },
+  {
+   "vid": "K64G06S00013",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "中原村",
+   "reading": "なかばる",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.43256,
+   "lng": 130.2012
+  },
+  {
+   "vid": "K64G06S00042",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "長神田刈",
+   "reading": "ちょうかんだかり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.28965,
+   "lng": 130.219
+  },
+  {
+   "vid": "K64G06S00021",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "藤瀬村",
+   "reading": "ふじせ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.4341,
+   "lng": 130.2286
+  },
+  {
+   "vid": "K64G06S00044",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "道辺刈",
+   "reading": "みちべかり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27842,
+   "lng": 130.2341
+  },
+  {
+   "vid": "K64G06S00028",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "道免村",
+   "reading": "どうめ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21727,
+   "lng": 130.219
+  },
+  {
+   "vid": "K64G06S00003",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "内野村",
+   "reading": "うちの",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36127,
+   "lng": 130.2497
+  },
+  {
+   "vid": "K64G06S00053",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "納所村",
+   "reading": "のうさ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25587,
+   "lng": 130.1696
+  },
+  {
+   "vid": "K64G06S00010",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "畑瀬村",
+   "reading": "はたぜ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.39858,
+   "lng": 130.2186
+  },
+  {
+   "vid": "K64G06S00037",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "畑田刈",
+   "reading": "はたけだかり",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2952,
+   "lng": 130.1895
+  },
+  {
+   "vid": "K64G06S00030",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "八枝村",
+   "reading": "やつえだ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23873,
+   "lng": 130.2005
+  },
+  {
+   "vid": "K64G06S00001",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "八反原村",
+   "reading": "はったばる",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3388,
+   "lng": 130.2549
+  },
+  {
+   "vid": "K64G06S00048",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "板屋村",
+   "reading": "いたや",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26086,
+   "lng": 130.0628
+  },
+  {
+   "vid": "K64G06S00024",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "樋口刈",
+   "reading": "ひぐちがり",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27179,
+   "lng": 130.2219
+  },
+  {
+   "vid": "K64G06S00051",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "別府村",
+   "reading": "べふ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28388,
+   "lng": 130.1455
+  },
+  {
+   "vid": "K64G06S00026",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "堀江村",
+   "reading": "ほりえ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27459,
+   "lng": 130.2358
+  },
+  {
+   "vid": "K64G06S00012",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "摩那古村",
+   "reading": "まなご",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.44167,
+   "lng": 130.1936
+  },
+  {
+   "vid": "K64G06S00006",
+   "kuni": "肥前",
+   "gun": "小城郡",
+   "name": "苣木村",
+   "reading": "ちやのき",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36154,
+   "lng": 130.1839
+  },
+  {
+   "vid": "K64G09S00246",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "伊万里津",
+   "reading": "いまりつ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27449,
+   "lng": 129.8777
+  },
+  {
+   "vid": "K64G09S00286",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "浦川内村",
+   "reading": "うらがわち",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27654,
+   "lng": 129.834
+  },
+  {
+   "vid": "K64G09S00268",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "久原村",
+   "reading": "くばら",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.30841,
+   "lng": 129.8117
+  },
+  {
+   "vid": "K64G09S00276",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "曲川村",
+   "reading": "まがりかわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19289,
+   "lng": 129.849
+  },
+  {
+   "vid": "K64G09S00247",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "今岳村",
+   "reading": "いまだけ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27466,
+   "lng": 129.8879
+  },
+  {
+   "vid": "K64G09S00273",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "皿山",
+   "reading": "さらやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.19015,
+   "lng": 129.8988
+  },
+  {
+   "vid": "K64G09S00257",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "山形村",
+   "reading": "やまがた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26533,
+   "lng": 129.9391
+  },
+  {
+   "vid": "K64G09S00278",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "山谷村",
+   "reading": "やまだに",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.23133,
+   "lng": 129.8487
+  },
+  {
+   "vid": "K64G09S00254",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "松島搦",
+   "reading": "まつしまからみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27893,
+   "lng": 129.8749
+  },
+  {
+   "vid": "K64G09S00266",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "城村",
+   "reading": "じょう",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.29264,
+   "lng": 129.8084
+  },
+  {
+   "vid": "K64G09S00279",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "新村",
+   "reading": "しん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.18257,
+   "lng": 129.881
+  },
+  {
+   "vid": "K64G09S00249",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "新田村",
+   "reading": "しんでん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27202,
+   "lng": 129.8756
+  },
+  {
+   "vid": "K64G09S00251",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "瀬戸村",
+   "reading": "せと",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30665,
+   "lng": 129.843
+  },
+  {
+   "vid": "K64G09S00272",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "西大久保村",
+   "reading": null,
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.31763,
+   "lng": 129.7775
+  },
+  {
+   "vid": "K64G09S00270",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "西分村",
+   "reading": "にしぶん",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.3192,
+   "lng": 129.7822
+  },
+  {
+   "vid": "K64G09S00264",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "川内野村",
+   "reading": "かわちの",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.28719,
+   "lng": 129.7719
+  },
+  {
+   "vid": "K64G09S00260",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "大久保村",
+   "reading": "おおくぼ",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27742,
+   "lng": 129.8225
+  },
+  {
+   "vid": "K64G09S00255",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "大川内村",
+   "reading": "おおかわち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25709,
+   "lng": 129.9012
+  },
+  {
+   "vid": "K64G09S00277",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "大木村",
+   "reading": "おおぎ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.21891,
+   "lng": 129.8514
+  },
+  {
+   "vid": "K64G09S00274",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "大里村",
+   "reading": "おおざと",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26508,
+   "lng": 129.8539
+  },
+  {
+   "vid": "K64G09S00263",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "滝川内村",
+   "reading": "たきがわち",
+   "domains": [
+    "saga",
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.2791,
+   "lng": 129.7956
+  },
+  {
+   "vid": "K64G09S00256",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "中野原村",
+   "reading": "なかのはる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25522,
+   "lng": 129.9323
+  },
+  {
+   "vid": "K64G09S00275",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "中里村",
+   "reading": "なかざと",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25146,
+   "lng": 129.8463
+  },
+  {
+   "vid": "K64G09S00250",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "町裏村",
+   "reading": "まちうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27232,
+   "lng": 129.8843
+  },
+  {
+   "vid": "K64G09S00259",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "長浜村",
+   "reading": "ながはま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27913,
+   "lng": 129.8474
+  },
+  {
+   "vid": "K64G09S00281",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "提川村",
+   "reading": "さげのかわ",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27579,
+   "lng": 129.9504
+  },
+  {
+   "vid": "K64G09S00284",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "天神村",
+   "reading": "てんじん",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27993,
+   "lng": 129.8423
+  },
+  {
+   "vid": "K64G09S00287",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "東大久保村",
+   "reading": "ひがしおおくぼ",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28019,
+   "lng": 129.8327
+  },
+  {
+   "vid": "K64G09S00271",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "東分村",
+   "reading": "ひがしぶん",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.31131,
+   "lng": 129.7891
+  },
+  {
+   "vid": "K64G09S00280",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "桃川村",
+   "reading": "もものかわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27252,
+   "lng": 129.9608
+  },
+  {
+   "vid": "K64G09S00258",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "楠久村",
+   "reading": "くすく",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.29574,
+   "lng": 129.825
+  },
+  {
+   "vid": "K64G09S00283",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "日尾村",
+   "reading": "ひお",
+   "domains": [
+    "ogi"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28131,
+   "lng": 129.8531
+  },
+  {
+   "vid": "K64G09S00248",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "八谷搦",
+   "reading": "はちやがらみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27674,
+   "lng": 129.8703
+  },
+  {
+   "vid": "K64G09S00265",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "福川内村",
+   "reading": "ふくがわち",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.29054,
+   "lng": 129.8176
+  },
+  {
+   "vid": "K64G09S00267",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "峯村",
+   "reading": "みね",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.29757,
+   "lng": 129.8097
+  },
+  {
+   "vid": "K64G09S00252",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "木須村",
+   "reading": "きす",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.287,
+   "lng": 129.8667
+  },
+  {
+   "vid": "K64G09S00262",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "里村",
+   "reading": "さと",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.28558,
+   "lng": 129.8347
+  },
+  {
+   "vid": "K64G09S00269",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "立岩村",
+   "reading": "たちいわ",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.32694,
+   "lng": 129.7915
+  },
+  {
+   "vid": "K64G09S00253",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "脇田村",
+   "reading": "わきだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28685,
+   "lng": 129.8858
+  },
+  {
+   "vid": "K64G09S00261",
+   "kuni": "肥前",
+   "gun": "松浦郡",
+   "name": "脇野村",
+   "reading": "わきの",
+   "domains": [
+    "ogi",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27023,
+   "lng": 129.8369
+  },
+  {
+   "vid": "K64G02S00016",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "永歌村",
+   "reading": "ながうた",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.2941,
+   "lng": 130.3773
+  },
+  {
+   "vid": "K64G02S00014",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "横武村",
+   "reading": "よこだけ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3022,
+   "lng": 130.3587
+  },
+  {
+   "vid": "K64G02S00010",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "下坂村",
+   "reading": "しもいた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28283,
+   "lng": 130.3916
+  },
+  {
+   "vid": "K64G02S00043",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "下西村",
+   "reading": "しもさい",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.26093,
+   "lng": 130.3464
+  },
+  {
+   "vid": "K64G02S00041",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "嘉納村",
+   "reading": "かのう",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28192,
+   "lng": 130.3739
+  },
+  {
+   "vid": "K64G02S00021",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "吉田村",
+   "reading": "よしだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32321,
+   "lng": 130.3996
+  },
+  {
+   "vid": "K64G02S00008",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "境原村",
+   "reading": "さかいばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27507,
+   "lng": 130.3488
+  },
+  {
+   "vid": "K64G02S00001",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "迎島村",
+   "reading": "むかいしま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25366,
+   "lng": 130.4096
+  },
+  {
+   "vid": "K64G02S00047",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "見島村",
+   "reading": "みしま",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25336,
+   "lng": 130.3616
+  },
+  {
+   "vid": "K64G02S00049",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "古賀村",
+   "reading": "こが",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25177,
+   "lng": 130.3724
+  },
+  {
+   "vid": "K64G02S00034",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "広滝山",
+   "reading": "ひろたきやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3718,
+   "lng": 130.3347
+  },
+  {
+   "vid": "K64G02S00012",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "黒井村",
+   "reading": "くろい",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27917,
+   "lng": 130.3616
+  },
+  {
+   "vid": "K64G02S00004",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "崎村",
+   "reading": "さき",
+   "domains": [
+    "saga",
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.25885,
+   "lng": 130.3869
+  },
+  {
+   "vid": "K64G02S00038",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "三ツ瀬山",
+   "reading": "みつぜやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.45194,
+   "lng": 130.2765
+  },
+  {
+   "vid": "K64G02S00019",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "三津村",
+   "reading": "みつ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34837,
+   "lng": 130.398
+  },
+  {
+   "vid": "K64G02S00013",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "姉川村",
+   "reading": "あねがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.28776,
+   "lng": 130.3503
+  },
+  {
+   "vid": "K64G02S00011",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "姉村",
+   "reading": "あね",
+   "domains": [
+    "saga",
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.27285,
+   "lng": 130.3606
+  },
+  {
+   "vid": "K64G02S00032",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "志波屋村",
+   "reading": "しわや",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34505,
+   "lng": 130.3782
+  },
+  {
+   "vid": "K64G02S00036",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "鹿路山",
+   "reading": "ろくろやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3698,
+   "lng": 130.3032
+  },
+  {
+   "vid": "K64G02S00046",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "小松村",
+   "reading": "こまつ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.24702,
+   "lng": 130.365
+  },
+  {
+   "vid": "K64G02S00017",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "松隈村",
+   "reading": "まつぐま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.37268,
+   "lng": 130.3994
+  },
+  {
+   "vid": "K64G02S00026",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "城原村",
+   "reading": "じょうばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.33709,
+   "lng": 130.3608
+  },
+  {
+   "vid": "K64G02S00030",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "神埼村",
+   "reading": "かんざき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30744,
+   "lng": 130.3722
+  },
+  {
+   "vid": "K64G02S00018",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "石動村",
+   "reading": "いしなり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.35623,
+   "lng": 130.4069
+  },
+  {
+   "vid": "K64G02S00020",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "大曲村",
+   "reading": "おおまがり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.338,
+   "lng": 130.3983
+  },
+  {
+   "vid": "K64G02S00009",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "託田村",
+   "reading": "たくた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27763,
+   "lng": 130.3868
+  },
+  {
+   "vid": "K64G02S00031",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "竹村",
+   "reading": "たけ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31891,
+   "lng": 130.361
+  },
+  {
+   "vid": "K64G02S00007",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "丁大田村",
+   "reading": "ちょうおおた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2698,
+   "lng": 130.3815
+  },
+  {
+   "vid": "K64G02S00040",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "直島村",
+   "reading": "なおとり",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.2668,
+   "lng": 130.3699
+  },
+  {
+   "vid": "K64G02S00027",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "鶴村",
+   "reading": "つる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32513,
+   "lng": 130.3701
+  },
+  {
+   "vid": "K64G02S00025",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "的村",
+   "reading": "ゆくわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34465,
+   "lng": 130.37
+  },
+  {
+   "vid": "K64G02S00024",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "田手村",
+   "reading": "たで",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32197,
+   "lng": 130.3889
+  },
+  {
+   "vid": "K64G02S00033",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "田道ヶ里",
+   "reading": "たみちがり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31106,
+   "lng": 130.3875
+  },
+  {
+   "vid": "K64G02S00003",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "渡瀬村",
+   "reading": "わたぜ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27408,
+   "lng": 130.3946
+  },
+  {
+   "vid": "K64G02S00039",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "藤原山",
+   "reading": "ふじのはるやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.43508,
+   "lng": 130.2985
+  },
+  {
+   "vid": "K64G02S00023",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "豆田村",
+   "reading": "まめだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31608,
+   "lng": 130.3979
+  },
+  {
+   "vid": "K64G02S00005",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "箱川村",
+   "reading": "はこがわ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.30492,
+   "lng": 130.3995
+  },
+  {
+   "vid": "K64G02S00028",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "尾崎村",
+   "reading": "おさき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.31964,
+   "lng": 130.346
+  },
+  {
+   "vid": "K64G02S00035",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "腹巻山",
+   "reading": "はらまきやま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.39775,
+   "lng": 130.3163
+  },
+  {
+   "vid": "K64G02S00015",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "本告牟田村",
+   "reading": "もとおりむた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.29538,
+   "lng": 130.3689
+  },
+  {
+   "vid": "K64G02S00029",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "本堀村",
+   "reading": "もとほり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3003,
+   "lng": 130.3792
+  },
+  {
+   "vid": "K64G02S00022",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "目達原村",
+   "reading": "めたばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.33092,
+   "lng": 130.4105
+  },
+  {
+   "vid": "K64G02S00002",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "柳島村",
+   "reading": "やなぎしま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.27072,
+   "lng": 130.4067
+  },
+  {
+   "vid": "K64G02S00048",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "余り江村",
+   "reading": "あまりえ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25893,
+   "lng": 130.3649
+  },
+  {
+   "vid": "K64G02S00006",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "用作村",
+   "reading": "ようさく",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.25874,
+   "lng": 130.3727
+  },
+  {
+   "vid": "K64G02S00037",
+   "kuni": "肥前",
+   "gun": "神埼郡",
+   "name": "杠山",
+   "reading": "ゆずりは",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.42306,
+   "lng": 130.2645
+  },
+  {
+   "vid": "K64G08S00027",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "井手川内村",
+   "reading": "いでがわち",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.09563,
+   "lng": 129.992
+  },
+  {
+   "vid": "K64G08S00023",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "井手村",
+   "reading": "いで",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.12631,
+   "lng": 130.1043
+  },
+  {
+   "vid": "K64G08S00038",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "音成村",
+   "reading": "おとなり",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.07062,
+   "lng": 130.1445
+  },
+  {
+   "vid": "K64G08S00016",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "下宿村",
+   "reading": "しもじゅく",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.09798,
+   "lng": 129.9844
+  },
+  {
+   "vid": "K64G08S00018",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "下野村",
+   "reading": "しもの",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10844,
+   "lng": 130.0087
+  },
+  {
+   "vid": "K64G08S00019",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "岩屋川内村",
+   "reading": "いわやがわち",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.08086,
+   "lng": 129.9788
+  },
+  {
+   "vid": "K64G08S00017",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "吉田村",
+   "reading": "よしだ",
+   "domains": [
+    "saga",
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.09269,
+   "lng": 130.0277
+  },
+  {
+   "vid": "K64G08S00013",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "久間村",
+   "reading": "くま",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.14871,
+   "lng": 130.0631
+  },
+  {
+   "vid": "K64G08S00004",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "古枝村",
+   "reading": "ふるえだ",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.07646,
+   "lng": 130.1087
+  },
+  {
+   "vid": "K64G08S00021",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "五丁田村",
+   "reading": "ごちょうだ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.12264,
+   "lng": 130.0621
+  },
+  {
+   "vid": "K64G08S00007",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "高津原村",
+   "reading": "たかつはら",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10287,
+   "lng": 130.0883
+  },
+  {
+   "vid": "K64G08S00011",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "三川内村",
+   "reading": "みかわち",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.07696,
+   "lng": 130.0659
+  },
+  {
+   "vid": "K64G08S00008",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "山浦村",
+   "reading": "やまうら",
+   "domains": [
+    "saga",
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.05456,
+   "lng": 130.071
+  },
+  {
+   "vid": "K64G08S00034",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "糸岐村",
+   "reading": "いとき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.01574,
+   "lng": 130.1793
+  },
+  {
+   "vid": "K64G08S00006",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "重木村",
+   "reading": "じゅうのき",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10946,
+   "lng": 130.1113
+  },
+  {
+   "vid": "K64G08S00010",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "常広村",
+   "reading": "つねひろ",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.11805,
+   "lng": 130.1088
+  },
+  {
+   "vid": "K64G08S00002",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "森村",
+   "reading": "もり",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.12498,
+   "lng": 130.0857
+  },
+  {
+   "vid": "K64G08S00024",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "真崎村",
+   "reading": "まつさき",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.1281,
+   "lng": 130.0741
+  },
+  {
+   "vid": "K64G08S00040",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "西牟田村",
+   "reading": "にしむた",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.11206,
+   "lng": 130.09
+  },
+  {
+   "vid": "K64G08S00039",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "浅浦村",
+   "reading": "あさうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.09117,
+   "lng": 130.0712
+  },
+  {
+   "vid": "K64G08S00036",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "多良村",
+   "reading": "たら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.031,
+   "lng": 130.1742
+  },
+  {
+   "vid": "K64G08S00035",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "大浦村",
+   "reading": "おおうら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.97744,
+   "lng": 130.2082
+  },
+  {
+   "vid": "K64G08S00014",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "大草野村",
+   "reading": "おおくさの",
+   "domains": [
+    "saga",
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.12938,
+   "lng": 130.0026
+  },
+  {
+   "vid": "K64G08S00026",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "大野原村",
+   "reading": "おおのはら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.03845,
+   "lng": 130.0044
+  },
+  {
+   "vid": "K64G08S00022",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "谷所村",
+   "reading": "たにどころ",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10007,
+   "lng": 130.0683
+  },
+  {
+   "vid": "K64G08S00001",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "中村",
+   "reading": "なか",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.1202,
+   "lng": 130.0885
+  },
+  {
+   "vid": "K64G08S00041",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "鳥坂村",
+   "reading": "とさか",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10631,
+   "lng": 130.0701
+  },
+  {
+   "vid": "K64G08S00025",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "鍋野村",
+   "reading": "なべの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.14287,
+   "lng": 130.0187
+  },
+  {
+   "vid": "K64G08S00005",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "納富分村",
+   "reading": "のうどみぶん",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.09586,
+   "lng": 130.0943
+  },
+  {
+   "vid": "K64G08S00012",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "馬場下村",
+   "reading": "ばばした",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.13014,
+   "lng": 130.06
+  },
+  {
+   "vid": "K64G08S00003",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "八本木村",
+   "reading": "はちほんぎ",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.09271,
+   "lng": 130.1181
+  },
+  {
+   "vid": "K64G08S00037",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "飯田村",
+   "reading": "いいだ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.05455,
+   "lng": 130.1574
+  },
+  {
+   "vid": "K64G08S00042",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "美野分",
+   "reading": "みのぶん",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.12423,
+   "lng": 130.0315
+  },
+  {
+   "vid": "K64G08S00015",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "不動山村",
+   "reading": "ふどうやま",
+   "domains": [
+    "hasuike",
+    "saga"
+   ],
+   "shared": [],
+   "isShared": true,
+   "lat": 33.09751,
+   "lng": 129.9461
+  },
+  {
+   "vid": "K64G08S00020",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "伏原村",
+   "reading": "ふしわら",
+   "domains": [
+    "hasuike"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.10273,
+   "lng": 130.0783
+  },
+  {
+   "vid": "K64G08S00009",
+   "kuni": "肥前",
+   "gun": "藤津郡",
+   "name": "両岩村",
+   "reading": "もろいわ",
+   "domains": [
+    "kashima"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.07836,
+   "lng": 130.027
+  },
+  {
+   "vid": "K64G10S00008",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "喜々津村",
+   "reading": "ききつ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83419,
+   "lng": 129.9814
+  },
+  {
+   "vid": "K64G10S00012",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "黒崎村",
+   "reading": "くろさき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.83737,
+   "lng": 129.713
+  },
+  {
+   "vid": "K64G10S00011",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "小ヶ倉村",
+   "reading": "こがくら",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.70612,
+   "lng": 129.8542
+  },
+  {
+   "vid": "K64G10S00009",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "大草村",
+   "reading": "おおくさ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.85852,
+   "lng": 129.938
+  },
+  {
+   "vid": "K64G10S00010",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "本村",
+   "reading": "もと",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.68575,
+   "lng": 129.826
+  },
+  {
+   "vid": "K64G10S00007",
+   "kuni": "肥前",
+   "gun": "彼杵郡",
+   "name": "矢上村",
+   "reading": "やがみ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 32.77529,
+   "lng": 129.9508
+  },
+  {
+   "vid": "K64G04S00007",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "下野村",
+   "reading": "しもの",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3354,
+   "lng": 130.5028
+  },
+  {
+   "vid": "K64G04S00008",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "儀徳村",
+   "reading": "ぎとく",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.35272,
+   "lng": 130.494
+  },
+  {
+   "vid": "K64G04S00012",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "原古賀村",
+   "reading": "はらこが",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34904,
+   "lng": 130.4406
+  },
+  {
+   "vid": "K64G04S00009",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "江島村",
+   "reading": "えじま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.34832,
+   "lng": 130.4855
+  },
+  {
+   "vid": "K64G04S00006",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "轟木村",
+   "reading": "とどろき",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36492,
+   "lng": 130.4994
+  },
+  {
+   "vid": "K64G04S10001",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "山浦村",
+   "reading": null,
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.37879,
+   "lng": 130.4811
+  },
+  {
+   "vid": "K64G04S00015",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "中津隈村",
+   "reading": "なかつくま",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.3238,
+   "lng": 130.4421
+  },
+  {
+   "vid": "K64G04S00014",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "東尾村",
+   "reading": "ひがしお",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32703,
+   "lng": 130.4575
+  },
+  {
+   "vid": "K64G04S00013",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "白壁村",
+   "reading": "しらかべ",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.32831,
+   "lng": 130.4638
+  },
+  {
+   "vid": "K64G04S00011",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "蓑原村",
+   "reading": "みのばる",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.35722,
+   "lng": 130.4469
+  },
+  {
+   "vid": "K64G04S00010",
+   "kuni": "肥前",
+   "gun": "養父郡",
+   "name": "立石村",
+   "reading": "たていし",
+   "domains": [
+    "saga"
+   ],
+   "shared": [],
+   "isShared": false,
+   "lat": 33.36586,
+   "lng": 130.4627
+  }
+ ]
+}
