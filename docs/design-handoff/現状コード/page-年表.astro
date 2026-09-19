@@ -1,0 +1,219 @@
+---
+import Base from '../layouts/Base.astro';
+import ConfidenceBadge from '../components/ConfidenceBadge.astro';
+import { timeline, PERIODS, THEMES } from '../lib/archive';
+import { periodById } from '../data/periods';
+
+const events = await timeline();
+const first = events[0]?.data.year ?? 1500;
+const last = events[events.length - 1]?.data.year ?? 1900;
+const span = Math.max(1, last - first);
+---
+
+<Base
+  title="年表"
+  description="佐賀藩の年表。記事のない出来事も載せている。主題で絞り込み、記事のあるものへ移動できる。"
+>
+  <section class="inner tl-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <span aria-current="page">年表</span>
+    </nav>
+    <h1>年表</h1>
+    <p class="tl-lede">
+      {events.length}件。<strong>記事のない出来事も載せています</strong>——
+      年表は記事の目次ではなく、藩の出来事そのものの一覧だからです。
+      記事のあるものは見出しがリンクになっています。
+    </p>
+  </section>
+
+  <!-- 帯：藩の一生を一本の線で -->
+  <section class="inner tl-ribbon-wrap">
+    <div class="tl-ribbon">
+      {PERIODS.map((p) => (
+        <a
+          href={`/period/${p.id}/`}
+          class="tl-ribbon-seg"
+          style={`--ec: var(${p.colorVar}); --w: ${(p.endYear - p.startYear) / span}`}
+          title={`${p.name}（${p.span}）`}
+        >
+          <span class="lb">{p.name}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- 絞り込み（JS 無効時は非表示。無くても全件が読める） -->
+  <section class="inner tl-filter" id="tlFilter" hidden>
+    <p class="tl-filter-label">主題で絞る</p>
+    <div class="tl-chips">
+      <button type="button" class="tl-chip is-on" data-theme="all">すべて</button>
+      {THEMES.map((t) => (
+        <button type="button" class="tl-chip" data-theme={t.id} style={`--tc: var(${t.colorVar})`}>
+          <i></i>{t.name}
+        </button>
+      ))}
+    </div>
+    <p class="tl-count" id="tlCount"></p>
+  </section>
+
+  <section class="inner tl-body" data-pagefind-body data-pagefind-filter="種別:年表">
+    <ol class="tl-list" id="tlList">
+      {events.map((e) => {
+        const p = periodById(e.data.period);
+        return (
+          <li
+            class="tl-item"
+            id={`e-${e.data.id}`}
+            data-themes={e.data.themes.join(' ')}
+            data-period={e.data.period}
+            style={`--ec: var(${p.colorVar})`}
+          >
+            <div class="tl-year">
+              <span class="y num">{e.data.year}</span>
+              {e.data.wareki && <span class="w">{e.data.wareki}</span>}
+            </div>
+            <div class="tl-dot"><i></i></div>
+            <div class="tl-content">
+              <h2>
+                {e.article ? (
+                  <a href={`/articles/${e.article.id}/`}>{e.data.title}</a>
+                ) : (
+                  <span>{e.data.title}</span>
+                )}
+                {e.data.scope === 'national' && <span class="tl-scope">全国</span>}
+              </h2>
+              {e.data.summary && <p class="tl-sum">{e.data.summary}</p>}
+              <p class="tl-meta">
+                <a class="tl-period" href={`/period/${p.id}/`}>{p.name}</a>
+                {e.data.themes.map((t) => {
+                  const th = THEMES.find((x) => x.id === t)!;
+                  return (
+                    <a class="tl-theme" href={`/theme/${th.id}/`} style={`--tc: var(${th.colorVar})`}>
+                      <i></i>{th.name}
+                    </a>
+                  );
+                })}
+                <ConfidenceBadge level={e.data.confidence} />
+              </p>
+            </div>
+          </li>
+        );
+      })}
+    </ol>
+  </section>
+</Base>
+
+<style>
+  .tl-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .tl-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .tl-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+
+  .tl-ribbon-wrap { padding-block: clamp(24px, 4vw, 40px) 0; }
+  .tl-ribbon { display: flex; gap: 2px; }
+  .tl-ribbon-seg {
+    flex: var(--w) 1 0; min-width: 24px; height: 34px;
+    display: grid; place-items: center; overflow: hidden;
+    background: color-mix(in srgb, var(--ec) 24%, var(--paper-2));
+    border-radius: 2px; text-decoration: none;
+    transition: background .2s;
+  }
+  .tl-ribbon-seg:hover { background: color-mix(in srgb, var(--ec) 52%, var(--paper-2)); }
+  .tl-ribbon-seg .lb {
+    font-size: 9.5px; color: var(--ink-2); white-space: nowrap;
+    padding-inline: 4px; text-overflow: ellipsis; overflow: hidden;
+  }
+
+  .tl-filter { padding-block: clamp(20px, 3vw, 32px) 0; }
+  .tl-filter-label { font-size: var(--fs-xs); color: var(--ink-4); letter-spacing: .06em; margin-bottom: 10px; }
+  .tl-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tl-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 13px; border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--card); color: var(--ink-3);
+    font-family: inherit; font-size: var(--fs-xs); cursor: pointer;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .tl-chip i { width: 7px; height: 7px; border-radius: 2px; background: var(--tc, var(--ink-4)); }
+  .tl-chip:hover { color: var(--ink); }
+  .tl-chip.is-on { border-color: var(--ink-3); color: var(--ink); background: var(--paper-2); }
+  .tl-count { margin-top: 10px; font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .tl-body { padding-block: clamp(24px, 4vw, 40px) clamp(48px, 7vw, 88px); }
+  .tl-list { list-style: none; }
+  .tl-item {
+    display: grid; grid-template-columns: 6.5em 24px minmax(0, 1fr);
+    gap: 0 12px; padding-block: 18px;
+    scroll-margin-top: 110px;
+  }
+  .tl-item[hidden] { display: none; }
+
+  .tl-year { text-align: right; padding-top: 1px; }
+  .tl-year .y { display: block; font-family: var(--f-mono); font-size: var(--fs-sm); color: var(--ink); }
+  .tl-year .w { display: block; font-size: 10px; color: var(--ink-4); margin-top: 2px; }
+
+  .tl-dot { position: relative; display: grid; justify-items: center; }
+  .tl-dot::before {
+    content: ''; position: absolute; top: 0; bottom: -18px; width: 1px;
+    background: var(--rule-2);
+  }
+  .tl-item:last-child .tl-dot::before { display: none; }
+  .tl-dot i {
+    position: relative; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--ec); margin-top: 5px;
+    box-shadow: 0 0 0 3px var(--paper);
+  }
+
+  .tl-content { padding-bottom: 4px; }
+  .tl-content h2 { font-family: var(--f-mincho); font-size: var(--fs-base); font-weight: 700; line-height: 1.6; }
+  .tl-content h2 a { color: inherit; text-underline-offset: 4px; }
+  .tl-scope {
+    margin-left: 8px; padding: 1px 7px; border: 1px solid var(--rule); border-radius: 999px;
+    font-family: var(--f-sans); font-size: 10px; font-weight: 400; color: var(--ink-4);
+  }
+  .tl-sum { margin-top: 7px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95; }
+  .tl-meta { margin-top: 9px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .tl-period, .tl-theme {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--ink-4); text-decoration: none;
+    padding: 2px 8px; border: 1px solid var(--rule-2); border-radius: 999px;
+  }
+  .tl-period:hover, .tl-theme:hover { color: var(--ink-2); border-color: var(--rule); }
+  .tl-theme i { width: 6px; height: 6px; border-radius: 2px; background: var(--tc); }
+
+  @media (max-width: 600px) {
+    .tl-item { grid-template-columns: 4.6em 20px minmax(0, 1fr); }
+    .tl-year .w { display: none; }
+  }
+</style>
+
+<script>
+  function initTimeline() {
+    const filter = document.getElementById('tlFilter');
+    const list = document.getElementById('tlList');
+    const count = document.getElementById('tlCount');
+    if (!filter || !list || !count) return;
+
+    filter.hidden = false;
+    const items = [...list.querySelectorAll<HTMLElement>('.tl-item')];
+    const chips = [...filter.querySelectorAll<HTMLButtonElement>('.tl-chip')];
+
+    const apply = (theme: string) => {
+      let n = 0;
+      for (const it of items) {
+        const themes = (it.dataset.themes ?? '').split(' ').filter(Boolean);
+        const show = theme === 'all' || themes.includes(theme);
+        it.hidden = !show;
+        if (show) n++;
+      }
+      count.textContent = theme === 'all' ? `${n}件` : `${n}件 / 全${items.length}件`;
+      for (const c of chips) c.classList.toggle('is-on', c.dataset.theme === theme);
+    };
+
+    for (const c of chips) c.addEventListener('click', () => apply(c.dataset.theme!));
+    apply('all');
+  }
+
+  initTimeline();
+  document.addEventListener('astro:page-load', initTimeline);
+</script>

@@ -1,0 +1,145 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConfidenceBadge from '../../components/ConfidenceBadge.astro';
+import { getCollection } from 'astro:content';
+
+const people = (await getCollection('people')).sort(
+  (a, b) => (a.data.birth ?? 9999) - (b.data.birth ?? 9999)
+);
+
+const lords = people
+  .filter((p) => p.data.reign || p.data.generation)
+  .sort((a, b) => (a.data.generation?.naoshigeFirst ?? 99) - (b.data.generation?.naoshigeFirst ?? 99));
+
+const others = people.filter((p) => !p.data.reign && !p.data.generation);
+
+const life = (p: (typeof people)[number]) =>
+  p.data.lifeLabel ?? `${p.data.birth ?? '生年未詳'}–${p.data.death ?? '没年未詳'}`;
+---
+
+<Base
+  title="人物と家"
+  description="佐賀藩の藩主と主要人物。藩主の代数には二つの数え方があり、本アーカイブは両論を併記する。"
+>
+  <section class="inner pp-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <span aria-current="page">人物と家</span>
+    </nav>
+    <h1>人物と家</h1>
+    <p class="pp-lede">
+      藩主と主要人物の索引です。あわせて
+      <a href="/houses/">家と家格</a>、<a href="/offices/">役職と機関</a> もご覧ください。
+    </p>
+  </section>
+
+  <!-- 代数の二つの数え方 — このサイトが断定を避ける実例 -->
+  <section class="inner pp-gen">
+    <div class="pp-gen-box">
+      <p class="pp-gen-head">代数には二つの数え方があります</p>
+      <p class="pp-gen-body">
+        佐賀藩主を何代と数えるかは、基本文献のあいだで一致していません。
+        『佐賀藩の総合研究』『続 佐賀藩の総合研究』（藤野保 編）は<strong>鍋島直茂を初代</strong>として数え、
+        『佐賀市史』は<strong>勝茂を初代</strong>として数えます。両者は常に1つずれます。
+        たとえば鍋島直正は、前者では一一代、後者では十代です。
+      </p>
+      <p class="pp-gen-body">
+        本アーカイブはどちらか一方を採らず、<strong>両方を併記します</strong>。
+        典拠のページは各人物のページに記しています。
+      </p>
+    </div>
+  </section>
+
+  <section class="inner pp-body">
+    <p class="en-label">藩主</p>
+    <div class="table-scroll">
+      <table class="pp-table">
+        <thead>
+          <tr>
+            <th scope="col">直茂を初代</th>
+            <th scope="col">勝茂を初代</th>
+            <th scope="col">名</th>
+            <th scope="col">生没</th>
+            <th scope="col">在位</th>
+            <th scope="col">信頼度</th>
+          </tr>
+        </thead>
+        <tbody>
+          {lords.map((p) => (
+            <tr>
+              <td class="num">{p.data.generation?.naoshigeFirst ?? '—'}</td>
+              <td class="num">{p.data.generation?.katsushigeFirst ?? '—'}</td>
+              <td>
+                <a href={`/people/${p.id}/`}>{p.data.name}</a>
+                <span class="rd">{p.data.reading}</span>
+              </td>
+              <td class="num">{life(p)}</td>
+              <td class="num">{p.data.reign ? `${p.data.reign.from}–${p.data.reign.to}` : '—'}</td>
+              <td><ConfidenceBadge level={p.data.confidence} /></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="pp-caveat">
+      「勝茂を初代」の列に値がない行は、その数え方では藩主に数えられない人物です。
+      在位年は原典との照合が未了のものを含みます。
+    </p>
+
+    {others.length > 0 && (
+      <>
+        <p class="en-label pp-sub">その他の人物</p>
+        <ul class="pp-list">
+          {others.map((p) => (
+            <li>
+              <a href={`/people/${p.id}/`}>
+                <span class="nm">{p.data.name}</span>
+                <span class="rd">{p.data.reading}</span>
+                <span class="yr num">{life(p)}</span>
+              </a>
+              <p class="sm">{p.data.summary}</p>
+            </li>
+          ))}
+        </ul>
+      </>
+    )}
+  </section>
+</Base>
+
+<style>
+  .pp-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .pp-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .pp-lede { margin-top: 14px; color: var(--ink-2); font-size: var(--fs-sm); }
+
+  .pp-gen { padding-block: clamp(24px, 4vw, 40px); }
+  .pp-gen-box {
+    padding: 20px 22px; border-left: 3px solid var(--era);
+    background: var(--paper-2); border-radius: 0 3px 3px 0;
+  }
+  .pp-gen-head { font-family: var(--f-mincho); font-size: var(--fs-lg); margin-bottom: 10px; }
+  .pp-gen-body { font-size: var(--fs-sm); line-height: 2; color: var(--ink-2); }
+  .pp-gen-body + .pp-gen-body { margin-top: 8px; }
+
+  .pp-body { padding-bottom: clamp(48px, 7vw, 88px); }
+  .pp-table { width: 100%; border-collapse: collapse; font-size: var(--fs-sm); margin-top: 14px; }
+  .pp-table th {
+    text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--rule);
+    font-size: var(--fs-xs); font-weight: 500; color: var(--ink-3); letter-spacing: .05em; white-space: nowrap;
+  }
+  .pp-table td { padding: 11px 12px; border-bottom: 1px solid var(--rule-2); vertical-align: baseline; }
+  .pp-table .num { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-3); white-space: nowrap; }
+  .pp-table a { color: var(--ink); text-underline-offset: 3px; }
+  .pp-table .rd { display: block; font-size: 10px; color: var(--ink-4); }
+
+  .pp-caveat { margin-top: 12px; font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.85; }
+
+  .pp-sub { margin-top: clamp(36px, 5vw, 56px); }
+  .pp-list { list-style: none; display: grid; gap: 14px; margin-top: 14px; }
+  .pp-list li { padding-bottom: 12px; border-bottom: 1px solid var(--rule-2); }
+  .pp-list a { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; color: inherit; text-decoration: none; }
+  .pp-list a:hover .nm { text-decoration: underline; text-underline-offset: 4px; }
+  .pp-list .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); }
+  .pp-list .rd, .pp-list .yr { font-size: 10px; color: var(--ink-4); }
+  .pp-list .yr { font-family: var(--f-mono); }
+  .pp-list .sm { margin-top: 5px; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+</style>

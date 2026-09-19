@@ -1,0 +1,258 @@
+---
+import Base from '../layouts/Base.astro';
+import Matrix from '../components/Matrix.astro';
+import StoryBrowser from '../components/StoryBrowser.astro';
+import { allArticles, timeline, progress, PERIODS, THEMES } from '../lib/archive';
+
+const articles = await allArticles();
+const events = await timeline();
+const st = await progress();
+
+const hanStart = 1607;
+const hanEnd = 1871;
+const spanStart = PERIODS[0].startYear;
+const spanEnd = PERIODS[PERIODS.length - 1].endYear;
+const total = spanEnd - spanStart;
+const pos = (y: number) => ((y - spanStart) / total) * 100;
+
+/** ヒーロー帯に出す節目。重要度3のものだけを拾う */
+const marks = events.filter((e) => e.data.weight === 3).slice(0, 12);
+---
+
+<Base
+  title={undefined}
+  description="佐賀藩の制度・家臣団・財政・軍事・産業・学問を、出典を示しながら記述するアーカイブ。まだ器を作っている段階です。"
+>
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="inner">
+      <p class="hero-en en-label">SAGA DOMAIN ARCHIVE</p>
+      <h1 class="hero-title">
+        佐賀藩を、<br />構造から読む。
+      </h1>
+      <p class="hero-lede">
+        鍋島氏による藩政 264年。三家から足軽まで11段の家格、借銀が収入の過半を占めた財政、
+        福岡藩と一年交代で担った長崎警備、海を田に変え続けた干拓。
+        <strong>800ページの研究書を何冊も読まなければ見えてこない構造</strong>を、
+        出典を示しながら、図とともに解きほぐしていくアーカイブです。
+      </p>
+      <p class="hero-actions">
+        <a class="btn btn-era" href="/matrix/">48マスで俯瞰する</a>
+        <a class="btn" href="/timeline/">年表を見る</a>
+      </p>
+
+      <!-- 現状を隠さない -->
+      <p class="hero-status">
+        いま記事は <span class="num">{st.articles}</span>本（目標 {st.target}本）。
+        このサイトは<strong>器を先に作っている段階</strong>で、中身はこれからです。
+        空白は空白のまま見えるようにしています。
+      </p>
+    </div>
+  </section>
+
+  <!-- 藩の一生を一本の線で -->
+  <section class="inner spine-sec">
+    <p class="en-label">{spanStart}–{spanEnd}</p>
+    <div class="spine">
+      <div class="spine-bar">
+        {PERIODS.map((p) => (
+          <a
+            class:list={['spine-seg', `stage-${p.stage}`]}
+            href={`/period/${p.id}/`}
+            style={`--ec: var(${p.colorVar}); --w: ${(p.endYear - p.startYear) / total}`}
+            title={`${p.name}（${p.span}）`}
+          >
+            <span class="lb">{p.name}</span>
+            <span class="sp num">{p.span}</span>
+          </a>
+        ))}
+      </div>
+
+      <!-- 藩が存在した区間 -->
+      <div class="spine-han" style={`left:${pos(hanStart)}%; width:${pos(hanEnd) - pos(hanStart)}%`}>
+        <span>佐賀藩 {hanStart}–{hanEnd}</span>
+      </div>
+
+      <!-- 節目 -->
+      <div class="spine-marks">
+        {marks.map((e) => (
+          <a
+            class="spine-mark"
+            href={e.article ? `/articles/${e.article.id}/` : `/timeline/#e-${e.data.id}`}
+            style={`left:${pos(e.data.year)}%`}
+          >
+            <i></i>
+            <span class="y num">{e.data.year}</span>
+            <span class="t">{e.data.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 画像駆動の探索 -->
+  <section class="inner">
+    <StoryBrowser
+      articles={articles}
+      en="ARTICLES"
+      title="記事を見わたす"
+      lede="気になるものを選ぶと、右の一覧から中身が入れ替わります。写真のない記事には、時代の色で作った仮の図を当てています。"
+    />
+  </section>
+
+  <!-- 俯瞰マトリクス -->
+  <section class="inner">
+    <Matrix articles={articles} />
+  </section>
+
+  <!-- 入口 -->
+  <section class="inner gates">
+    <p class="en-label">ほかの入口</p>
+    <div class="gates-grid">
+      <a class="gate" href="/people/">
+        <span class="n">人物と家</span>
+        <span class="d">藩主{st.people >= 7 ? '' : 'ほか'}の索引と、三家から足軽までの家格序列。代数の二つの数え方も併記しています。</span>
+        <span class="c num">{st.people} 人 / {st.houses} 家</span>
+      </a>
+      <a class="gate" href="/offices/">
+        <span class="n">役職と機関</span>
+        <span class="d">請役所を頂点とする役方と、着到15組の番方。職制図はデータから自動で組み立てています。</span>
+        <span class="c num">{st.offices} 件</span>
+      </a>
+      <a class="gate" href="/sources/">
+        <span class="n">出典</span>
+        <span class="d">どの本のどのページに基づく記述かを公開しています。本ごとの逆引きもできます。</span>
+        <span class="c num">{st.sources} 文献</span>
+      </a>
+      <a class="gate" href="/glossary/">
+        <span class="n">用語集</span>
+        <span class="d">請役所、手明鑓、着到、懸硯方——制度と身分の言葉を短い定義で。</span>
+        <span class="c num">{st.terms} 語</span>
+      </a>
+      <a class="gate" href="/places/">
+        <span class="n">地名</span>
+        <span class="d">城・陣屋・遺構・窯。座標の分からないものは、推定で埋めずに空けています。</span>
+        <span class="c num">{st.places} 件</span>
+      </a>
+      <a class="gate" href="/about/">
+        <span class="n">このサイトについて</span>
+        <span class="d">編集の方針と、信頼度の三段階について。</span>
+        <span class="c">方針</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 主題 -->
+  <section class="inner themes-sec">
+    <p class="en-label">主題から入る</p>
+    <div class="themes-grid">
+      {THEMES.map((t, i) => (
+        <a class="theme-card reveal" href={`/theme/${t.id}/`} style={`--tc: var(${t.colorVar}); --cue: ${i}`}>
+          <span class="bar"></span>
+          <span class="n">{t.name}</span>
+          <span class="l">{t.lede}</span>
+          <span class="s">{t.scope}</span>
+        </a>
+      ))}
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* ── ヒーロー ── */
+  .hero { padding-block: clamp(48px, 9vw, 120px) clamp(32px, 5vw, 56px); }
+  .hero-title {
+    font-family: var(--f-mincho); font-size: var(--fs-hero); font-weight: 800;
+    line-height: 1.18; letter-spacing: .01em; margin-top: 14px;
+  }
+  .hero-lede { margin-top: 26px; max-width: 42em; line-height: 2.1; color: var(--ink-2); }
+  .hero-actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-status {
+    margin-top: 30px; padding: 14px 18px; max-width: 46em;
+    border-left: 2px solid var(--rule);
+    font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.95;
+  }
+
+  /* ── 藩の一生 ── */
+  .spine-sec { padding-block: clamp(32px, 5vw, 56px); }
+  .spine { position: relative; margin-top: 14px; padding-bottom: 96px; }
+  .spine-bar { display: flex; gap: 2px; }
+  .spine-seg {
+    flex: var(--w) 1 0; min-width: 26px; height: 56px;
+    display: grid; align-content: center; gap: 3px; padding-inline: 8px;
+    background: color-mix(in srgb, var(--ec) 20%, var(--paper-2));
+    border-radius: 2px; text-decoration: none; overflow: hidden;
+    transition: background .25s var(--ease-out);
+  }
+  .spine-seg:hover { background: color-mix(in srgb, var(--ec) 55%, var(--paper-2)); }
+  .spine-seg.stage-han { background: color-mix(in srgb, var(--ec) 34%, var(--paper-2)); }
+  .spine-seg .lb { font-size: 10px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .spine-seg .sp { font-size: 9px; color: var(--ink-4); white-space: nowrap; }
+
+  .spine-han {
+    position: absolute; top: 60px; height: 3px;
+    background: var(--ink-3); border-radius: 2px;
+  }
+  .spine-han span {
+    position: absolute; top: 7px; left: 0;
+    font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); white-space: nowrap;
+  }
+
+  .spine-marks { position: absolute; top: 82px; left: 0; right: 0; height: 0; }
+  .spine-mark {
+    position: absolute; top: 0; transform: translateX(-50%);
+    display: grid; justify-items: center; gap: 2px;
+    text-decoration: none; color: var(--ink-4);
+  }
+  .spine-mark i {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4);
+    transition: background .2s, transform .2s;
+  }
+  .spine-mark .y { font-family: var(--f-mono); font-size: 9px; }
+  .spine-mark .t {
+    font-size: 9.5px; white-space: nowrap; opacity: 0;
+    transition: opacity .2s; max-width: 12em; overflow: hidden; text-overflow: ellipsis;
+  }
+  .spine-mark:hover { color: var(--ink); z-index: 2; }
+  .spine-mark:hover i { background: var(--ink); transform: scale(1.5); }
+  .spine-mark:hover .t { opacity: 1; }
+  @media (max-width: 760px) {
+    .spine-mark .y { display: none; }
+    .spine { padding-bottom: 48px; }
+  }
+
+  /* ── 入口 ── */
+  .gates { padding-block: clamp(32px, 5vw, 56px); border-top: 1px solid var(--rule); }
+  .gates-grid {
+    display: grid; gap: 12px; margin-top: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  .gate {
+    display: grid; gap: 7px; align-content: start;
+    padding: 18px 20px; border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--card); text-decoration: none;
+    transition: border-color .2s, transform .2s var(--ease-out);
+  }
+  .gate:hover { border-color: var(--ink-3); transform: translateY(-3px); }
+  .gate .n { font-family: var(--f-mincho); font-size: var(--fs-base); color: var(--ink); }
+  .gate .d { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+  .gate .c { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+
+  /* ── 主題 ── */
+  .themes-sec { padding-block: clamp(32px, 5vw, 56px) clamp(56px, 8vw, 96px); border-top: 1px solid var(--rule); }
+  .themes-grid {
+    display: grid; gap: 12px; margin-top: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .theme-card {
+    display: grid; gap: 8px; align-content: start;
+    padding: 20px; border: 1px solid var(--rule-2); border-radius: 3px;
+    background: var(--card); text-decoration: none;
+    transition: border-color .2s, transform .2s var(--ease-out);
+  }
+  .theme-card:hover { border-color: var(--tc); transform: translateY(-3px); }
+  .theme-card .bar { display: block; width: 32px; height: 3px; background: var(--tc); border-radius: 2px; }
+  .theme-card .n { font-family: var(--f-mincho); font-size: var(--fs-lg); color: var(--ink); }
+  .theme-card .l { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.9; }
+  .theme-card .s { font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.75; }
+</style>

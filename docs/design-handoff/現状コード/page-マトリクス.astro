@@ -1,0 +1,129 @@
+---
+import Base from '../layouts/Base.astro';
+import Matrix from '../components/Matrix.astro';
+import { allArticles, progress, PERIODS, THEMES } from '../lib/archive';
+
+const articles = await allArticles();
+const st = await progress();
+const pct = Math.round((st.articles / st.target) * 100);
+---
+
+<Base
+  title="時代と主題で俯瞰する"
+  description="佐賀藩の8つの時代と6つの主題。48の交点から、書かれたところと、まだ書かれていないところを一望する。"
+>
+  <section class="inner mx-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <span aria-current="page">時代と主題</span>
+    </nav>
+    <h1>時代と主題で俯瞰する</h1>
+    <p class="mx-lede">
+      佐賀藩の260年は、時代を追うだけでも、主題を追うだけでも捉えきれません。
+      「請役所」は260年を貫いてどの時代にも属さず、「直正の改革」は一時代に多主題が集中します。
+      そこでこのアーカイブは<strong>時代軸と主題軸の二本立て</strong>で記事を配置しています。
+    </p>
+    <p class="mx-note">
+      なおこの8区分は本アーカイブの整理であって、史学上の定説ではありません。
+      境界の年も便宜的なものです。
+    </p>
+  </section>
+
+  <section class="inner">
+    <Matrix articles={articles} heading={false} />
+  </section>
+
+  <section class="inner mx-progress">
+    <p class="en-label">現在の状態</p>
+    <div class="mx-stats">
+      <div class="mx-stat">
+        <span class="n">{st.articles}<span class="u">/ {st.target}</span></span>
+        <span class="l">記事</span>
+        <div class="bar"><span style={`width:${Math.min(100, pct)}%`}></span></div>
+      </div>
+      <div class="mx-stat"><span class="n">{st.people}</span><span class="l">人物</span></div>
+      <div class="mx-stat"><span class="n">{st.houses}</span><span class="l">家</span></div>
+      <div class="mx-stat"><span class="n">{st.offices}</span><span class="l">役職・機関</span></div>
+      <div class="mx-stat"><span class="n">{st.events}</span><span class="l">年表項目</span></div>
+      <div class="mx-stat"><span class="n">{st.terms}</span><span class="l">用語</span></div>
+      <div class="mx-stat"><span class="n">{st.sources}</span><span class="l">出典</span></div>
+    </div>
+    <p class="mx-conf">
+      信頼度の内訳 —
+      <span class="badge badge-sourced">出典準拠 {st.confidence.sourced}</span>
+      <span class="badge badge-ai">AI統合・検証中 {st.confidence.ai}</span>
+      <span class="badge badge-note">研究メモ {st.confidence.note}</span>
+    </p>
+    <p class="mx-note">
+      記事はまだほとんどありません。このサイトは今、<strong>器を先に作っている段階</strong>です。
+      空白のマスは隠さず、そのまま見えるようにしています。
+    </p>
+  </section>
+
+  <section class="inner mx-axes">
+    <div class="mx-axis">
+      <p class="en-label">時代軸 — 8期</p>
+      <ul>
+        {PERIODS.map((p) => (
+          <li style={`--ec: var(${p.colorVar})`}>
+            <a href={`/period/${p.id}/`}>
+              <i></i>
+              <span class="nm">{p.name}</span>
+              <span class="sp num">{p.span}</span>
+            </a>
+            <p class="ld">{p.lede}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+    <div class="mx-axis">
+      <p class="en-label">主題軸 — 6系統</p>
+      <ul>
+        {THEMES.map((t) => (
+          <li style={`--ec: var(${t.colorVar})`}>
+            <a href={`/theme/${t.id}/`}>
+              <i class="sq"></i>
+              <span class="nm">{t.name}</span>
+            </a>
+            <p class="ld">{t.lede}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .mx-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .mx-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .mx-lede { margin-top: 18px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+  .mx-note { margin-top: 12px; max-width: 46em; font-size: var(--fs-sm); color: var(--ink-4); line-height: 1.95; }
+
+  .mx-progress { padding-block: clamp(32px, 5vw, 56px); border-top: 1px solid var(--rule); }
+  .mx-stats {
+    display: grid; gap: 16px; margin-top: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  }
+  .mx-stat { display: grid; gap: 3px; }
+  .mx-stat .n { font-family: var(--f-mono); font-size: 26px; color: var(--ink); line-height: 1.1; }
+  .mx-stat .n .u { font-size: 13px; color: var(--ink-4); margin-left: 5px; }
+  .mx-stat .l { font-size: var(--fs-xs); color: var(--ink-4); letter-spacing: .05em; }
+  .mx-stat .bar { height: 3px; background: var(--paper-3); border-radius: 2px; overflow: hidden; margin-top: 4px; }
+  .mx-stat .bar span { display: block; height: 100%; background: var(--ink-3); }
+
+  .mx-conf { margin-top: 22px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: var(--fs-sm); color: var(--ink-3); }
+
+  .mx-axes {
+    display: grid; gap: clamp(28px, 4vw, 48px); padding-bottom: clamp(48px, 7vw, 88px);
+  }
+  @media (min-width: 880px) { .mx-axes { grid-template-columns: 1fr 1fr; } }
+  .mx-axis ul { list-style: none; margin-top: 14px; display: grid; gap: 16px; }
+  .mx-axis li { padding-left: 16px; border-left: 2px solid var(--ec); }
+  .mx-axis a { display: flex; align-items: baseline; gap: 8px; color: inherit; text-decoration: none; }
+  .mx-axis a:hover .nm { text-decoration: underline; text-underline-offset: 4px; }
+  .mx-axis i { width: 7px; height: 7px; border-radius: 50%; background: var(--ec); align-self: center; flex: none; }
+  .mx-axis i.sq { border-radius: 2px; }
+  .mx-axis .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); }
+  .mx-axis .sp { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+  .mx-axis .ld { margin-top: 4px; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+</style>

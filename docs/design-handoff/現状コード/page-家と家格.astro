@@ -1,0 +1,115 @@
+---
+import Base from '../../layouts/Base.astro';
+import RankPyramid from '../../components/RankPyramid.astro';
+import ChigyoChart from '../../components/ChigyoChart.astro';
+import { getCollection } from 'astro:content';
+import { HOUSE_RANKS, CHAKUTO_GROUPS, OOGUMIGASHIRA_HOUSES } from '../../data/houseRanks';
+
+const houses = await getCollection('houses');
+const rankOrder = new Map(HOUSE_RANKS.map((r) => [r.id, r.rank]));
+const sorted = [...houses].sort(
+  (a, b) => (rankOrder.get(a.data.rank) ?? 99) - (rankOrder.get(b.data.rank) ?? 99)
+);
+const withChigyo = houses.filter((h) => h.data.chigyo.length > 0);
+---
+
+<Base
+  title="家と家格"
+  description="三家から足軽まで11段の家格序列と、各家の知行高。本藩から見た序列であり、支藩や親類は独自の職制を持っていた。"
+>
+  <section class="inner hs-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/people/">人物と家</a><span class="sep">/</span>
+      <span aria-current="page">家と家格</span>
+    </nav>
+    <h1>家と家格</h1>
+    <p class="hs-lede">
+      佐賀藩の武士は<strong>三家・親類・親類同格・連判家老・加判家老・着座・独礼・平侍・手明鑓・徒士・足軽</strong>
+      という11段の序列に置かれました。ただしこれは本藩から見たときの姿にすぎません。
+    </p>
+  </section>
+
+  <section class="inner">
+    <RankPyramid houses={houses} />
+  </section>
+
+  {withChigyo.length > 0 && (
+    <section class="inner hs-chigyo">
+      <p class="en-label">知行高の推移</p>
+      <p class="hs-note">
+        書籍の記述から読み取った数値で作図しています。記録の残らない年は線をつながず、空けたままにしています。
+      </p>
+      <ChigyoChart houses={withChigyo} />
+    </section>
+  )}
+
+  <section class="inner hs-chakuto">
+    <p class="en-label">番方の編成 — 着到15組</p>
+    <p class="hs-note">
+      軍事組織は「着到」と呼ばれ、整備された段階では家臣を15組に分けていました。
+    </p>
+    <div class="hs-groups">
+      {CHAKUTO_GROUPS.map((g) => (
+        <div class="hs-group">
+          <span class="n">{g.count}</span>
+          <span class="l">{g.name}</span>
+          {g.note && <span class="d">{g.note}</span>}
+        </div>
+      ))}
+    </div>
+    <p class="hs-ogumi">
+      各組の責任者である<strong>大組頭</strong>は、
+      {OOGUMIGASHIRA_HOUSES.join('・')}
+      の家老の家格と、のち着座一八家と呼ばれる着座の中から選ばれるのが原則でした。
+    </p>
+    <p class="hs-src">典拠：『佐賀市史』第2巻 p.24–25</p>
+  </section>
+
+  <section class="inner hs-list">
+    <p class="en-label">家の一覧</p>
+    <ul>
+      {sorted.map((h) => (
+        <li>
+          <a href={`/houses/${h.id}/`}>
+            <span class="nm">{h.data.name}</span>
+            <span class="rk">{HOUSE_RANKS.find((r) => r.id === h.data.rank)?.name ?? h.data.rank}</span>
+            <span class="og">{h.data.origin}</span>
+          </a>
+          <p class="sm">{h.data.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .hs-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .hs-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .hs-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+
+  .hs-chigyo, .hs-chakuto, .hs-list { padding-block: clamp(32px, 5vw, 56px); border-top: 1px solid var(--rule); }
+  .hs-note { margin-top: 10px; font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.95; max-width: 46em; }
+  .hs-src { margin-top: 12px; font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .hs-groups { display: grid; gap: 12px; margin-top: 18px; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+  .hs-group {
+    display: grid; gap: 3px; padding: 14px 16px;
+    border: 1px solid var(--rule-2); border-radius: 3px; background: var(--card);
+  }
+  .hs-group .n { font-family: var(--f-mono); font-size: 24px; color: var(--ink); line-height: 1; }
+  .hs-group .l { font-family: var(--f-mincho); font-size: var(--fs-sm); }
+  .hs-group .d { font-size: var(--fs-xs); color: var(--ink-4); }
+  .hs-ogumi { margin-top: 18px; font-size: var(--fs-sm); line-height: 2; color: var(--ink-2); max-width: 46em; }
+
+  .hs-list ul { list-style: none; display: grid; gap: 14px; margin-top: 14px; }
+  .hs-list li { padding-bottom: 12px; border-bottom: 1px solid var(--rule-2); }
+  .hs-list a { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; color: inherit; text-decoration: none; }
+  .hs-list a:hover .nm { text-decoration: underline; text-underline-offset: 4px; }
+  .hs-list .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); }
+  .hs-list .rk, .hs-list .og {
+    font-size: 10px; color: var(--ink-4); padding: 1px 7px;
+    border: 1px solid var(--rule); border-radius: 999px;
+  }
+  .hs-list .sm { margin-top: 5px; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+</style>

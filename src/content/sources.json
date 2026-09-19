@@ -66,15 +66,5 @@
     "hasOcr": true,
     "ocrPages": 1085,
     "note": "直正の藩政改革以降。幕末維新期の基本研究。"
-  },
-  {
-    "id": "tenminutes-meiji",
-    "title": "テンミニッツ・アカデミー「明治維新シリーズ」講義",
-    "author": "島田晴雄",
-    "publisher": "テンミニッツ・アカデミー",
-    "year": 2020,
-    "kind": "web",
-    "hasOcr": false,
-    "note": "動画講義。二次的な概説であり、一次文献による裏取りが必要。"
   }
 ]

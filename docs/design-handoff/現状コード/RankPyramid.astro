@@ -1,0 +1,104 @@
+---
+/**
+ * 家格ピラミッド — 三家から足軽まで11段の序列
+ *
+ * 典拠：『佐賀市史』第2巻 p.24 の列挙。
+ * 層の厚みは図示上の目安であって史料上の実数ではない。そのことを図の中に明記する。
+ * また「これは本藩から見た序列であり、三支藩・親類・親類同格は独自の職制を持っていた」
+ * という留保を必ず併記する——単一のピラミッドではない、というのがこの図の要点。
+ */
+import { HOUSE_RANKS } from '../data/houseRanks';
+import type { House } from '../lib/archive';
+
+interface Props {
+  houses: House[];
+}
+
+const { houses } = Astro.props;
+const maxW = Math.max(...HOUSE_RANKS.map((r) => r.weight));
+const rows = HOUSE_RANKS.map((r) => ({
+  ...r,
+  houses: houses.filter((h) => h.data.rank === r.id),
+  w: 26 + (r.weight / maxW) * 74,
+}));
+---
+
+<div class="pyr">
+  <ol class="pyr-rows">
+    {rows.map((r, i) => (
+      <li class="pyr-row" style={`--w:${r.w}%; --cue:${i}`}>
+        <div class="pyr-bar">
+          <span class="pyr-rank">{r.rank}</span>
+          <span class="pyr-name">{r.name}</span>
+          <span class="pyr-reading">{r.reading}</span>
+        </div>
+        <div class="pyr-side">
+          {r.houses.length > 0 ? (
+            <ul class="pyr-houses">
+              {r.houses.map((h) => (
+                <li><a href={`/houses/${h.id}/`}>{h.data.name}</a></li>
+              ))}
+            </ul>
+          ) : (
+            <p class="pyr-note">{r.note}</p>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <p class="pyr-caveat">
+    <strong>これは本藩から見た序列です。</strong>
+    三支藩・親類・親類同格は本藩とは別に独自の着到（軍事編成）を持ち、
+    自治を認められた大配分にはそれぞれ家老以下の職制がありました。
+    単一のピラミッドに全員が収まっていたわけではありません。
+  </p>
+  <p class="pyr-src">
+    序列の典拠：『佐賀市史』第2巻 p.24 ／ 各段の厚みは図示上の目安であり、史料上の人数比ではありません。
+  </p>
+</div>
+
+<style>
+  .pyr { margin-block: clamp(24px, 4vw, 40px); }
+  .pyr-rows { list-style: none; display: grid; gap: 3px; }
+  .pyr-row {
+    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 16px; align-items: center;
+  }
+  .pyr-bar {
+    width: var(--w);
+    display: flex; align-items: baseline; gap: 10px;
+    padding: 9px 14px;
+    margin-inline: auto 0;
+    background: color-mix(in srgb, var(--ink) 8%, var(--card));
+    border: 1px solid var(--rule-2);
+    border-radius: 2px;
+    transition: background .2s;
+  }
+  .pyr-row:hover .pyr-bar { background: color-mix(in srgb, var(--ink) 15%, var(--card)); }
+  .pyr-rank { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); flex: none; }
+  .pyr-name { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); white-space: nowrap; }
+  .pyr-reading { font-size: 10px; color: var(--ink-4); white-space: nowrap; }
+
+  .pyr-houses { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
+  .pyr-houses a {
+    display: inline-block; padding: 3px 9px;
+    border: 1px solid var(--rule); border-radius: 999px;
+    font-size: var(--fs-xs); color: var(--ink-2); text-decoration: none;
+    transition: border-color .2s, color .2s;
+  }
+  .pyr-houses a:hover { border-color: var(--ink-3); color: var(--ink); }
+  .pyr-note { font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.8; }
+
+  .pyr-caveat {
+    margin-top: 22px; padding: 14px 16px;
+    border-left: 2px solid var(--rule);
+    font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95;
+  }
+  .pyr-src { margin-top: 10px; font-size: var(--fs-xs); color: var(--ink-4); }
+
+  @media (max-width: 720px) {
+    .pyr-row { grid-template-columns: 1fr; gap: 4px; }
+    .pyr-bar { width: max(var(--w), 60%); margin-inline: 0; }
+  }
+</style>

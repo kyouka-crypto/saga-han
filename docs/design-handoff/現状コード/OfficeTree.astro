@@ -1,0 +1,109 @@
+---
+/**
+ * 職制図 — offices コレクションの parent 関係から組み立てる。
+ * 図を手で描かず、データから生成する。記事が増えれば図も自動的に育つ。
+ */
+import type { Office } from '../lib/archive';
+
+interface Props {
+  offices: Office[];
+  /** 番方 / 役方 のどちらを描くか */
+  branch: '番方' | '役方';
+}
+
+const { offices, branch } = Astro.props;
+const inBranch = offices.filter((o) => o.data.branch === branch);
+const childrenOf = (id: string | null) =>
+  inBranch.filter((o) => (o.data.parent?.id ?? null) === id);
+
+const roots = childrenOf(null);
+
+/** 2階層までを平たく取り出す（今の規模ではこれで足りる） */
+const tree = roots.map((r) => ({
+  node: r,
+  children: childrenOf(r.id).map((c) => ({ node: c, children: childrenOf(c.id) })),
+}));
+---
+
+<div class="tree">
+  {tree.length === 0 ? (
+    <p class="tree-empty">{branch}の機関はまだ登録されていません。</p>
+  ) : (
+    tree.map((r) => (
+      <div class="tree-root">
+        <a class="node node-root" href={`/offices/${r.node.id}/`}>
+          <span class="nm">{r.node.data.name}</span>
+          <span class="rd">{r.node.data.reading}</span>
+          {r.node.data.seats && <span class="seats">{r.node.data.seats}</span>}
+        </a>
+
+        {r.children.length > 0 && (
+          <div class="tree-children">
+            {r.children.map((c) => (
+              <div class="tree-branch">
+                <a class="node" href={`/offices/${c.node.id}/`}>
+                  <span class="nm">{c.node.data.name}</span>
+                  <span class="rd">{c.node.data.reading}</span>
+                  {c.node.data.seats && <span class="seats">{c.node.data.seats}</span>}
+                  {c.node.data.duties.length > 0 && (
+                    <span class="duties">{c.node.data.duties.join('・')}</span>
+                  )}
+                </a>
+                {c.children.length > 0 && (
+                  <div class="tree-grandchildren">
+                    {c.children.map((g) => (
+                      <a class="node node-leaf" href={`/offices/${g.id}/`}>
+                        <span class="nm">{g.data.name}</span>
+                        {g.data.duties.length > 0 && (
+                          <span class="duties">{g.data.duties.join('・')}</span>
+                        )}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    ))
+  )}
+</div>
+
+<style>
+  .tree { margin-block: 20px; }
+  .tree-empty { font-size: var(--fs-sm); color: var(--ink-4); }
+
+  .node {
+    display: grid; gap: 2px;
+    padding: 10px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    background: var(--card);
+    color: var(--ink-2); text-decoration: none;
+    transition: border-color .2s, transform .18s var(--ease-out);
+  }
+  .node:hover { border-color: var(--era); transform: translateY(-2px); }
+  .node .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); }
+  .node .rd { font-size: 10px; color: var(--ink-4); }
+  .node .seats { font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); }
+  .node .duties { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.7; }
+
+  .node-root {
+    border-width: 2px; border-color: var(--era);
+    max-width: 22em;
+  }
+  .node-leaf { padding: 7px 11px; }
+
+  .tree-children {
+    display: grid; gap: 10px; margin-top: 14px; padding-top: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    position: relative;
+  }
+  /* 親子をつなぐ罫。CSS だけで引く（画像もライブラリも使わない） */
+  .tree-children::before {
+    content: ''; position: absolute; left: 20px; top: 0; width: 1px; height: 14px;
+    background: var(--rule);
+  }
+  .tree-grandchildren { display: grid; gap: 6px; margin-top: 8px; padding-left: 14px; border-left: 1px solid var(--rule-2); }
+</style>
