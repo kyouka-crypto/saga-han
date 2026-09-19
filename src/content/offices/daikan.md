@@ -3,6 +3,7 @@ name: "代官"
 reading: "だいかん"
 branch: 役方
 parent: gundai
+group: 地方
 duties:
   - "村方の掌握"
 periods:

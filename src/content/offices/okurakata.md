@@ -3,6 +3,7 @@ name: "御蔵方"
 reading: "おくらかた"
 branch: 役方
 parent: ukeyakusho
+group: 財政
 duties:
   - "一般会計"
 periods:

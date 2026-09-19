@@ -3,6 +3,7 @@ name: "郡代"
 reading: "ぐんだい"
 branch: 役方
 parent: ukeyakusho
+group: 地方
 duties:
   - "地方支配"
 periods:

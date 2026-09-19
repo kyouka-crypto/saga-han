@@ -1,109 +1,300 @@
 ---
 /**
- * 職制図 — offices コレクションの parent 関係から組み立てる。
- * 図を手で描かず、データから生成する。記事が増えれば図も自動的に育つ。
+ * 図 — 藩の機構（役方と番方）
+ *
+ * この図の要点は三つ。
+ *   1. 行政の役方と軍事の番方が**並び立つ**こと。どちらかが他方の下にあるのではない
+ *   2. 文書の係（案文方）が独立して組み込まれていること
+ *   3. 役方の最高職である請役家老に、旧主家である龍造寺氏の一門四家が就いたこと
+ *
+ * ★ 役方内部の「補佐・文書・財政・地方」という区分は、職掌にもとづく本サイトの
+ *   整理であって、史料上の呼称ではない（offices の group フィールド）。
+ *   その旨を図の注に必ず残すこと。
+ *
+ * 典拠：『佐賀市史』第2巻 p.24–25
+ * 意匠：Claude Design「図表見本-家格と職制」図2。CSS は src/styles/figures.css
  */
+import { CHAKUTO_GROUPS, OOGUMIGASHIRA_HOUSES } from '../data/houseRanks';
 import type { Office } from '../lib/archive';
 
 interface Props {
   offices: Office[];
-  /** 番方 / 役方 のどちらを描くか */
-  branch: '番方' | '役方';
+  no?: string;
+  /** 同じページに家格の図（図1）があるときだけ、そこへの参照を出す */
+  linkRanks?: boolean;
 }
 
-const { offices, branch } = Astro.props;
-const inBranch = offices.filter((o) => o.data.branch === branch);
-const childrenOf = (id: string | null) =>
-  inBranch.filter((o) => (o.data.parent?.id ?? null) === id);
+const { offices, no = '2', linkRanks = true } = Astro.props;
 
-const roots = childrenOf(null);
+const inBranch = (b: string) => offices.filter((o) => o.data.branch === b);
+const rootOf = (b: string) => inBranch(b).find((o) => !o.data.parent);
+const groupOf = (b: string, g: string) => inBranch(b).filter((o) => o.data.group === g);
 
-/** 2階層までを平たく取り出す（今の規模ではこれで足りる） */
-const tree = roots.map((r) => ({
-  node: r,
-  children: childrenOf(r.id).map((c) => ({ node: c, children: childrenOf(c.id) })),
-}));
+const yakuRoot = rootOf('役方');
+const banRoot = rootOf('番方');
+
+const exec = groupOf('役方', '執政');
+const aides = groupOf('役方', '補佐');
+const docs = groupOf('役方', '文書');
+const fin = groupOf('役方', '財政');
+const local = groupOf('役方', '地方');
+const command = groupOf('番方', '指揮');
+
+/** 御蔵方と懸硯方が二重会計の対をなす。先頭2件を対として組み、残りは単独で置く */
+const finPair = fin.slice(0, 2);
+const finRest = fin.slice(2);
+
+/** 「請役家老（御当役）」のような別称つきの名を、本名と別称に割る */
+const splitName = (name: string) => {
+  const m = /^(.*?)（(.*)）$/.exec(name);
+  return m ? { main: m[1], sub: m[2] } : { main: name, sub: null };
+};
+
+/** 本藩の外に独自の着到を持つまとまり。編成の内訳は未登録 */
+const OUTSIDE = [
+  { label: '三家', detail: '蓮池・小城・鹿島' },
+  { label: '親類', detail: '白石鍋島・川久保神代・久保田村田' },
+  { label: '親類同格', detail: '諫早・武雄・多久・須古' },
+];
+
+const allRows = [...inBranch('役方'), ...inBranch('番方')];
+const parentName = (o: Office) =>
+  o.data.parent ? offices.find((x) => x.id === o.data.parent!.id)?.data.name ?? '—' : '—';
 ---
 
-<div class="tree">
-  {tree.length === 0 ? (
-    <p class="tree-empty">{branch}の機関はまだ登録されていません。</p>
-  ) : (
-    tree.map((r) => (
-      <div class="tree-root">
-        <a class="node node-root" href={`/offices/${r.node.id}/`}>
-          <span class="nm">{r.node.data.name}</span>
-          <span class="rd">{r.node.data.reading}</span>
-          {r.node.data.seats && <span class="seats">{r.node.data.seats}</span>}
-        </a>
+<figure class="sg-fig of" id="fig-offices" aria-labelledby="of-t" aria-describedby="of-d">
+  <div class="sg-fig__head">
+    <span class="sg-fig__no">図 {no}</span>
+    <span class="sg-fig__title" id="of-t">藩の機構 — 役方と番方</span>
+  </div>
 
-        {r.children.length > 0 && (
-          <div class="tree-children">
-            {r.children.map((c) => (
-              <div class="tree-branch">
-                <a class="node" href={`/offices/${c.node.id}/`}>
-                  <span class="nm">{c.node.data.name}</span>
-                  <span class="rd">{c.node.data.reading}</span>
-                  {c.node.data.seats && <span class="seats">{c.node.data.seats}</span>}
-                  {c.node.data.duties.length > 0 && (
-                    <span class="duties">{c.node.data.duties.join('・')}</span>
-                  )}
+  <div class="sg-fig__plate">
+    <div class="of-top">
+      <b>藩の機構</b>
+      <span>行政と軍事の二系統が並び立つ。どちらかが他方の下にあるのではない</span>
+    </div>
+    <div class="of-fork" aria-hidden="true"></div>
+
+    <div class="of-split">
+      <!-- 役方 -->
+      <section class="of-col" aria-labelledby="of-yaku">
+        <header class="of-head">
+          <h3 class="of-head__nm" id="of-yaku">役方<small>やくかた</small></h3>
+          <p class="of-head__kind">行政</p>
+          <p class="of-head__era">幕藩体制の確立後、文治政治のもとで重視された</p>
+        </header>
+
+        {yakuRoot && (
+          <div class="of-org">
+            <a class="of-org__nm" href={`/offices/${yakuRoot.id}/`}>
+              <b>{yakuRoot.data.name}</b><span>{yakuRoot.data.reading}</span>
+            </a>
+            <p class="of-org__desc">{yakuRoot.data.summary}</p>
+
+            {exec.map((o) => (
+              <div class="of-exec">
+                <p class="of-exec__cap">
+                  就任する家の家格<br />
+                  {linkRanks ? <a href="#fig-ranks">図1</a> : <span>家格</span>}の一〜三段
+                </p>
+                <a class="of-node of-node--key" href={`/offices/${o.id}/`}>
+                  <span class="of-node__nm">
+                    {splitName(o.data.name).main}
+                    {splitName(o.data.name).sub && <small>{splitName(o.data.name).sub}</small>}
+                  </span>
+                  <span class="of-node__rd">{o.data.reading}</span>
+                  <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                  {o.data.seats && <span class="of-node__seat">定員 {o.data.seats}</span>}
                 </a>
-                {c.children.length > 0 && (
-                  <div class="tree-grandchildren">
-                    {c.children.map((g) => (
-                      <a class="node node-leaf" href={`/offices/${g.id}/`}>
-                        <span class="nm">{g.data.name}</span>
-                        {g.data.duties.length > 0 && (
-                          <span class="duties">{g.data.duties.join('・')}</span>
-                        )}
-                      </a>
-                    ))}
-                  </div>
-                )}
               </div>
             ))}
+
+            {aides.length > 0 && (
+              <div class="of-sec">
+                <p class="of-sec__lb">補佐</p>
+                <div class="of-aides">
+                  {aides.map((o) => (
+                    <a class="of-node" href={`/offices/${o.id}/`}>
+                      <span class="of-node__nm">{o.data.name}</span>
+                      <span class="of-node__rd">{o.data.reading}</span>
+                      <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                      {o.data.seats && <span class="of-node__seat">定員 {o.data.seats}</span>}
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            <div class="of-fns">
+              {docs.length > 0 && (
+                <div class="of-fn of-fn--doc">
+                  <p class="of-sec__lb">文書 — 独立の係</p>
+                  {docs.map((o) => (
+                    <a class="of-node" href={`/offices/${o.id}/`}>
+                      <span class="of-node__nm">{o.data.name}</span>
+                      <span class="of-node__rd">{o.data.reading}</span>
+                      <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                      {o.data.seats && <span class="of-node__seat">定員 {o.data.seats}</span>}
+                    </a>
+                  ))}
+                  <span class="of-ghost"><i></i>書上方 — 未登録</span>
+                </div>
+              )}
+
+              {local.length > 0 && (
+                <div class="of-fn">
+                  <p class="of-sec__lb">地方</p>
+                  <div class="of-chain">
+                    {local.map((o) => (
+                      <a class="of-node" href={`/offices/${o.id}/`}>
+                        <span class="of-node__nm">{o.data.name}</span>
+                        <span class="of-node__rd">{o.data.reading}</span>
+                        <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                      </a>
+                    ))}
+                    <p class="of-chain__end">村方</p>
+                  </div>
+                </div>
+              )}
+
+              {fin.length > 0 && (
+                <div class="of-fn of-fn--fin">
+                  <p class="of-sec__lb">財政</p>
+                  <div class="of-finrow">
+                    <div class="of-pair">
+                      {finPair.map((o) => (
+                        <a class="of-node" href={`/offices/${o.id}/`}>
+                          <span class="of-node__nm">{o.data.name}</span>
+                          <span class="of-node__rd">{o.data.reading}</span>
+                          <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                        </a>
+                      ))}
+                    </div>
+                    <div>
+                      {finRest.map((o) => (
+                        <a class="of-node" href={`/offices/${o.id}/`}>
+                          <span class="of-node__nm">{o.data.name}</span>
+                          <span class="of-node__rd">{o.data.reading}</span>
+                          <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
         )}
-      </div>
-    ))
-  )}
-</div>
+      </section>
 
-<style>
-  .tree { margin-block: 20px; }
-  .tree-empty { font-size: var(--fs-sm); color: var(--ink-4); }
+      <!-- 番方 -->
+      <section class="of-col" aria-labelledby="of-ban">
+        <header class="of-head">
+          <h3 class="of-head__nm" id="of-ban">番方<small>ばんかた</small></h3>
+          <p class="of-head__kind">軍事</p>
+          <p class="of-head__era">初期の武断的な政治のもとで重視された</p>
+        </header>
 
-  .node {
-    display: grid; gap: 2px;
-    padding: 10px 14px;
-    border: 1px solid var(--rule);
-    border-radius: 3px;
-    background: var(--card);
-    color: var(--ink-2); text-decoration: none;
-    transition: border-color .2s, transform .18s var(--ease-out);
-  }
-  .node:hover { border-color: var(--era); transform: translateY(-2px); }
-  .node .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); }
-  .node .rd { font-size: 10px; color: var(--ink-4); }
-  .node .seats { font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); }
-  .node .duties { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.7; }
+        {banRoot && (
+          <div class="of-org">
+            <a class="of-org__nm" href={`/offices/${banRoot.id}/`}>
+              <b>{banRoot.data.name}</b><span>{banRoot.data.reading}</span>
+            </a>
+            <p class="of-org__desc">
+              本藩の軍事編成。中世的な呼称。整備後は家臣を <span class="sg-num">15</span> 組に分けた。
+            </p>
 
-  .node-root {
-    border-width: 2px; border-color: var(--era);
-    max-width: 22em;
-  }
-  .node-leaf { padding: 7px 11px; }
+            <ul class="of-kumi" aria-label="着到15組の内訳">
+              {CHAKUTO_GROUPS.map((g) => (
+                <li>
+                  <span class="of-kumi__lb">{g.name}<span class="sg-num">{g.count}</span></span>
+                  <span class="of-cells" aria-hidden="true">
+                    {Array.from({ length: g.count }).map(() => <i></i>)}
+                  </span>
+                </li>
+              ))}
+            </ul>
 
-  .tree-children {
-    display: grid; gap: 10px; margin-top: 14px; padding-top: 14px;
-    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
-    position: relative;
-  }
-  /* 親子をつなぐ罫。CSS だけで引く（画像もライブラリも使わない） */
-  .tree-children::before {
-    content: ''; position: absolute; left: 20px; top: 0; width: 1px; height: 14px;
-    background: var(--rule);
-  }
-  .tree-grandchildren { display: grid; gap: 6px; margin-top: 8px; padding-left: 14px; border-left: 1px solid var(--rule-2); }
-</style>
+            {command.map((o) => (
+              <div class="of-sec">
+                <p class="of-sec__lb">各組の指揮</p>
+                <a class="of-node" href={`/offices/${o.id}/`}>
+                  <span class="of-node__nm">{o.data.name}</span>
+                  <span class="of-node__rd">{o.data.reading}</span>
+                  <span class="of-node__duty">{o.data.duties.join('・')}</span>
+                  {o.data.seats && <span class="of-node__seat">定員 {o.data.seats}</span>}
+                </a>
+                <ul class="of-from" aria-label="大組頭の出自（原則）">
+                  {OOGUMIGASHIRA_HOUSES.map((h) => <li>{h}</li>)}
+                  <li>着座一八家</li>
+                </ul>
+              </div>
+            ))}
+
+            <div class="of-sec">
+              <p class="of-sec__lb">本藩の外にある着到</p>
+              <p class="of-org__desc">三支藩・親類・親類同格は、本藩とは別に独自の着到を持っていた。</p>
+              <div class="of-others">
+                {OUTSIDE.map((x) => (
+                  <div class="of-other of-other--inner">
+                    <b>{x.label}</b>
+                    <span>{x.detail}</span>
+                    <span class="fx-na">編成は未登録</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+      </section>
+    </div>
+
+    <dl class="of-tw">
+      <dt>読みどころ</dt>
+      <dd>
+        役方の最高職である請役家老には、家格で一段目・二段目の鍋島一門ではなく、
+        三段目の親類同格——旧主家である龍造寺氏の一門四家——が原則として交代で就いた。
+      </dd>
+    </dl>
+  </div>
+
+  <p class="sg-fig__note" id="of-d">
+    藩の機構は、行政の組織である役方と、軍事の組織である番方に分かれる。
+    役方は請役所を頂点とし、その内部に執政（請役家老）、補佐、文書・財政・地方の各係を置いた。
+    番方は着到の名で家臣を15組に編成した。
+  </p>
+
+  <dl class="sg-fig__src">
+    <dt>典拠</dt>
+    <dd>佐賀市史編さん委員会 編『佐賀市史』第2巻（近世編）、佐賀市、1977年、p.24–25</dd>
+    <dt>図の注</dt>
+    <dd>
+      役方内部の「補佐・文書・財政・地方」の区分は、職掌にもとづく図の整理のためのもので、
+      史料上の呼称ではない。空欄・斜線は未登録を示す。
+    </dd>
+  </dl>
+
+  <details class="fx-data">
+    <summary>表で読む（図{no}と同じ内容）</summary>
+    <div class="sg-table-wrap">
+      <table class="sg-table">
+        <caption>役方・番方の機関</caption>
+        <thead>
+          <tr><th>名称</th><th>読み</th><th>系統</th><th>上位</th><th>定員</th><th>職掌</th></tr>
+        </thead>
+        <tbody>
+          {allRows.map((o) => (
+            <tr>
+              <td class="is-name">{o.data.name}</td>
+              <td class="is-rd">{o.data.reading}</td>
+              <td>{o.data.branch}</td>
+              <td>{parentName(o)}</td>
+              <td>{o.data.seats ?? '—'}</td>
+              <td>{o.data.duties.join('・') || '—'}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>

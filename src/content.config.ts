@@ -196,6 +196,12 @@ const offices = defineCollection({
     branch: z.enum(['番方', '役方', 'その他']).default('役方'),
     /** 上位機関（職制図の親子関係をこれで組む） */
     parent: reference('offices').optional(),
+    /**
+     * 職制図の中での係の区分。
+     * ★ これは職掌にもとづく本サイトの整理であって、史料上の呼称ではない。
+     *   図の注にもその旨を明記すること。
+     */
+    group: z.enum(['執政', '補佐', '文書', '財政', '地方', '指揮']).optional(),
     /** 定員 */
     seats: z.string().optional(),
     duties: z.array(z.string()).default([]),

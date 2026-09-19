@@ -3,6 +3,7 @@ name: "御目安方"
 reading: "おめやすかた"
 branch: 役方
 parent: ukeyakusho
+group: 財政
 duties:
   - "銀蔵・米蔵の管理"
 periods:

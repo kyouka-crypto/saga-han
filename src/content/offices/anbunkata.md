@@ -3,6 +3,7 @@ name: "案文方"
 reading: "あんぶんかた"
 branch: 役方
 parent: ukeyakusho
+group: 文書
 seats: "書上方より1人を兼帯"
 duties:
   - "文書作成"

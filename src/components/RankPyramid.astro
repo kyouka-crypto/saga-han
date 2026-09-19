@@ -1,104 +1,143 @@
 ---
 /**
- * 家格ピラミッド — 三家から足軽まで11段の序列
+ * 図 — 家格の序列（本藩から見た十一段）
  *
- * 典拠：『佐賀市史』第2巻 p.24 の列挙。
- * 層の厚みは図示上の目安であって史料上の実数ではない。そのことを図の中に明記する。
- * また「これは本藩から見た序列であり、三支藩・親類・親類同格は独自の職制を持っていた」
- * という留保を必ず併記する——単一のピラミッドではない、というのがこの図の要点。
+ * この図の要点は、序列が十一段あることではなく、
+ * **これが単一のピラミッドではない**ことにある。
+ * 一〜三段の十家は本藩の序列では上位に置かれるが、
+ * それぞれ独自の着到と家老以下の職制を別に持っていた。
+ * だから図でも二つのまとまりに分け、注記ではなく構造で示す。
+ *
+ * 典拠：『佐賀市史』第2巻 p.24（親類三家の内訳は『佐賀藩の総合研究』p.23）
+ * 意匠：Claude Design「図表見本-家格と職制」図1。CSS は src/styles/figures.css
  */
 import { HOUSE_RANKS } from '../data/houseRanks';
 import type { House } from '../lib/archive';
 
 interface Props {
   houses: House[];
+  /** 図番号 */
+  no?: string;
 }
 
-const { houses } = Astro.props;
-const maxW = Math.max(...HOUSE_RANKS.map((r) => r.weight));
+const { houses, no = '1' } = Astro.props;
+
+/** 一〜三段は独自の職制を持つ家、四段以下は本藩家中 */
+const UPPER = 3;
+
 const rows = HOUSE_RANKS.map((r) => ({
   ...r,
+  pad: String(r.rank).padStart(2, '0'),
   houses: houses.filter((h) => h.data.rank === r.id),
-  w: 26 + (r.weight / maxW) * 74,
 }));
+const upper = rows.filter((r) => r.rank <= UPPER);
+const main = rows.filter((r) => r.rank > UPPER);
 ---
 
-<div class="pyr">
-  <ol class="pyr-rows">
-    {rows.map((r, i) => (
-      <li class="pyr-row" style={`--w:${r.w}%; --cue:${i}`}>
-        <div class="pyr-bar">
-          <span class="pyr-rank">{r.rank}</span>
-          <span class="pyr-name">{r.name}</span>
-          <span class="pyr-reading">{r.reading}</span>
-        </div>
-        <div class="pyr-side">
-          {r.houses.length > 0 ? (
-            <ul class="pyr-houses">
+<figure class="sg-fig kf" id="fig-ranks" aria-labelledby="kf-t" aria-describedby="kf-d">
+  <div class="sg-fig__head">
+    <span class="sg-fig__no">図 {no}</span>
+    <span class="sg-fig__title" id="kf-t">家格の序列 — 本藩から見た十一段</span>
+  </div>
+
+  <div class="sg-fig__plate">
+    <blockquote class="fx-quote">
+      武士の身分は、三家・親類・親類同格・連判家老・加判家老・着座・独礼・平侍・手明鑓・徒士・足軽という序列が出来たが、<b
+        >これも本藩を中心としてみた場合のもので、自治を認められていた大配分では、それぞれ独自の組織をもち、家老その他の職制があった</b
+      >。<cite>『佐賀市史』第2巻 p.24</cite>
+    </blockquote>
+
+    <section class="kf-group" aria-labelledby="kf-g1">
+      <p class="kf-group__head">
+        <b id="kf-g1">一〜三段　独自の組織をもつ家</b>
+        <span>本藩の序列では上位だが、各家がそれぞれ家老以下の職制と着到を別に持つ</span>
+      </p>
+      <ol class="kf-rows">
+        {upper.map((r) => (
+          <li class="kf-row kf-row--upper" id={`rank-${r.id}`}>
+            <div class="kf-rank">
+              <span class="kf-rank__no">{r.pad}</span>
+              <span class="kf-rank__nm">{r.name}</span>
+              <span class="kf-rank__rd">{r.reading}</span>
+            </div>
+            {r.houses.length > 0 ? (
+              <ul class="kf-houses" aria-label={`${r.name}に属する家`}>
+                {r.houses.map((h) => (
+                  <li>
+                    <a class="kf-house" href={`/houses/${h.id}/`}>
+                      <span class="kf-house__nm">{h.data.name}</span>
+                      {h.data.seat && <span class="kf-house__sub">{h.data.seat}</span>}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <span class="fx-na">属する家は未登録</span>
+            )}
+            <p class="kf-note">{r.note}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="kf-group" aria-labelledby="kf-g2">
+      <p class="kf-group__head">
+        <b id="kf-g2">四〜十一段　本藩の家中</b>
+        <span>本藩の着到・職制のなかでの序列</span>
+      </p>
+      <ol class="kf-rows">
+        {main.map((r) => (
+          <li class="kf-row kf-row--main" id={`rank-${r.id}`}>
+            <div class="kf-rank">
+              <span class="kf-rank__no">{r.pad}</span>
+              <span class="kf-rank__nm">{r.name}</span>
+              <span class="kf-rank__rd">{r.reading}</span>
+            </div>
+            <p class="kf-note">
+              {r.note}
               {r.houses.map((h) => (
-                <li><a href={`/houses/${h.id}/`}>{h.data.name}</a></li>
+                <a class="fx-link" href={`/houses/${h.id}/`}>{h.data.name}</a>
               ))}
-            </ul>
-          ) : (
-            <p class="pyr-note">{r.note}</p>
-          )}
-        </div>
-      </li>
-    ))}
-  </ol>
+            </p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </div>
 
-  <p class="pyr-caveat">
-    <strong>これは本藩から見た序列です。</strong>
-    三支藩・親類・親類同格は本藩とは別に独自の着到（軍事編成）を持ち、
-    自治を認められた大配分にはそれぞれ家老以下の職制がありました。
-    単一のピラミッドに全員が収まっていたわけではありません。
+  <p class="sg-fig__note" id="kf-d">
+    三家・親類・親類同格の十家は、本藩から見れば一〜三段に位置づけられる。
+    しかし各家はそれぞれ独自の着到（軍事編成）と家老以下の職制をもっていたため、
+    図では本藩家中とは切り離し、別のまとまりとして置いた。四段以下は本藩家中の序列である。
   </p>
-  <p class="pyr-src">
-    序列の典拠：『佐賀市史』第2巻 p.24 ／ 各段の厚みは図示上の目安であり、史料上の人数比ではありません。
-  </p>
-</div>
 
-<style>
-  .pyr { margin-block: clamp(24px, 4vw, 40px); }
-  .pyr-rows { list-style: none; display: grid; gap: 3px; }
-  .pyr-row {
-    display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
-    gap: 16px; align-items: center;
-  }
-  .pyr-bar {
-    width: var(--w);
-    display: flex; align-items: baseline; gap: 10px;
-    padding: 9px 14px;
-    margin-inline: auto 0;
-    background: color-mix(in srgb, var(--ink) 8%, var(--card));
-    border: 1px solid var(--rule-2);
-    border-radius: 2px;
-    transition: background .2s;
-  }
-  .pyr-row:hover .pyr-bar { background: color-mix(in srgb, var(--ink) 15%, var(--card)); }
-  .pyr-rank { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); flex: none; }
-  .pyr-name { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); white-space: nowrap; }
-  .pyr-reading { font-size: 10px; color: var(--ink-4); white-space: nowrap; }
+  <dl class="sg-fig__src">
+    <dt>典拠</dt>
+    <dd>佐賀市史編さん委員会 編『佐賀市史』第2巻（近世編）、佐賀市、1977年、p.24</dd>
+    <dt>親類三家</dt>
+    <dd>藤野保 編『佐賀藩の総合研究：藩制の成立と構造』、吉川弘文館、1981年、p.23</dd>
+  </dl>
 
-  .pyr-houses { list-style: none; display: flex; flex-wrap: wrap; gap: 6px; }
-  .pyr-houses a {
-    display: inline-block; padding: 3px 9px;
-    border: 1px solid var(--rule); border-radius: 999px;
-    font-size: var(--fs-xs); color: var(--ink-2); text-decoration: none;
-    transition: border-color .2s, color .2s;
-  }
-  .pyr-houses a:hover { border-color: var(--ink-3); color: var(--ink); }
-  .pyr-note { font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.8; }
-
-  .pyr-caveat {
-    margin-top: 22px; padding: 14px 16px;
-    border-left: 2px solid var(--rule);
-    font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95;
-  }
-  .pyr-src { margin-top: 10px; font-size: var(--fs-xs); color: var(--ink-4); }
-
-  @media (max-width: 720px) {
-    .pyr-row { grid-template-columns: 1fr; gap: 4px; }
-    .pyr-bar { width: max(var(--w), 60%); margin-inline: 0; }
-  }
-</style>
+  <details class="fx-data">
+    <summary>表で読む（図{no}と同じ内容）</summary>
+    <div class="sg-table-wrap">
+      <table class="sg-table">
+        <caption>家格の序列（本藩から見た場合）</caption>
+        <thead>
+          <tr><th>序列</th><th>名称</th><th>読み</th><th>属する家</th><th>備考</th></tr>
+        </thead>
+        <tbody>
+          {rows.map((r) => (
+            <tr>
+              <td class="is-num">{r.rank}</td>
+              <td class="is-name">{r.name}</td>
+              <td class="is-rd">{r.reading}</td>
+              <td>{r.houses.length ? r.houses.map((h) => h.data.name).join('・') : '—'}</td>
+              <td>{r.note}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </details>
+</figure>

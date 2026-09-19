@@ -27,16 +27,12 @@ const bankata = offices.filter((o) => o.data.branch === '番方').length;
   </section>
 
   <section class="inner of-sec">
-    <p class="en-label">役方 — 行政の組織（{yakukata}件）</p>
     <p class="of-note">
-      請役所を頂点とする構造です。この図は登録された機関の上下関係から自動的に組み立てられます。
+      役方 {yakukata}件・番方 {bankata}件を登録しています。
+      この図は登録された機関の系統と上下関係から自動的に組み立てられます。
     </p>
-    <OfficeTree offices={offices} branch="役方" />
-  </section>
-
-  <section class="inner of-sec">
-    <p class="en-label">番方 — 軍事の組織（{bankata}件）</p>
-    <OfficeTree offices={offices} branch="番方" />
+    <!-- 家格の図はこのページに無いので、図1への参照は出さない -->
+    <OfficeTree offices={offices} no="1" linkRanks={false} />
   </section>
 
   <section class="inner of-sec of-list">

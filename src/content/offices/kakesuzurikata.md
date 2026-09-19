@@ -3,6 +3,7 @@ name: "懸硯方"
 reading: "かけすずりかた"
 branch: 役方
 parent: ukeyakusho
+group: 財政
 duties:
   - "別会計"
 periods:

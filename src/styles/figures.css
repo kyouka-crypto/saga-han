@@ -1,0 +1,191 @@
+/* ==========================================================================
+   図版と表
+   --------------------------------------------------------------------------
+   Claude Design から受け取った「図表見本-家格と職制」の規則を、
+   クラス名を変えずに取り込んだもの。設計が更新されたとき貼り替えやすくするため、
+   命名は設計側のまま。
+
+     sg-fig / sg-table / sg-num  共通（図版の枠・表・数字）
+     kf-*                        家格の序列
+     of-*                        藩の機構
+     fx-*                        図の中の小物（引用・タグ・欠損表示）
+
+   色・寸法はすべて tokens.css の変数を経由する。ここに生の値を書かない。
+   ========================================================================== */
+
+.sg-table { width: 100%; border-collapse: collapse; font: 400 var(--fs-base)/1.6 var(--f-sans); color: var(--ink); border-top: var(--keisen) solid var(--rule-strong); border-bottom: var(--keisen) solid var(--rule-strong); }
+.sg-table caption { caption-side: top; text-align: left; padding-bottom: var(--sp-2); font: 700 var(--fs-sm)/1.5 var(--f-sans); }
+.sg-table caption .sg-num { font-weight: 400; color: var(--ink-3); margin-right: .6em; }
+.sg-table th { text-align: left; font: 700 var(--fs-xs)/1.4 var(--f-sans); letter-spacing: .06em; color: var(--ink-3); padding: var(--sp-2) var(--sp-3); border-bottom: var(--hair) solid var(--rule-strong); white-space: nowrap; }
+.sg-table td { padding: var(--sp-3); border-bottom: var(--hair) solid var(--rule-2); vertical-align: top; }
+.sg-table tr:last-child td { border-bottom: 0; }
+.sg-table th:first-child, .sg-table td:first-child { padding-left: 0; }
+.sg-table .is-num { text-align: right; font-family: var(--f-mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.sg-table td.is-name { font: 600 var(--fs-base)/1.5 var(--f-mincho); white-space: nowrap; }
+.sg-table tbody tr:hover td { background: var(--paper-2); }
+.sg-table tr.is-group td { padding-top: var(--sp-5); font: 700 var(--fs-xs)/1.4 var(--f-sans); letter-spacing: .08em; color: var(--ink-3); border-bottom: var(--hair) solid var(--rule); }
+.sg-fig--pending .sg-fig__plate { display: grid; place-items: center; min-height: 200px; background: var(--hatch), var(--paper-2); }
+
+/* 図版の枠：やわらかい台紙 */
+.sg-fig{margin:0}
+.sg-fig__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px;margin-bottom:14px}
+.sg-fig__no{display:inline-block;padding:2px 10px;border-radius:var(--r-pill);background:var(--era-soft);font:500 var(--fs-xs)/1.5 var(--f-mono);letter-spacing:.06em;color:var(--navy)}
+.sg-fig__title{font:700 20px/1.5 var(--f-mincho);letter-spacing:.03em;color:var(--ink)}
+.sg-fig__plate{position:relative;padding:32px;background:var(--paper-2);border-radius:var(--r-m);overflow-x:auto}
+.sg-fig__note{margin:16px 0 0;max-width:44em;font:400 var(--fs-sm)/1.9 var(--f-sans);color:var(--ink-2)}
+.sg-fig__src{display:grid;grid-template-columns:auto 1fr;gap:4px 14px;margin:14px 0 0;font:400 var(--fs-xs)/1.7 var(--f-sans);color:var(--ink-3)}
+.sg-fig__src dt{font-weight:700;letter-spacing:.06em}
+.sg-fig__src dd{margin:0}
+/* 同じ内容の表 */
+.fx-data{margin-top:24px}
+.sg-table-wrap{overflow-x:auto;margin-top:12px}
+.sg-table{width:100%;border-collapse:collapse;font:400 var(--fs-sm)/1.7 var(--f-sans);color:var(--ink);margin-bottom:16px}
+.sg-table caption{caption-side:top;text-align:left;padding:8px 0;font:700 var(--fs-sm)/1.5 var(--f-sans)}
+.sg-table th{text-align:left;font:700 var(--fs-xs)/1.4 var(--f-sans);letter-spacing:.06em;color:var(--ink-3);padding:10px 12px;background:var(--paper-2);white-space:nowrap}
+.sg-table th:first-child{border-radius:var(--r-s) 0 0 var(--r-s)}
+.sg-table th:last-child{border-radius:0 var(--r-s) var(--r-s) 0}
+.sg-table td{padding:10px 12px;border-bottom:1px solid var(--rule-2);vertical-align:top}
+.sg-table .is-num{font-family:var(--f-mono);text-align:right;white-space:nowrap}
+.sg-table td.is-rd{white-space:nowrap;color:var(--ink-3)}
+.sg-table td.is-name{font:600 var(--fs-base)/1.5 var(--f-mincho);white-space:nowrap}
+.sg-table tbody tr:hover td{background:var(--paper-2)}
+/* ===== 図1 家格 ===== */
+.kf-group{padding:24px 28px;border-radius:var(--r-m);background:var(--surface)}
+.kf-group + .kf-group{margin-top:16px}
+.kf-group__head{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;margin:0 0 8px}
+.kf-group__head b{font:700 var(--fs-base)/1.5 var(--f-sans);color:var(--ink)}
+.kf-group__head span{font:400 var(--fs-xs)/1.7 var(--f-sans);color:var(--ink-3)}
+.kf-rows{list-style:none;margin:0;padding:0}
+.kf-row--main{grid-template-columns:11em minmax(0,1fr)!important;padding:14px 0!important}
+.kf-row--main + .kf-row--main{border-top:1px solid var(--rule-2)}
+.kf-row{display:grid;grid-template-columns:10em minmax(0,1fr) 19em;column-gap:28px;align-items:center;padding:6px 0}
+.kf-row--upper{padding:14px 0}
+.kf-row--upper + .kf-row--upper{border-top:1px solid var(--rule-2)}
+.kf-rank{display:grid;grid-template-columns:2.4em 1fr;align-items:baseline}
+.kf-rank__no{font:500 var(--fs-xs)/1 var(--f-mono);color:var(--navy)}
+.kf-rank__nm{font:700 19px/1.35 var(--f-mincho);letter-spacing:.05em;color:var(--ink)}
+.kf-rank__rd{grid-column:2;font:500 var(--fs-xs)/1.4 var(--f-sans);letter-spacing:.06em;color:var(--ink-3)}
+.kf-note{margin:0;font:400 var(--fs-base)/1.85 var(--f-sans);color:var(--ink-2)}
+.kf-note .fx-tag{margin:0 6px 4px 0}
+/* 家：テキストだけのリンク（丸いピル） */
+.kf-houses{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.kf-house{display:inline-flex;align-items:baseline;gap:8px;min-height:40px;padding:8px 16px;border-radius:var(--r-pill);background:var(--paper-2);text-decoration:none;transition:background var(--dur) var(--ease-out)}
+.kf-house:hover{background:var(--era-soft)}
+.kf-house__nm{font:700 var(--fs-sm)/1.4 var(--f-mincho);letter-spacing:.03em;color:var(--ink)}
+.kf-house__sub{font:400 var(--fs-xs)/1.4 var(--f-sans);color:var(--ink-3)}
+.kf-house:hover .kf-house__nm{color:var(--navy)}
+/* 本藩家中：やわらかい帯。端は地へ溶ける＝幅は目安 */
+.kf-bandcell{display:flex;justify-content:center;padding-inline:10%}
+.kf-row--main:hover .kf-band{background:linear-gradient(90deg,var(--bar-edge),var(--navy) 18%,var(--navy) 82%,var(--bar-edge))}
+.kf-row--main{border-radius:var(--r-s)}
+@container fx (max-width:760px){
+ .kf-row--main{grid-template-columns:minmax(0,1fr)!important}
+ .fx-page{padding:24px 16px}
+ .sg-fig__plate{padding:14px}
+ .kf-group{padding:18px 16px}
+ .kf-row{grid-template-columns:minmax(0,1fr);row-gap:8px;padding:12px 0}
+ .kf-row--main + .kf-row--main{border-top:1px solid var(--rule-2)}
+ .kf-bandcell{padding-inline:6%}
+}
+/* ===== 図2 職制 ===== */
+.of-top{display:grid;justify-items:center;gap:4px;text-align:center}
+.of-top b{display:inline-block;padding:6px 20px;border-radius:var(--r-pill);background:var(--surface);font:700 var(--fs-base)/1.4 var(--f-mincho);letter-spacing:.1em}
+.of-top span{font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+.of-fork{position:relative;height:28px;margin:8px 25% 0;border:1.5px solid var(--rule);border-bottom:0;border-radius:12px 12px 0 0}
+.of-fork::before{content:"";position:absolute;left:50%;top:-9px;height:8px;border-left:1.5px solid var(--rule)}
+.of-split{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:20px}
+.of-col{min-width:0;padding:24px;border-radius:var(--r-m);background:var(--surface)}
+.of-head{text-align:center;padding-bottom:4px}
+.of-head__nm{margin:0;font:700 26px/1.3 var(--f-mincho);letter-spacing:.12em;color:var(--ink)}
+.of-head__nm small{font:500 var(--fs-xs)/1 var(--f-sans);letter-spacing:.08em;color:var(--ink-3);margin-left:.6em}
+.of-head__kind{display:inline-block;margin:6px 0 0;padding:1px 12px;border-radius:var(--r-pill);background:var(--era-soft);font:700 var(--fs-xs)/1.7 var(--f-sans);letter-spacing:.2em;color:var(--navy)}
+.of-head__era{margin:6px 0 0;font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+/* 機関：地の色で囲う（線で囲わない） */
+.of-org{margin-top:20px;padding:18px 20px 20px;border-radius:var(--r-m);background:var(--paper-2)}
+.of-org__nm{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;margin:0;text-decoration:none}
+.of-org__nm b{font:800 21px/1.35 var(--f-mincho);letter-spacing:.08em}
+.of-org__nm span{font:500 var(--fs-xs)/1.4 var(--f-sans);letter-spacing:.06em;color:var(--ink-3)}
+a.of-org__nm:hover b{color:var(--navy)}
+.of-org__desc{margin:4px 0 0;font:400 var(--fs-sm)/1.75 var(--f-sans);color:var(--ink-2)}
+.of-sec{margin-top:20px}
+.of-sec__lb{display:flex;align-items:center;gap:8px;margin:0 0 8px;font:700 var(--fs-xs)/1.5 var(--f-sans);letter-spacing:.1em;color:var(--ink-3)}
+.of-sec__lb::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ink-4)}
+/* 役：小さなカード */
+.of-node{display:grid;gap:1px;align-content:start;padding:10px 14px 12px;border-radius:var(--r-s);background:var(--surface);text-decoration:none;min-width:0;transition:background var(--dur) var(--ease-out)}
+.of-node + .of-node{margin-top:8px}
+a.of-node:hover{background:var(--era-soft)}
+.of-node__nm{font:700 16px/1.4 var(--f-mincho);letter-spacing:.04em;color:var(--ink)}
+.of-node__nm small{font:500 var(--fs-xs)/1 var(--f-sans);letter-spacing:.04em;color:var(--ink-3);margin-left:.5em}
+.of-node__rd{font:500 var(--fs-xs)/1.4 var(--f-sans);letter-spacing:.06em;color:var(--ink-3)}
+.of-node__duty{margin-top:2px;font:400 var(--fs-sm)/1.6 var(--f-sans);color:var(--ink-2)}
+.of-node__seat{font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+.of-node__seat .sg-num{color:var(--ink-2)}
+.of-node--key{background:var(--era-soft);box-shadow:inset 0 0 0 1.5px var(--navy)}
+.of-node--key .of-node__nm{font-size:19px}
+/* 執政：序列3位の家から最高職へ */
+.of-exec{display:grid;grid-template-columns:minmax(0,10.5em) minmax(0,1fr);grid-template-rows:auto repeat(3,auto);column-gap:18px;margin-top:18px}
+.of-exec__cap{grid-column:1;grid-row:1;align-self:end;padding-bottom:8px;font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+.of-exec .of-node{grid-column:2;grid-row:1;margin:0}
+.of-rung{grid-column:1;display:grid;grid-template-columns:1.8em 1fr;align-items:baseline;margin-top:6px;padding:6px 10px;border-radius:var(--r-s)}
+.of-rung__no{font:500 var(--fs-xs)/1 var(--f-mono);color:var(--ink-3)}
+.of-rung__nm{font:700 var(--fs-sm)/1.4 var(--f-mincho);color:var(--ink-2)}
+.of-rung__lin{grid-column:2;font:400 var(--fs-xs)/1.5 var(--f-sans);color:var(--ink-3)}
+.of-rung--on{background:var(--era-soft);box-shadow:inset 0 0 0 1.5px var(--navy)}
+.of-rung--on .of-rung__no{color:var(--navy)}
+.of-rung--on .of-rung__nm{color:var(--ink)}
+.of-rung--on .of-rung__lin{color:var(--ink-2);font-weight:700}
+.of-feed{position:relative;grid-column:2;grid-row:2/5;margin:0 0 18px 22px;border-left:2px solid var(--navy);border-bottom:2px solid var(--navy);border-bottom-left-radius:14px;padding:10px 0 8px 16px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px}
+.of-feed::before{content:"";position:absolute;bottom:-2px;right:100%;width:40px;border-bottom:2px solid var(--navy)}
+.of-feed::after{content:"";position:absolute;top:-8px;left:-7px;border:6px solid transparent;border-bottom:8px solid var(--navy);border-top:0}
+.of-feed b{font:700 var(--fs-xs)/1.5 var(--f-sans);color:var(--ink)}
+.of-feed span{font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-2)}
+.of-feed a{color:var(--navy)!important;text-decoration:none;font-weight:700}
+.of-feed a:hover{text-decoration:underline}
+.of-aides{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,11em),1fr));gap:8px}
+.of-aides .of-node{margin:0}
+.of-fns{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0 14px;margin-top:4px}
+.of-fn--fin{grid-column:1/-1}
+.of-finrow{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:8px 14px;align-items:start}
+.of-fn .of-sec__lb{margin-top:20px}
+.of-fn--doc .of-sec__lb{color:var(--navy)}
+.of-fn--doc .of-sec__lb::before{background:var(--navy)}
+.of-fn--doc .of-node{box-shadow:inset 3px 0 0 var(--navy)}
+.of-ghost{display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:3px 12px;border-radius:var(--r-pill);border:1px dashed var(--ink-4);font:400 var(--fs-xs)/1.5 var(--f-sans);color:var(--ink-3)}
+.of-ghost i{width:1.3em;height:.7em;border-radius:2px;background:var(--hatch)}
+.of-pair{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:30px 10px 10px;border-radius:var(--r-s);background:var(--paper-3)}
+.of-pair::before{content:"二重会計";position:absolute;top:8px;left:12px;font:700 var(--fs-xs)/1.2 var(--f-sans);letter-spacing:.1em;color:var(--ink-3)}
+.of-pair .of-node{margin:0}
+.of-chain{display:grid}
+.of-chain .of-node + .of-node{margin-left:20px}
+.of-chain__end{margin:6px 0 0 40px;font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+.of-chain__end::before,.of-chain .of-node + .of-node .of-node__nm::before{content:"↳ ";font-family:var(--f-mono);color:var(--ink-4)}
+/* 番方：15組を1組1粒で */
+.of-kumi{display:flex;flex-wrap:wrap;gap:14px 22px;margin:16px 0 0;padding:0;list-style:none}
+.of-kumi li{display:grid;gap:6px}
+.of-kumi__lb{font:700 var(--fs-sm)/1.3 var(--f-mincho);color:var(--ink)}
+.of-kumi__lb .sg-num{font-weight:400;color:var(--ink-3);margin-left:.4em}
+.of-cells{display:flex;gap:4px}
+.of-cells i{width:16px;height:16px;border-radius:50%;background:var(--bar)}
+.of-kumi-key{margin:10px 0 0;font:400 var(--fs-xs)/1.6 var(--f-sans);color:var(--ink-3)}
+.of-from{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:4px;font:400 var(--fs-xs)/1.7 var(--f-sans);color:var(--ink-2)}
+.of-from li{display:flex;gap:8px}
+.of-from li::before{content:"・";color:var(--ink-3)}
+.of-from a{color:var(--navy)!important;text-decoration:none;font-weight:700}
+.of-others{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,8.5em),1fr));gap:8px;margin-top:10px}
+.of-other{display:grid;gap:4px;padding:12px 14px;border-radius:var(--r-s);border:1.5px dashed var(--rule)}
+.of-other b{font:700 var(--fs-sm)/1.4 var(--f-mincho);color:var(--ink)}
+.of-other span{font:400 var(--fs-xs)/1.5 var(--f-sans);color:var(--ink-3)}
+.of-tw{margin:20px 0 0;padding:16px 20px;border-radius:var(--r-m);background:var(--surface);display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font:400 var(--fs-sm)/1.8 var(--f-sans);color:var(--ink-2)}
+.of-tw dt{font-weight:700;color:var(--navy)}
+.of-tw dd{margin:0}
+@container fx (max-width:760px){
+ .of-fork{display:none}
+ .of-split{grid-template-columns:minmax(0,1fr);gap:16px;margin-top:16px}
+ .of-col{padding:18px 14px}
+ .of-org{padding:14px 12px}
+ .of-exec{grid-template-columns:minmax(0,8.5em) minmax(0,1fr);column-gap:12px}
+ .of-feed{margin-left:12px;padding-left:10px}
+ .of-feed::before{width:24px}
+ .of-fns,.of-finrow{grid-template-columns:minmax(0,1fr)}
+ .of-tw{grid-template-columns:minmax(0,1fr);padding:14px}
+}

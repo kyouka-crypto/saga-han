@@ -6,6 +6,7 @@
      tokens.css      色・書体・寸法・モーション（★デザインの差し替え口）
      base.css        リセットと素の要素、レイアウトユーティリティ
      components.css  共通部品（バッジ・カード・チップ・パンくず）
+     figures.css     図版と表（Claude Design 由来。クラス名は設計側のまま）
      prose.css       記事本文の組版
      pages.css       ページ固有の大型部品
 
@@ -15,5 +16,6 @@
 @import './tokens.css';
 @import './base.css';
 @import './components.css';
+@import './figures.css';
 @import './prose.css';
 @import './pages.css';

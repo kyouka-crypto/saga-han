@@ -3,6 +3,7 @@ name: "大組頭"
 reading: "おおぐみがしら"
 branch: 番方
 parent: chakuto
+group: 指揮
 seats: "15人"
 duties:
   - "各組の指揮"

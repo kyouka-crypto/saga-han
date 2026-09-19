@@ -3,6 +3,7 @@ name: "請役家老（御当役）"
 reading: "うけやくがろう"
 branch: 役方
 parent: ukeyakusho
+group: 執政
 seats: "1人"
 duties:
   - "藩政の総括"
