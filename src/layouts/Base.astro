@@ -7,14 +7,35 @@ import '../styles/global.css';
 interface Props {
   title?: string;
   description?: string;
-  /** 記事ページで時代カラーを差し込む（例: 'var(--c-edo)'） */
+  /** 時代・主題のアクセント色を差し込む（例: 'var(--c-seiritsu)'） */
   eraColor?: string;
+  /** 記事ページなら公開日・更新日（構造化データに使う） */
+  published?: string;
+  modified?: string;
 }
 
-const { title, description, eraColor } = Astro.props;
-const siteName = '佐賀通史アーカイブ';
-const pageTitle = title ? `${title} — ${siteName}` : `${siteName} | SAGA HISTORICAL ARCHIVE`;
-const desc = description ?? '大地の形成から現代まで、佐賀という土地の「完全な伝記」を目指す個人研究アーカイブ。すべての記述に出典を、未詳には未詳の表示を。';
+const { title, description, eraColor, published, modified } = Astro.props;
+
+const siteName = '佐賀藩アーカイブ';
+const pageTitle = title ? `${title} — ${siteName}` : `${siteName} | SAGA DOMAIN ARCHIVE`;
+const desc =
+  description ??
+  '佐賀藩の制度・家臣団・財政・軍事・産業・学問を、出典を示しながら記述するアーカイブ。すべての記述に典拠を、未詳には未詳の表示を。';
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? 'https://saga-han.example.com').href;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': published ? 'Article' : 'WebSite',
+  name: pageTitle,
+  headline: title ?? siteName,
+  description: desc,
+  url: canonical,
+  inLanguage: 'ja',
+  isPartOf: { '@type': 'WebSite', name: siteName, url: Astro.site?.href },
+  ...(published ? { datePublished: published } : {}),
+  ...(modified ? { dateModified: modified } : {}),
+};
 ---
 
 <!doctype html>
@@ -24,19 +45,33 @@ const desc = description ?? '大地の形成から現代まで、佐賀という
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{pageTitle}</title>
     <meta name="description" content={desc} />
+    <link rel="canonical" href={canonical} />
+
+    <meta property="og:site_name" content={siteName} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={desc} />
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={published ? 'article' : 'website'} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="ja_JP" />
+    <meta name="twitter:card" content="summary_large_image" />
+
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@400;500&display=swap"
       rel="stylesheet"
     />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
     <script is:inline>
-      // FOUC 回避：描画前にテーマを確定（View Transitions 後も再適用）
+      // FOUC 回避：描画前にテーマを確定する。あわせて JS 有効を示す印を付け、
+      // 段階的強化（マトリクス・探索UI）が働くようにする。
       (function () {
+        document.documentElement.classList.add('js');
         const apply = () => {
           const saved = localStorage.getItem('saga-theme');
           const dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
@@ -57,7 +92,7 @@ const desc = description ?? '大地の形成から現代まで、佐賀という
     <Footer />
 
     <script>
-      // スクロール出現（reduced-motion では global.css 側で無効化）
+      // スクロール出現（reduced-motion では tokens/base 側で無効化）
       function initReveal() {
         const targets = document.querySelectorAll<HTMLElement>('.reveal:not(.is-visible)');
         if (!targets.length) return;

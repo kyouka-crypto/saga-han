@@ -1,0 +1,21 @@
+---
+import { themeById } from '../data/themes';
+
+interface Props {
+  id: string;
+  static?: boolean;
+}
+
+const { id, static: isStatic = false } = Astro.props;
+const t = themeById(id);
+const Tag = isStatic ? 'span' : 'a';
+---
+
+<Tag
+  class="theme-chip"
+  href={isStatic ? undefined : `/theme/${t.id}/`}
+  style={`--tc: var(${t.colorVar})`}
+>
+  <i></i>
+  <span>{t.name}</span>
+</Tag>

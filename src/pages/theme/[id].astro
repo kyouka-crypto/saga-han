@@ -1,0 +1,152 @@
+---
+import Base from '../../layouts/Base.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { THEMES, themeById } from '../../data/themes';
+import { PERIODS } from '../../data/periods';
+import { allArticles, articlesInTheme } from '../../lib/archive';
+import { getCollection } from 'astro:content';
+
+export function getStaticPaths() {
+  return THEMES.map((t) => ({ params: { id: t.id } }));
+}
+
+const theme = themeById(Astro.params.id!);
+const articles = articlesInTheme(await allArticles(), theme.id);
+
+/** 時代ごとに束ねる。主題ページの読み方は「通史で追う」なので時代順に並べる */
+const byPeriod = PERIODS.map((p) => ({
+  period: p,
+  articles: articles.filter((a) => a.data.periods.includes(p.id)),
+})).filter((g) => g.articles.length > 0);
+
+const terms = (await getCollection('terms')).filter((t) => t.data.themes.includes(theme.id));
+---
+
+<Base title={`${theme.name}`} description={theme.lede} eraColor={`var(${theme.colorVar})`}>
+  <section class="t-hero">
+    <div class="inner">
+      <nav class="breadcrumb" aria-label="パンくず">
+        <a href="/">トップ</a><span class="sep">/</span>
+        <a href="/matrix/">時代と主題</a><span class="sep">/</span>
+        <span aria-current="page">{theme.name}</span>
+      </nav>
+
+      <p class="en-label" style={`color:var(${theme.colorVar})`}>{theme.en.toUpperCase()}</p>
+      <h1>{theme.name}</h1>
+      <p class="t-lede">{theme.lede}</p>
+      <p class="t-scope">扱う範囲：{theme.scope}</p>
+
+      <!-- この主題が時代をどう横断しているか -->
+      <div class="t-across" aria-label="時代ごとの記事数">
+        {PERIODS.map((p) => {
+          const n = articles.filter((a) => a.data.periods.includes(p.id)).length;
+          return (
+            <a
+              class:list={['t-across-seg', n === 0 && 'is-empty']}
+              href={`/matrix/#cell-${p.id}-${theme.id}`}
+              style={`--ec: var(${p.colorVar})`}
+              title={`${p.name}：${n === 0 ? '未執筆' : `${n}本`}`}
+            >
+              <span class="bar" style={`--h: ${n}`}></span>
+              <span class="lb">{p.name}</span>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <section class="t-body">
+    <div class="inner">
+      {byPeriod.length > 0 ? (
+        byPeriod.map((g) => (
+          <div class="t-group">
+            <p class="t-group-head" style={`--ec: var(${g.period.colorVar})`}>
+              <i></i>
+              <a href={`/period/${g.period.id}/`}>{g.period.name}</a>
+              <span class="num">{g.period.span}</span>
+            </p>
+            <div class="t-grid">
+              {g.articles.map((a, n) => <ArticleCard article={a} showTheme={false} cue={n % 6} />)}
+            </div>
+          </div>
+        ))
+      ) : (
+        <div class="t-empty">
+          <p class="en-label">IN PREPARATION</p>
+          <p class="t-empty-title">この主題の記事はまだありません</p>
+          <p class="t-empty-body">目標は {theme.target}本です。</p>
+        </div>
+      )}
+
+      {terms.length > 0 && (
+        <div class="t-terms">
+          <p class="en-label">この主題の用語</p>
+          <dl class="t-terms-list">
+            {terms.map((t) => (
+              <div class="t-term" id={`t-${t.data.id}`}>
+                <dt>{t.data.term}<span class="rd">{t.data.reading}</span></dt>
+                <dd>{t.data.definition}</dd>
+              </div>
+            ))}
+          </dl>
+          <p class="t-terms-more"><a href="/glossary/">用語集をすべて見る →</a></p>
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .t-hero { padding-block: clamp(28px, 5vw, 56px) clamp(20px, 3vw, 32px); }
+  .t-hero h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .t-lede { margin-top: 16px; max-width: 44em; color: var(--ink-2); line-height: 2; }
+  .t-scope { margin-top: 10px; font-size: var(--fs-sm); color: var(--ink-4); }
+
+  .t-across { display: flex; gap: 4px; margin-top: 32px; align-items: flex-end; }
+  .t-across-seg {
+    flex: 1; display: grid; gap: 6px; justify-items: center;
+    text-decoration: none; color: var(--ink-4);
+  }
+  .t-across-seg .bar {
+    width: 100%; height: calc(6px + var(--h) * 14px); max-height: 64px;
+    background: color-mix(in srgb, var(--ec) 62%, var(--paper-2));
+    border-radius: 2px;
+    transition: background .2s;
+  }
+  .t-across-seg:hover .bar { background: var(--ec); }
+  .t-across-seg.is-empty .bar { background: var(--paper-2); border: 1px dashed var(--rule); }
+  .t-across-seg .lb {
+    font-size: 9.5px; letter-spacing: .02em; text-align: center; line-height: 1.35;
+  }
+  @media (max-width: 720px) { .t-across-seg .lb { display: none; } }
+
+  .t-body { padding-block: clamp(24px, 4vw, 48px) clamp(40px, 6vw, 72px); }
+  .t-group { margin-bottom: clamp(32px, 5vw, 56px); }
+  .t-group-head {
+    display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px;
+    padding-bottom: 8px; border-bottom: 1px solid var(--rule-2);
+  }
+  .t-group-head i { width: 8px; height: 8px; border-radius: 50%; background: var(--ec); align-self: center; }
+  .t-group-head a { font-family: var(--f-mincho); font-size: var(--fs-lg); color: inherit; text-decoration: none; }
+  .t-group-head a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .t-group-head .num { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .t-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+  .t-empty {
+    padding: 40px 28px; border: 1px dashed var(--rule); border-radius: 4px;
+    background: var(--paper-2); text-align: center;
+  }
+  .t-empty-title { font-family: var(--f-mincho); font-size: var(--fs-lg); margin-top: 8px; }
+  .t-empty-body { margin-top: 10px; font-size: var(--fs-sm); color: var(--ink-3); }
+
+  .t-terms { margin-top: clamp(40px, 6vw, 64px); padding-top: 24px; border-top: 1px solid var(--rule); }
+  .t-terms-list { margin-top: 14px; display: grid; gap: 12px; }
+  .t-term { display: grid; grid-template-columns: minmax(8em, 12em) minmax(0, 1fr); gap: 14px; }
+  .t-term dt { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); }
+  .t-term dt .rd { display: block; font-family: var(--f-sans); font-size: 10px; color: var(--ink-4); }
+  .t-term dd { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.9; }
+  .t-terms-more { margin-top: 16px; font-size: var(--fs-sm); }
+  @media (max-width: 560px) { .t-term { grid-template-columns: 1fr; gap: 2px; } }
+</style>

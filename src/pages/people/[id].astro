@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConfidenceBadge from '../../components/ConfidenceBadge.astro';
+import SourceRefs from '../../components/SourceRefs.astro';
+import PeriodChip from '../../components/PeriodChip.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { allArticles } from '../../lib/archive';
+import { periodById } from '../../data/periods';
+
+export async function getStaticPaths() {
+  const people = await getCollection('people');
+  return people.map((p) => ({ params: { id: p.id }, props: { person: p } }));
+}
+
+const { person } = Astro.props;
+const d = person.data;
+const { Content } = await render(person);
+
+const house = d.house ? await getEntry('houses', d.house.id) : null;
+const offices = await Promise.all(d.offices.map((o) => getEntry('offices', o.id)));
+const related = (await allArticles()).filter((a) => a.data.people.some((p) => p.id === person.id));
+const accent = d.periods[0] ? `var(${periodById(d.periods[0]).colorVar})` : undefined;
+
+const life = d.lifeLabel ?? `${d.birth ?? '生年未詳'}–${d.death ?? '没年未詳'}`;
+---
+
+<Base title={d.name} description={d.summary} eraColor={accent}>
+  <article class="inner-narrow ent" data-pagefind-body data-pagefind-filter="種別:人物">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/people/">人物と家</a><span class="sep">/</span>
+      <span aria-current="page">{d.name}</span>
+    </nav>
+
+    <header class="ent-head">
+      <h1>{d.name}<span class="rd">{d.reading}</span></h1>
+      <p class="ent-meta">
+        <span class="num">{life}</span>
+        {d.reign && <span class="num">藩主 {d.reign.from}–{d.reign.to}</span>}
+        <ConfidenceBadge level={d.confidence} />
+      </p>
+      {d.periods.length > 0 && (
+        <p class="ent-chips">{d.periods.map((p) => <PeriodChip id={p} />)}</p>
+      )}
+    </header>
+
+    {d.generation && (
+      <div class="ent-gen">
+        <p class="ent-gen-head">代数</p>
+        <div class="ent-gen-grid">
+          <div>
+            <span class="n">{d.generation.naoshigeFirst ?? '—'}</span>
+            <span class="l">代<br />（直茂を初代とする数え方）</span>
+          </div>
+          <div>
+            <span class="n">{d.generation.katsushigeFirst ?? '—'}</span>
+            <span class="l">代<br />（勝茂を初代とする数え方）</span>
+          </div>
+        </div>
+        <p class="ent-gen-note">
+          文献によって数え方が異なります。詳しくは <a href="/people/">人物と家</a> の説明をご覧ください。
+        </p>
+      </div>
+    )}
+
+    <p class="ent-summary">{d.summary}</p>
+
+    {(house || offices.length > 0) && (
+      <dl class="ent-facts">
+        {house && (
+          <div><dt>家</dt><dd><a href={`/houses/${house.id}/`}>{house.data.name}</a></dd></div>
+        )}
+        {offices.length > 0 && (
+          <div>
+            <dt>役職</dt>
+            <dd>{offices.filter(Boolean).map((o) => <a href={`/offices/${o!.id}/`}>{o!.data.name}</a>)}</dd>
+          </div>
+        )}
+      </dl>
+    )}
+
+    <div class="prose ent-body"><Content /></div>
+
+    {related.length > 0 && (
+      <section class="ent-related">
+        <p class="en-label">この人物に関わる記事</p>
+        <div class="ent-related-grid">
+          {related.map((a, i) => <ArticleCard article={a} cue={i} />)}
+        </div>
+      </section>
+    )}
+
+    <SourceRefs refs={d.sourceRefs} />
+  </article>
+</Base>
+
+<style>
+  .ent { padding-block: clamp(28px, 5vw, 56px) clamp(48px, 7vw, 88px); }
+  .ent-head { margin-top: 10px; }
+  .ent-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; line-height: 1.3; }
+  .ent-head h1 .rd {
+    display: block; font-family: var(--f-sans); font-size: var(--fs-sm);
+    font-weight: 400; color: var(--ink-4); margin-top: 6px; letter-spacing: .06em;
+  }
+  .ent-meta { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 14px; }
+  .ent-meta .num { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-3); }
+  .ent-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+  .ent-gen { margin-top: 28px; padding: 18px 20px; background: var(--paper-2); border-radius: 3px; }
+  .ent-gen-head {
+    font-family: var(--f-mono); font-size: var(--fs-xs); letter-spacing: .12em;
+    color: var(--ink-3); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .ent-gen-grid { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+  .ent-gen-grid > div { display: flex; align-items: baseline; gap: 8px; }
+  .ent-gen-grid .n { font-family: var(--f-mono); font-size: 30px; color: var(--ink); line-height: 1; }
+  .ent-gen-grid .l { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.6; }
+  .ent-gen-note { margin-top: 14px; font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .ent-summary {
+    margin-top: 28px; font-size: var(--fs-lg); line-height: 1.95;
+    font-family: var(--f-mincho); color: var(--ink);
+  }
+
+  .ent-facts { margin-top: 24px; display: grid; gap: 10px; }
+  .ent-facts > div { display: grid; grid-template-columns: 6em minmax(0, 1fr); gap: 12px; font-size: var(--fs-sm); }
+  .ent-facts dt { color: var(--ink-4); font-size: var(--fs-xs); padding-top: 2px; }
+  .ent-facts dd { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .ent-body { margin-top: 28px; }
+  .ent-related { margin-top: clamp(40px, 6vw, 64px); }
+  .ent-related-grid {
+    display: grid; gap: 14px; margin-top: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+</style>

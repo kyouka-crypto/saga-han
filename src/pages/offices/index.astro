@@ -1,0 +1,79 @@
+---
+import Base from '../../layouts/Base.astro';
+import OfficeTree from '../../components/OfficeTree.astro';
+import { getCollection } from 'astro:content';
+
+const offices = await getCollection('offices');
+const yakukata = offices.filter((o) => o.data.branch === '役方').length;
+const bankata = offices.filter((o) => o.data.branch === '番方').length;
+---
+
+<Base
+  title="役職と機関"
+  description="佐賀藩の職制。軍事の組織である番方と、行政の組織である役方。請役所を頂点とする役方の構造をデータから図示する。"
+>
+  <section class="inner of-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/people/">人物と家</a><span class="sep">/</span>
+      <span aria-current="page">役職と機関</span>
+    </nav>
+    <h1>役職と機関</h1>
+    <p class="of-lede">
+      藩の機構は大きく、<strong>軍事の組織である番方</strong>と<strong>行政の組織である役方</strong>に分かれます。
+      初期の武断的な政治のもとでは番方が重んじられ、幕藩体制の確立後、文治政治の風潮のなかで役方が重視されるようになりました。
+    </p>
+    <p class="of-src">典拠：『佐賀市史』第2巻 p.24</p>
+  </section>
+
+  <section class="inner of-sec">
+    <p class="en-label">役方 — 行政の組織（{yakukata}件）</p>
+    <p class="of-note">
+      請役所を頂点とする構造です。この図は登録された機関の上下関係から自動的に組み立てられます。
+    </p>
+    <OfficeTree offices={offices} branch="役方" />
+  </section>
+
+  <section class="inner of-sec">
+    <p class="en-label">番方 — 軍事の組織（{bankata}件）</p>
+    <OfficeTree offices={offices} branch="番方" />
+  </section>
+
+  <section class="inner of-sec of-list">
+    <p class="en-label">一覧</p>
+    <ul>
+      {offices.map((o) => (
+        <li>
+          <a href={`/offices/${o.id}/`}>
+            <span class="nm">{o.data.name}</span>
+            <span class="rd">{o.data.reading}</span>
+            <span class="br">{o.data.branch}</span>
+          </a>
+          <p class="sm">{o.data.summary}</p>
+        </li>
+      ))}
+    </ul>
+  </section>
+</Base>
+
+<style>
+  .of-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .of-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .of-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+  .of-src { margin-top: 10px; font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .of-sec { padding-block: clamp(32px, 5vw, 56px); border-top: 1px solid var(--rule); }
+  .of-note { margin-top: 10px; font-size: var(--fs-sm); color: var(--ink-3); max-width: 46em; line-height: 1.95; }
+
+  .of-list ul { list-style: none; display: grid; gap: 14px; margin-top: 14px; }
+  .of-list li { padding-bottom: 12px; border-bottom: 1px solid var(--rule-2); }
+  .of-list a { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; color: inherit; text-decoration: none; }
+  .of-list a:hover .nm { text-decoration: underline; text-underline-offset: 4px; }
+  .of-list .nm { font-family: var(--f-mincho); font-size: var(--fs-sm); }
+  .of-list .rd { font-size: 10px; color: var(--ink-4); }
+  .of-list .br {
+    font-size: 10px; color: var(--ink-4); padding: 1px 7px;
+    border: 1px solid var(--rule); border-radius: 999px;
+  }
+  .of-list .sm { margin-top: 5px; font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+</style>

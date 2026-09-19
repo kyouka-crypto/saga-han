@@ -1,0 +1,90 @@
+---
+import Base from '../../layouts/Base.astro';
+import { sourceUsage, citation } from '../../lib/archive';
+
+const usage = await sourceUsage();
+const totalUses = usage.reduce((n, u) => n + u.uses.length, 0);
+const unused = usage.filter((u) => u.uses.length === 0);
+---
+
+<Base
+  title="出典"
+  description="このアーカイブが依拠した文献の一覧と、どの記述がどのページに基づいているかの逆引き。"
+>
+  <section class="inner sr-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <span aria-current="page">出典</span>
+    </nav>
+    <h1>出典</h1>
+    <p class="sr-lede">
+      このアーカイブの記述が、どの本のどのページに基づいているかを公開しています。
+      書誌ごとのページを開くと、<strong>その本のどこを、どの記述に使ったかの逆引き</strong>が見られます。
+    </p>
+    <p class="sr-stat">
+      文献 {usage.length}件 ／ 参照 {totalUses}件
+    </p>
+    <p class="sr-note">
+      本文の OCR 全文は手元の作業用であり、このサイトには掲載していません。
+      掲載しているのは、資料を読んだうえで書き直した記述と、その典拠です。
+    </p>
+  </section>
+
+  <section class="inner sr-body">
+    <ul class="sr-list">
+      {usage.map((u) => (
+        <li class="sr-item">
+          <p class="sr-kind">{u.source.data.kind}</p>
+          <h2><a href={`/sources/${u.source.id}/`}>{citation(u.source.data)}</a></h2>
+          <p class="sr-uses">
+            {u.uses.length > 0 ? (
+              <>このアーカイブでの参照 <strong>{u.uses.length}件</strong></>
+            ) : (
+              <span class="sr-unused">まだ参照していません</span>
+            )}
+            {u.source.data.ocrPages && (
+              <span class="sr-pages"> ／ 全{u.source.data.ocrPages}ページ</span>
+            )}
+          </p>
+          {u.source.data.note && <p class="sr-memo">{u.source.data.note}</p>}
+          {u.source.data.url && (
+            <p class="sr-link">
+              <a href={u.source.data.url} rel="noopener noreferrer" target="_blank">原典（外部サイト）</a>
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
+
+    {unused.length > 0 && (
+      <p class="sr-todo">
+        うち {unused.length}件はまだ記述に使っていません。手元にある資料をすべて消化できてはいません。
+      </p>
+    )}
+  </section>
+</Base>
+
+<style>
+  .sr-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .sr-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .sr-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+  .sr-stat { margin-top: 12px; font-family: var(--f-mono); font-size: var(--fs-sm); color: var(--ink-3); }
+  .sr-note { margin-top: 12px; max-width: 46em; font-size: var(--fs-sm); color: var(--ink-4); line-height: 1.95; }
+
+  .sr-body { padding-block: clamp(32px, 5vw, 56px) clamp(48px, 7vw, 88px); }
+  .sr-list { list-style: none; display: grid; gap: 4px; }
+  .sr-item { padding: 20px 0; border-bottom: 1px solid var(--rule-2); }
+  .sr-kind {
+    font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em;
+    color: var(--ink-4); text-transform: uppercase;
+  }
+  .sr-item h2 { margin-top: 6px; font-family: var(--f-mincho); font-size: var(--fs-lg); font-weight: 700; line-height: 1.6; }
+  .sr-item h2 a { color: inherit; text-decoration: none; }
+  .sr-item h2 a:hover { text-decoration: underline; text-underline-offset: 5px; }
+  .sr-uses { margin-top: 8px; font-size: var(--fs-sm); color: var(--ink-3); }
+  .sr-unused { color: var(--ink-4); }
+  .sr-pages { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4); }
+  .sr-memo { margin-top: 8px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95; max-width: 48em; }
+  .sr-link { margin-top: 8px; font-size: var(--fs-xs); }
+  .sr-todo { margin-top: 24px; font-size: var(--fs-sm); color: var(--ink-4); }
+</style>

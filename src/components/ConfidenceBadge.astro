@@ -1,0 +1,19 @@
+---
+import { CONFIDENCE, type ConfidenceKey } from '../data/confidence';
+
+interface Props {
+  level: ConfidenceKey;
+  /** 説明文も並べる */
+  withDesc?: boolean;
+}
+
+const { level, withDesc = false } = Astro.props;
+const c = CONFIDENCE[level];
+---
+
+<span class:list={['badge', c.cls]} title={c.desc}>{c.label}</span>
+{withDesc && <span class="conf-desc">{c.desc}</span>}
+
+<style>
+  .conf-desc { font-size: var(--fs-xs); color: var(--ink-4); margin-left: 8px; }
+</style>

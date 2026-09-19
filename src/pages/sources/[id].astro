@@ -1,0 +1,137 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+import { sourceUsage, citation } from '../../lib/archive';
+
+export async function getStaticPaths() {
+  const sources = await getCollection('sources');
+  return sources.map((s) => ({ params: { id: s.id } }));
+}
+
+const all = await sourceUsage();
+const u = all.find((x) => x.source.id === Astro.params.id)!;
+const s = u.source.data;
+
+const KIND_LABEL: Record<string, string> = {
+  article: '記事',
+  person: '人物',
+  house: '家',
+  office: '役職・機関',
+  event: '年表',
+  term: '用語',
+  place: '地名',
+};
+
+/** ページ番号順に並べる。ページ不明のものは末尾へ。 */
+const pageNum = (p?: string) => (p ? parseInt(p, 10) || 99999 : 99999);
+const uses = [...u.uses].sort((a, b) => pageNum(a.pages) - pageNum(b.pages));
+---
+
+<Base
+  title={`${s.title}${s.volume ? ` ${s.volume}` : ''}`}
+  description={`この文献のどのページを、このアーカイブのどの記述に使ったかの逆引き。`}
+>
+  <article class="inner-narrow sd">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/sources/">出典</a><span class="sep">/</span>
+      <span aria-current="page">{s.title}</span>
+    </nav>
+
+    <header class="sd-head">
+      <p class="sd-kind">{s.kind}</p>
+      <h1>{s.title}</h1>
+      {s.volume && <p class="sd-vol">{s.volume}</p>}
+      <p class="sd-cite">{citation(s)}</p>
+      {s.url && (
+        <p class="sd-link">
+          <a href={s.url} rel="noopener noreferrer" target="_blank">
+            国立国会図書館デジタルコレクション等で原典を見る
+          </a>
+          {s.accessed && <span class="sd-acc">（参照 {s.accessed}）</span>}
+        </p>
+      )}
+      {s.note && <p class="sd-note">{s.note}</p>}
+    </header>
+
+    <section class="sd-uses">
+      <h2>このアーカイブでの使用箇所</h2>
+      {uses.length > 0 ? (
+        <>
+          <p class="sd-count">
+            {uses.length}件
+            {s.ocrPages && <span class="sd-of"> ／ 本書は全{s.ocrPages}ページ</span>}
+          </p>
+          <ol class="sd-list">
+            {uses.map((x) => (
+              <li>
+                <span class="pg num">{x.pages ? `p.${x.pages}` : 'ページ未記録'}</span>
+                <span class="body">
+                  <a href={x.href}>{x.title}</a>
+                  <span class="kd">{KIND_LABEL[x.kind]}</span>
+                  {x.note && <span class="nt">{x.note}</span>}
+                </span>
+              </li>
+            ))}
+          </ol>
+        </>
+      ) : (
+        <p class="sd-empty">
+          この文献はまだ記述に使っていません。手元にはありますが、読み込みはこれからです。
+        </p>
+      )}
+    </section>
+
+    <p class="sd-disclaimer">
+      本書の本文はこのサイトに掲載していません。ここに示しているのは、
+      どのページを典拠として参照したかという情報だけです。
+    </p>
+  </article>
+</Base>
+
+<style>
+  .sd { padding-block: clamp(28px, 5vw, 56px) clamp(48px, 7vw, 88px); }
+  .sd-head { margin-top: 10px; padding-bottom: 24px; border-bottom: 1px solid var(--rule); }
+  .sd-kind {
+    font-family: var(--f-mono); font-size: 10px; letter-spacing: .1em;
+    color: var(--ink-4); text-transform: uppercase;
+  }
+  .sd-head h1 { margin-top: 8px; font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; line-height: 1.35; }
+  .sd-vol { margin-top: 6px; font-size: var(--fs-lg); color: var(--ink-2); font-family: var(--f-mincho); }
+  .sd-cite { margin-top: 16px; font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.9; }
+  .sd-link { margin-top: 10px; font-size: var(--fs-sm); }
+  .sd-acc { color: var(--ink-4); font-size: var(--fs-xs); margin-left: 6px; }
+  .sd-note { margin-top: 14px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95; }
+
+  .sd-uses { margin-top: 32px; }
+  .sd-uses h2 {
+    font-family: var(--f-mono); font-size: var(--fs-xs); font-weight: 500;
+    letter-spacing: .14em; color: var(--ink-3); text-transform: uppercase;
+  }
+  .sd-count { margin-top: 10px; font-family: var(--f-mono); font-size: var(--fs-sm); color: var(--ink-3); }
+  .sd-of { color: var(--ink-4); }
+
+  .sd-list { list-style: none; margin-top: 16px; display: grid; gap: 2px; }
+  .sd-list li {
+    display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 14px;
+    padding: 11px 10px; border-bottom: 1px solid var(--rule-2);
+  }
+  .sd-list .pg { font-family: var(--f-mono); font-size: var(--fs-sm); color: var(--ink); }
+  .sd-list .body { display: grid; gap: 4px; }
+  .sd-list .body a { font-size: var(--fs-sm); color: var(--ink); }
+  .sd-list .kd { font-size: 10px; color: var(--ink-4); }
+  .sd-list .nt { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+
+  .sd-empty {
+    margin-top: 16px; padding: 24px; border: 1px dashed var(--rule);
+    border-radius: 4px; background: var(--paper-2);
+    font-size: var(--fs-sm); color: var(--ink-3);
+  }
+  .sd-disclaimer {
+    margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule-2);
+    font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.9;
+  }
+  @media (max-width: 560px) {
+    .sd-list li { grid-template-columns: 1fr; gap: 4px; }
+  }
+</style>

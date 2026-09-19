@@ -1,14 +1,21 @@
 ---
 title: "佐賀藩請役所 — 藩政を総括した最高行政機関"
 subtitleEn: "The Ukeyakusho: Saga Domain's Central Administration"
-era: edo
+periods:
+  - seiritsu
+  - kakuritsu
+  - mosaku
+  - naomasa
+theme: seido
+kind: B
 year: "江戸前期〜"
 sortYear: 1635
 summary: "佐賀藩の藩政を総括する最高行政機関。請役家老（御当役）が実務を主宰し、一般行政・渉外・財政・裁判などを所管した。請役家老を竜造寺系四家に担わせる変則的な執政構造は、鍋島勝茂の巧妙な統治策と評される。"
 tags: ["行政機構", "請役家老", "藩財政", "多久安順"]
 confidence: ai
-sources:
-  - "『佐賀市史』第2巻 近世-1（研究ノート経由）"
+sourceRefs:
+  - src: sagashishi-2
+    note: "第2巻 近世-1。研究ノート経由のため未照合。"
 created: "2026-05-09"
 updated: "2026-07-12"
 related: ["sanbu-agechi", "kumi-to-sonae"]

@@ -1,26 +1,51 @@
 ---
-import type { CollectionEntry } from 'astro:content';
-import { eraById, CONFIDENCE } from '../data/eras';
+import { periodById } from '../data/periods';
+import { themeById } from '../data/themes';
+import { CONFIDENCE } from '../data/confidence';
+import type { Article } from '../lib/archive';
 
 interface Props {
-  article: CollectionEntry<'articles'>;
+  article: Article;
+  /** 主題のラベルを出す（時代ページでは有用、主題ページでは冗長） */
+  showTheme?: boolean;
+  /** 時代のラベルを出す */
+  showPeriod?: boolean;
+  /** 出現アニメの順番 */
+  cue?: number;
 }
-const { article } = Astro.props;
-const { title, era, year, summary, sources, confidence } = article.data;
-const eraDef = eraById(era);
-const conf = CONFIDENCE[confidence];
+
+const { article, showTheme = true, showPeriod = true, cue = 0 } = Astro.props;
+const d = article.data;
+const p = periodById(d.periods[0]);
+const t = themeById(d.theme);
+const conf = CONFIDENCE[d.confidence];
 ---
 
-<a class="a-card reveal" href={`/articles/${article.id}/`} style={`--ec:var(${eraDef.color})`}>
+<a
+  class="a-card reveal"
+  href={`/articles/${article.id}/`}
+  style={`--ec: var(${p.colorVar}); --tc: var(${t.colorVar}); --cue: ${cue}`}
+>
   <span class="a-card-meta">
     <i></i>
-    {eraDef.name}
-    {year && <span>· {year}</span>}
+    {showPeriod && <span>{p.name}</span>}
+    {d.year && <span class="num">{d.year}</span>}
+    {showTheme && <span class="a-card-theme">{t.name}</span>}
+    {d.draft && <span class="a-card-draft">執筆中</span>}
   </span>
-  <h3>{title}</h3>
-  <p>{summary}</p>
+  <h3>{d.title}</h3>
+  <p>{d.summary}</p>
   <span class="a-card-foot">
     <span class={`badge ${conf.cls}`}>{conf.label}</span>
-    <span>出典 {sources.length}件</span>
+    <span>出典 {d.sourceRefs.length}件</span>
   </span>
 </a>
+
+<style>
+  .a-card-theme { display: inline-flex; align-items: center; gap: 5px; color: var(--ink-3); }
+  .a-card-theme::before { content: ''; width: 6px; height: 6px; border-radius: 2px; background: var(--tc); }
+  .a-card-draft {
+    padding: 1px 6px; border: 1px solid var(--rule); border-radius: 2px;
+    font-size: 10px; color: var(--ink-4);
+  }
+</style>

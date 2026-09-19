@@ -1,0 +1,81 @@
+---
+/**
+ * 出典欄 — sourceRefs から書誌を自動で組み立てる。
+ * 書式を一箇所（lib/archive.ts の citation）に閉じ込め、表記揺れを防ぐ。
+ */
+import { getEntry } from 'astro:content';
+import { citation } from '../lib/archive';
+
+interface Ref {
+  src: { id: string };
+  pages?: string;
+  note?: string;
+}
+
+interface Props {
+  refs: Ref[];
+  title?: string;
+  /** 見出しレベル */
+  compact?: boolean;
+}
+
+const { refs, title = '出典', compact = false } = Astro.props;
+
+const resolved = await Promise.all(
+  refs.map(async (r, i) => {
+    const s = await getEntry('sources', r.src.id);
+    return { i: i + 1, entry: s, pages: r.pages, note: r.note };
+  })
+);
+---
+
+{resolved.length > 0 && (
+  <section class:list={['srcs', compact && 'is-compact']} aria-labelledby="srcs-h">
+    <h2 id="srcs-h" class="srcs-h">{title}</h2>
+    <ol class="srcs-list">
+      {resolved.map((r) => (
+        <li id={`src-${r.i}`}>
+          <span class="srcs-n">{r.i}</span>
+          <div class="srcs-body">
+            {r.entry ? (
+              <p class="srcs-cite">
+                {citation(r.entry.data, r.pages)}
+                {r.entry.data.url && (
+                  <>
+                    {' '}
+                    <a href={r.entry.data.url} rel="noopener noreferrer" target="_blank">
+                      原典を見る
+                    </a>
+                  </>
+                )}
+              </p>
+            ) : (
+              <p class="srcs-cite srcs-missing">出典 <code>{r.src.id}</code> が sources.json にありません</p>
+            )}
+            {r.note && <p class="srcs-note">{r.note}</p>}
+          </div>
+        </li>
+      ))}
+    </ol>
+  </section>
+)}
+
+<style>
+  .srcs { margin-top: clamp(40px, 6vw, 72px); padding-top: 24px; border-top: 1px solid var(--rule); }
+  .srcs-h {
+    font-family: var(--f-mono); font-size: var(--fs-xs); font-weight: 500;
+    letter-spacing: .14em; color: var(--ink-3); text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .srcs-list { list-style: none; display: grid; gap: 12px; }
+  .srcs-list li { display: grid; grid-template-columns: 2em minmax(0, 1fr); gap: 4px; }
+  .srcs-n {
+    font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4);
+    line-height: 1.9;
+  }
+  .srcs-cite { font-size: var(--fs-sm); line-height: 1.9; color: var(--ink-2); }
+  .srcs-cite a { color: var(--ink-3); text-underline-offset: 3px; }
+  .srcs-note { font-size: var(--fs-xs); line-height: 1.85; color: var(--ink-4); margin-top: 2px; }
+  .srcs-missing { color: var(--conf-note-fg); }
+  .is-compact { margin-top: 24px; padding-top: 16px; }
+</style>

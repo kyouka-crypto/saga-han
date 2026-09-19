@@ -1,443 +1,258 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import ArticleCard from '../components/ArticleCard.astro';
-import { ERAS, PARTS, eraById } from '../data/eras';
+import Matrix from '../components/Matrix.astro';
+import StoryBrowser from '../components/StoryBrowser.astro';
+import { allArticles, timeline, progress, PERIODS, THEMES } from '../lib/archive';
 
-const articles = (await getCollection('articles')).sort((a, b) => a.data.sortYear - b.data.sortYear);
-const articleCount = articles.length;
-const sourceCount = new Set(articles.flatMap((a) => a.data.sources)).size;
-const eraArticleCount = (eraId: string) => articles.filter((a) => a.data.era === eraId).length;
+const articles = await allArticles();
+const events = await timeline();
+const st = await progress();
 
-// 注目記事ショーケース（新しい順に最大5本）
-const featured = [...articles]
-  .sort((a, b) => (a.data.updated < b.data.updated ? 1 : -1))
-  .slice(0, 5);
+const hanStart = 1607;
+const hanEnd = 1871;
+const spanStart = PERIODS[0].startYear;
+const spanEnd = PERIODS[PERIODS.length - 1].endYear;
+const total = spanEnd - spanStart;
+const pos = (y: number) => ((y - spanStart) / total) * 100;
 
-// 横年表イベント：記事があるものはリンク、無いものは遠景（dim）
-type TlEvent = { left: number; year: string; title: string; era: string; href?: string; up: boolean; lh: number; dim?: boolean };
-const slugByTitle = new Map(articles.map((a) => [a.data.title, a.id]));
-const ev = (left: number, year: string, title: string, era: string, opts: Partial<TlEvent> = {}): TlEvent => ({
-  left, year, title, era,
-  up: opts.up ?? true,
-  lh: opts.lh ?? 44,
-  dim: opts.dim,
-  href: opts.href,
-});
-const link = (slug: string) => `/articles/${slug}/`;
-const TL_EVENTS: TlEvent[] = [
-  ev(11,  'BC 6000', '東名遺跡',            'jomon',     { dim: true, up: true,  lh: 44 }),
-  ev(34,  'BC 100',  '吉野ヶ里遺跡',        'yayoi',     { dim: true, up: false, lh: 36 }),
-  ev(44,  '702',     '肥前国成立',          'ancient',   { dim: true, up: true,  lh: 48 }),
-  ev(56,  '1196',    '少弐氏下向',          'shoni',     { dim: true, up: false, lh: 40 }),
-  ev(63.5,'1570',    '今山合戦',            'ryuzoji',   { up: true,  lh: 48, href: slugByTitle.has('今山合戦（1570年）') ? link(slugByTitle.get('今山合戦（1570年）')!) : undefined }),
-  ev(67,  '1584',    '沖田畷の戦い',        'ryuzoji',   { dim: true, up: false, lh: 36 }),
-  ev(73.5,'1607',    '佐賀藩成立',          'edo',       { up: true,  lh: 56, href: '/era/edo/' }),
-  ev(76.5,'1610–21', '三部上地',            'edo',       { up: false, lh: 40, href: slugByTitle.has('三部上地の財政構造と実施過程') ? link(slugByTitle.get('三部上地の財政構造と実施過程')!) : undefined }),
-  ev(79.5,'1621',    '与と備の軍制改革',    'edo',       { up: true,  lh: 40, href: slugByTitle.has('与と備の二重軍制（佐賀藩）') ? link(slugByTitle.get('与と備の二重軍制（佐賀藩）')!) : undefined }),
-  ev(82.5,'江戸前期','請役所の成立',        'edo',       { up: false, lh: 48, href: slugByTitle.has('佐賀藩請役所') ? link(slugByTitle.get('佐賀藩請役所')!) : undefined }),
-  ev(87,  '1850',    '反射炉完成',          'bakumatsu', { dim: true, up: true,  lh: 44 }),
-  ev(89.5,'1858',    '三重津海軍所',        'bakumatsu', { dim: true, up: false, lh: 36 }),
-  ev(93,  '1874',    '佐賀の乱',            'bakumatsu', { up: true, lh: 52, href: slugByTitle.has('佐賀の乱（1874年）') ? link(slugByTitle.get('佐賀の乱（1874年）')!) : undefined }),
-];
+/** ヒーロー帯に出す節目。重要度3のものだけを拾う */
+const marks = events.filter((e) => e.data.weight === 3).slice(0, 12);
 ---
 
-<Base>
-  <!-- ============ HERO ============ -->
-  <section class="hero" aria-label="メインビジュアル">
-    <div class="hero-mosaic" aria-hidden="true">
-      <div class="cell c1"><span class="cell-label"><strong>吉野ヶ里遺跡</strong>弥生の環濠集落 · BC100</span></div>
-      <div class="cell c2"><span class="cell-label"><strong>有田焼</strong>1616〜</span></div>
-      <div class="cell c3"><span class="cell-label"><strong>築地反射炉</strong>1850</span></div>
-      <div class="cell c4"><span class="cell-label"><strong>佐賀城</strong>1607〜</span></div>
-    </div>
-    <div class="hero-overlay" aria-hidden="true"></div>
-
-    <p class="hero-vertical v-text" aria-hidden="true">佐賀 — ある土地の伝記</p>
-
-    <div class="hero-content">
-      <p class="hero-eyebrow">A COMPLETE BIOGRAPHY OF A LAND</p>
+<Base
+  title={undefined}
+  description="佐賀藩の制度・家臣団・財政・軍事・産業・学問を、出典を示しながら記述するアーカイブ。まだ器を作っている段階です。"
+>
+  <!-- ヒーロー -->
+  <section class="hero">
+    <div class="inner">
+      <p class="hero-en en-label">SAGA DOMAIN ARCHIVE</p>
       <h1 class="hero-title">
-        大地の形成から、<br />現代に至るまで。
+        佐賀藩を、<br />構造から読む。
       </h1>
-      <p class="hero-sub">
-        地質・縄文から江戸260年、幕末・明治まで。
-        佐賀という土地の通史を、出典を明示しながら時代を横断して読む個人研究アーカイブ。
+      <p class="hero-lede">
+        鍋島氏による藩政 264年。三家から足軽まで11段の家格、借銀が収入の過半を占めた財政、
+        福岡藩と一年交代で担った長崎警備、海を田に変え続けた干拓。
+        <strong>800ページの研究書を何冊も読まなければ見えてこない構造</strong>を、
+        出典を示しながら、図とともに解きほぐしていくアーカイブです。
       </p>
-      <div class="hero-stats" role="list">
-        <div class="stat" role="listitem"><span class="stat-num">10</span><span class="stat-label">時代レイヤー</span></div>
-        <div class="stat" role="listitem"><span class="stat-num">{articleCount}</span><span class="stat-label">収録記事</span></div>
-        <div class="stat" role="listitem"><span class="stat-num">{sourceCount}</span><span class="stat-label">参照出典</span></div>
+      <p class="hero-actions">
+        <a class="btn btn-era" href="/matrix/">48マスで俯瞰する</a>
+        <a class="btn" href="/timeline/">年表を見る</a>
+      </p>
+
+      <!-- 現状を隠さない -->
+      <p class="hero-status">
+        いま記事は <span class="num">{st.articles}</span>本（目標 {st.target}本）。
+        このサイトは<strong>器を先に作っている段階</strong>で、中身はこれからです。
+        空白は空白のまま見えるようにしています。
+      </p>
+    </div>
+  </section>
+
+  <!-- 藩の一生を一本の線で -->
+  <section class="inner spine-sec">
+    <p class="en-label">{spanStart}–{spanEnd}</p>
+    <div class="spine">
+      <div class="spine-bar">
+        {PERIODS.map((p) => (
+          <a
+            class:list={['spine-seg', `stage-${p.stage}`]}
+            href={`/period/${p.id}/`}
+            style={`--ec: var(${p.colorVar}); --w: ${(p.endYear - p.startYear) / total}`}
+            title={`${p.name}（${p.span}）`}
+          >
+            <span class="lb">{p.name}</span>
+            <span class="sp num">{p.span}</span>
+          </a>
+        ))}
       </div>
-      <div class="hero-ctas">
-        <a href="#spine" class="hero-cta">時代から読む
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M8 3v10M4 9l4 4 4-4"/></svg>
+
+      <!-- 藩が存在した区間 -->
+      <div class="spine-han" style={`left:${pos(hanStart)}%; width:${pos(hanEnd) - pos(hanStart)}%`}>
+        <span>佐賀藩 {hanStart}–{hanEnd}</span>
+      </div>
+
+      <!-- 節目 -->
+      <div class="spine-marks">
+        {marks.map((e) => (
+          <a
+            class="spine-mark"
+            href={e.article ? `/articles/${e.article.id}/` : `/timeline/#e-${e.data.id}`}
+            style={`left:${pos(e.data.year)}%`}
+          >
+            <i></i>
+            <span class="y num">{e.data.year}</span>
+            <span class="t">{e.data.title}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- 画像駆動の探索 -->
+  <section class="inner">
+    <StoryBrowser
+      articles={articles}
+      en="ARTICLES"
+      title="記事を見わたす"
+      lede="気になるものを選ぶと、右の一覧から中身が入れ替わります。写真のない記事には、時代の色で作った仮の図を当てています。"
+    />
+  </section>
+
+  <!-- 俯瞰マトリクス -->
+  <section class="inner">
+    <Matrix articles={articles} />
+  </section>
+
+  <!-- 入口 -->
+  <section class="inner gates">
+    <p class="en-label">ほかの入口</p>
+    <div class="gates-grid">
+      <a class="gate" href="/people/">
+        <span class="n">人物と家</span>
+        <span class="d">藩主{st.people >= 7 ? '' : 'ほか'}の索引と、三家から足軽までの家格序列。代数の二つの数え方も併記しています。</span>
+        <span class="c num">{st.people} 人 / {st.houses} 家</span>
+      </a>
+      <a class="gate" href="/offices/">
+        <span class="n">役職と機関</span>
+        <span class="d">請役所を頂点とする役方と、着到15組の番方。職制図はデータから自動で組み立てています。</span>
+        <span class="c num">{st.offices} 件</span>
+      </a>
+      <a class="gate" href="/sources/">
+        <span class="n">出典</span>
+        <span class="d">どの本のどのページに基づく記述かを公開しています。本ごとの逆引きもできます。</span>
+        <span class="c num">{st.sources} 文献</span>
+      </a>
+      <a class="gate" href="/glossary/">
+        <span class="n">用語集</span>
+        <span class="d">請役所、手明鑓、着到、懸硯方——制度と身分の言葉を短い定義で。</span>
+        <span class="c num">{st.terms} 語</span>
+      </a>
+      <a class="gate" href="/places/">
+        <span class="n">地名</span>
+        <span class="d">城・陣屋・遺構・窯。座標の分からないものは、推定で埋めずに空けています。</span>
+        <span class="c num">{st.places} 件</span>
+      </a>
+      <a class="gate" href="/about/">
+        <span class="n">このサイトについて</span>
+        <span class="d">編集の方針と、信頼度の三段階について。</span>
+        <span class="c">方針</span>
+      </a>
+    </div>
+  </section>
+
+  <!-- 主題 -->
+  <section class="inner themes-sec">
+    <p class="en-label">主題から入る</p>
+    <div class="themes-grid">
+      {THEMES.map((t, i) => (
+        <a class="theme-card reveal" href={`/theme/${t.id}/`} style={`--tc: var(${t.colorVar}); --cue: ${i}`}>
+          <span class="bar"></span>
+          <span class="n">{t.name}</span>
+          <span class="l">{t.lede}</span>
+          <span class="s">{t.scope}</span>
         </a>
-        <a href="/timeline/" class="hero-cta ghost">年表を見る</a>
-      </div>
-    </div>
-    <div class="hero-scroll" aria-hidden="true"><i></i><span>SCROLL</span></div>
-  </section>
-
-  <!-- ============ 時代スパイン ============ -->
-  <section class="sec-spine" id="spine">
-    <div class="inner">
-      <div class="section-head reveal">
-        <span class="en-label">LAYER 0 — 9 / STRATA OF SAGA</span>
-        <h2>十の時代レイヤー</h2>
-        <p class="lede">佐賀の歴史を、大地の形成（Layer 0）から現代（Layer 9)まで10の地層として積み上げる。帯の幅はアーカイブのコンテンツ配分。</p>
-      </div>
-      <div class="spine reveal">
-        {ERAS.map((era) => (
-          <a href={`/era/${era.id}/`} style={`--ec:var(${era.color});--w:${era.weight}`}>
-            {eraArticleCount(era.id) > 0 && <span class="sp-count">{eraArticleCount(era.id)}</span>}
-            <span class="sp-name">{era.name}</span>
-            <span class="sp-period">{era.period}</span>
-          </a>
-        ))}
-      </div>
-      <div class="parts-grid reveal">
-        {PARTS.map((p) => (
-          <a class="part" href={`/era/${p.eras[p.eras.length - 1]}/`} style={`--pc:var(${eraById(p.eras[p.eras.length - 1]).color})`}>
-            <span class="en-label">{p.num} · {p.share}%</span>
-            <span class="part-title">{p.title}</span>
-            <span class="part-sub">{p.hint}</span>
-            <i class="part-bar" style={`--share:${p.share}%`}></i>
-          </a>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 通史年表（横ドラッグ） ============ -->
-  <section class="sec-timeline">
-    <div class="inner">
-      <div class="section-head reveal">
-        <span class="en-label">HISTORICAL TIMELINE</span>
-        <h2>佐賀の通史年表</h2>
-        <p class="lede">左へスクロールするほど過去へ。濃い項目は記事あり、淡い項目は今後の拡充予定。</p>
-      </div>
-    </div>
-    <div class="tl-scroll reveal" id="tlScroll">
-      <div class="tl-stage">
-        <span class="tl-edge left">BC 10,000 ←</span>
-        <span class="tl-edge right">→ 現在</span>
-        <div class="tl-rail">
-          {ERAS.map((era) => <i style={`--c:var(${era.color});--w:${era.weight}`}></i>)}
-        </div>
-        {TL_EVENTS.map((e) => {
-          const Tag = e.href ? 'a' : 'div';
-          return (
-            <Tag
-              class:list={['evt', e.up ? 'up' : 'dn', { dim: e.dim }]}
-              href={e.href}
-              style={`left:${e.left}%;--c:var(${eraById(e.era).color});--lh:${e.lh}px`}
-            >
-              <i class="evt-dot"></i>
-              <i class="evt-line"></i>
-              <span class="evt-card">
-                <span class="evt-year">{e.year}</span>
-                <span class="evt-title">{e.title}</span>
-                <span class="evt-era">{eraById(e.era).name}</span>
-              </span>
-            </Tag>
-          );
-        })}
-      </div>
-    </div>
-    <div class="inner">
-      <a class="btn btn-era reveal" href="/timeline/" style="--era:var(--ink)">全記事の年表へ →</a>
-    </div>
-  </section>
-
-  <!-- ============ 収録記事 ============ -->
-  <section class="sec-articles">
-    <div class="inner">
-      <div class="section-head reveal">
-        <span class="en-label">ARTICLES / 収録記事</span>
-        <h2>記事を読む</h2>
-        <p class="lede">1記事1テーマ。すべての記事に出典と信頼度表示を付す。</p>
-      </div>
-      <div class="articles-grid">
-        {featured.map((a) => <ArticleCard article={a} />)}
-      </div>
-    </div>
-  </section>
-
-  <!-- ============ 設計原則 ============ -->
-  <section class="sec-principles">
-    <div class="inner">
-      <div class="principles reveal">
-        <div class="pr">
-          <span class="pr-num">壱</span>
-          <h3>出典なき記述は載せない</h3>
-          <p>すべての記事に出典・参考文献を明示する。記述の来歴を辿れることが、このアーカイブの唯一の約束。</p>
-        </div>
-        <div class="pr">
-          <span class="pr-num">弐</span>
-          <h3>未詳は未詳のまま置く</h3>
-          <p>「諸説あり」「未詳」を隠さない。無理な断定より、研究史の現在地を正直に示すことを優先する。</p>
-        </div>
-        <div class="pr">
-          <span class="pr-num">参</span>
-          <h3>構造を記述し、裁かない</h3>
-          <p>善政か悪政かの現代的評価ではなく、制度と構造がどう動いたかを記述する。</p>
-        </div>
-      </div>
-      <p class="principles-link reveal"><a href="/about/">信頼度表示の凡例と編集方針 →</a></p>
+      ))}
     </div>
   </section>
 </Base>
 
 <style>
-  /* ---------- HERO ---------- */
-  .hero {
-    position: relative;
-    height: 92svh; min-height: 620px;
-    overflow: hidden;
-    background: #0d0b08;
-  }
-  .hero-mosaic {
-    position: absolute; inset: 0;
-    display: grid;
-    grid-template-columns: 1.6fr 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 2px;
-  }
-  .cell { position: relative; overflow: hidden; display: flex; align-items: flex-end; justify-content: flex-start; padding: 18px 20px; }
-  .cell::before {
-    content: ''; position: absolute; inset: 0;
-    background:
-      repeating-linear-gradient(0deg, transparent 0 38px, rgba(255,255,255,.025) 38px 40px),
-      repeating-linear-gradient(90deg, transparent 0 38px, rgba(255,255,255,.025) 38px 40px);
-  }
-  .c1 { grid-column: 1 / 2; grid-row: 1 / 3; background: linear-gradient(160deg, #232d12 0%, #0c1206 60%, #06080a 100%); }
-  .c2 { background: linear-gradient(160deg, #2c1d08 0%, #180b04 100%); }
-  .c3 { background: linear-gradient(160deg, #38160a 0%, #170705 100%); }
-  .c4 { grid-column: 2 / 4; background: linear-gradient(160deg, #131f38 0%, #080d1a 100%); }
-  .cell-label {
-    position: relative;
-    font-family: var(--f-mincho); font-size: 10.5px; line-height: 1.9;
-    letter-spacing: .16em; color: rgba(255,255,255,.34); text-align: left;
-  }
-  .cell-label strong { display: block; font-size: 12.5px; color: rgba(255,255,255,.55); }
-  .hero-overlay {
-    position: absolute; inset: 0; pointer-events: none;
-    background:
-      linear-gradient(to right, rgba(10,8,6,.88) 0%, rgba(10,8,6,.42) 55%, rgba(10,8,6,.1) 100%),
-      linear-gradient(to top, rgba(0,0,0,.5) 0%, transparent 40%);
-  }
-  .hero-vertical {
-    position: absolute; top: 50%; right: clamp(14px, 3.5vw, 48px);
-    transform: translateY(-50%);
-    font-size: clamp(15px, 1.8vw, 21px);
-    font-weight: 600;
-    color: rgba(242, 236, 221, .5);
-    border-right: 1px solid rgba(242, 236, 221, .22);
-    padding-right: 14px;
-    height: min(58vh, 460px);
-  }
-  .hero-content {
-    position: absolute; top: 50%; left: clamp(24px, 7vw, 110px);
-    transform: translateY(-50%);
-    max-width: 620px;
-  }
-  .hero-eyebrow {
-    font-family: var(--f-mono); font-size: 10px; letter-spacing: .34em;
-    color: rgba(242,236,221,.5);
-    display: flex; align-items: center; gap: 14px; margin-bottom: 22px;
-  }
-  .hero-eyebrow::before { content: ''; width: 36px; height: 1px; background: rgba(242,236,221,.4); }
+  /* ── ヒーロー ── */
+  .hero { padding-block: clamp(48px, 9vw, 120px) clamp(32px, 5vw, 56px); }
   .hero-title {
-    font-family: var(--f-mincho);
-    font-size: clamp(38px, 5.2vw, 72px);
-    font-weight: 800; line-height: 1.28; letter-spacing: .02em;
-    font-feature-settings: "palt";
-    color: #f7f2e5;
-    text-shadow: 0 2px 48px rgba(0,0,0,.6);
-    margin-bottom: 22px;
+    font-family: var(--f-mincho); font-size: var(--fs-hero); font-weight: 800;
+    line-height: 1.18; letter-spacing: .01em; margin-top: 14px;
   }
-  .hero-sub {
-    font-size: 14.5px; line-height: 2.1; color: rgba(242,236,221,.72);
-    max-width: 30em; text-wrap: pretty; margin-bottom: 30px;
-  }
-  .hero-stats { display: flex; border: 1px solid rgba(242,236,221,.22); width: fit-content; margin-bottom: 30px; }
-  .stat { padding: 12px 26px; text-align: center; border-right: 1px solid rgba(242,236,221,.22); }
-  .stat:last-child { border-right: none; }
-  .stat-num { display: block; font-family: var(--f-mincho); font-size: 24px; font-weight: 700; color: #f7f2e5; line-height: 1.2; }
-  .stat-label { font-size: 10.5px; letter-spacing: .14em; color: rgba(242,236,221,.55); }
-  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
-  .hero-cta {
-    display: inline-flex; align-items: center; gap: 10px;
-    padding: 13px 30px;
-    background: rgba(242,236,221,.12); border: 1px solid rgba(242,236,221,.4);
-    color: #f7f2e5; font-size: 13px; font-weight: 500; letter-spacing: .1em;
-    text-decoration: none;
-    transition: background .25s, border-color .25s;
-  }
-  .hero-cta:hover { background: rgba(242,236,221,.24); border-color: rgba(242,236,221,.8); }
-  .hero-cta.ghost { background: transparent; border-color: rgba(242,236,221,.22); color: rgba(242,236,221,.75); }
-  .hero-cta.ghost:hover { border-color: rgba(242,236,221,.6); color: #fff; }
-  .hero-scroll {
-    position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%);
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    font-family: var(--f-mono); font-size: 9px; letter-spacing: .3em;
-    color: rgba(242,236,221,.45);
-  }
-  .hero-scroll i {
-    width: 1px; height: 42px;
-    background: linear-gradient(to bottom, rgba(242,236,221,.55), transparent);
-    animation: scrollpulse 2.2s ease-in-out infinite;
-  }
-  @keyframes scrollpulse { 0%,100% { opacity: .4; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(.68); } }
-  @media (max-width: 720px) {
-    .hero { height: auto; min-height: 0; padding: 90px 0 110px; }
-    .hero-content { position: static; transform: none; padding-inline: 24px; }
-    .hero-vertical { display: none; }
-    .hero-stats .stat { padding: 10px 18px; }
+  .hero-lede { margin-top: 26px; max-width: 42em; line-height: 2.1; color: var(--ink-2); }
+  .hero-actions { margin-top: 30px; display: flex; flex-wrap: wrap; gap: 12px; }
+  .hero-status {
+    margin-top: 30px; padding: 14px 18px; max-width: 46em;
+    border-left: 2px solid var(--rule);
+    font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.95;
   }
 
-  /* ---------- 時代スパイン ---------- */
-  .sec-spine { padding: clamp(72px, 10vw, 130px) 0 0; }
-  .parts-grid {
-    display: grid; grid-template-columns: repeat(5, 1fr); gap: 2px;
-    margin-top: 2px;
+  /* ── 藩の一生 ── */
+  .spine-sec { padding-block: clamp(32px, 5vw, 56px); }
+  .spine { position: relative; margin-top: 14px; padding-bottom: 96px; }
+  .spine-bar { display: flex; gap: 2px; }
+  .spine-seg {
+    flex: var(--w) 1 0; min-width: 26px; height: 56px;
+    display: grid; align-content: center; gap: 3px; padding-inline: 8px;
+    background: color-mix(in srgb, var(--ec) 20%, var(--paper-2));
+    border-radius: 2px; text-decoration: none; overflow: hidden;
+    transition: background .25s var(--ease-out);
   }
-  @media (max-width: 960px) { .parts-grid { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 560px) { .parts-grid { grid-template-columns: 1fr; } }
-  .part {
-    position: relative;
-    display: flex; flex-direction: column; gap: 6px;
-    padding: 20px 20px 24px;
-    background: var(--card);
-    border: 1px solid var(--rule-2);
-    text-decoration: none;
-    transition: transform .4s var(--ease-out), box-shadow .4s var(--ease-out);
+  .spine-seg:hover { background: color-mix(in srgb, var(--ec) 55%, var(--paper-2)); }
+  .spine-seg.stage-han { background: color-mix(in srgb, var(--ec) 34%, var(--paper-2)); }
+  .spine-seg .lb { font-size: 10px; color: var(--ink); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .spine-seg .sp { font-size: 9px; color: var(--ink-4); white-space: nowrap; }
+
+  .spine-han {
+    position: absolute; top: 60px; height: 3px;
+    background: var(--ink-3); border-radius: 2px;
   }
-  .part:hover { transform: translateY(-3px); box-shadow: var(--shadow-lg); }
-  .part-title { font-family: var(--f-mincho); font-size: 18px; font-weight: 700; color: var(--ink); letter-spacing: .04em; }
-  .part-sub { font-size: 11.5px; line-height: 1.7; color: var(--ink-3); }
-  .part-bar {
-    position: absolute; left: 0; bottom: 0; height: 3px;
-    width: var(--share);
-    background: var(--pc);
+  .spine-han span {
+    position: absolute; top: 7px; left: 0;
+    font-family: var(--f-mono); font-size: 10px; color: var(--ink-3); white-space: nowrap;
   }
 
-  /* ---------- 年表 ---------- */
-  .sec-timeline { padding: clamp(80px, 11vw, 140px) 0 0; }
-  .sec-timeline .btn { margin-top: 26px; }
-  .tl-scroll {
-    overflow-x: auto; overflow-y: visible;
-    padding: 70px 24px 84px;
-    cursor: grab; user-select: none;
-    -webkit-overflow-scrolling: touch;
+  .spine-marks { position: absolute; top: 82px; left: 0; right: 0; height: 0; }
+  .spine-mark {
+    position: absolute; top: 0; transform: translateX(-50%);
+    display: grid; justify-items: center; gap: 2px;
+    text-decoration: none; color: var(--ink-4);
   }
-  .tl-scroll:active { cursor: grabbing; }
-  .tl-scroll::-webkit-scrollbar { height: 4px; }
-  .tl-scroll::-webkit-scrollbar-thumb { background: var(--ink-4); border-radius: 2px; }
-  .tl-scroll::-webkit-scrollbar-track { background: var(--paper-2); }
-  .tl-stage { position: relative; width: 1680px; height: 280px; margin: 0 auto; }
-  .tl-rail {
-    position: absolute; top: 50%; left: 0; right: 0; height: 10px;
-    transform: translateY(-50%);
-    display: flex; border-radius: 5px; overflow: hidden;
-    box-shadow: var(--shadow);
+  .spine-mark i {
+    width: 5px; height: 5px; border-radius: 50%; background: var(--ink-4);
+    transition: background .2s, transform .2s;
   }
-  .tl-rail i { height: 100%; flex: var(--w) 1 0; background: var(--c); }
-  .tl-edge {
-    position: absolute; top: 50%; transform: translateY(-50%); z-index: 20;
-    font-family: var(--f-mono); font-size: 9px; letter-spacing: .16em;
-    color: var(--paper); background: var(--ink);
-    padding: 3px 10px; white-space: nowrap; pointer-events: none;
+  .spine-mark .y { font-family: var(--f-mono); font-size: 9px; }
+  .spine-mark .t {
+    font-size: 9.5px; white-space: nowrap; opacity: 0;
+    transition: opacity .2s; max-width: 12em; overflow: hidden; text-overflow: ellipsis;
   }
-  .tl-edge.left { left: 0; }
-  .tl-edge.right { right: 0; }
-  .evt { position: absolute; top: 50%; transform: translateX(-50%); text-decoration: none; }
-  .evt-dot {
-    position: absolute; left: 50%; transform: translate(-50%, -50%);
-    width: 14px; height: 14px; border-radius: 50%;
-    background: var(--paper); border: 2.5px solid var(--c);
-    box-shadow: 0 0 0 3px rgba(0,0,0,.08);
-    z-index: 5;
-    transition: transform .2s, background .2s;
+  .spine-mark:hover { color: var(--ink); z-index: 2; }
+  .spine-mark:hover i { background: var(--ink); transform: scale(1.5); }
+  .spine-mark:hover .t { opacity: 1; }
+  @media (max-width: 760px) {
+    .spine-mark .y { display: none; }
+    .spine { padding-bottom: 48px; }
   }
-  .evt:hover .evt-dot { transform: translate(-50%,-50%) scale(1.5); background: var(--c); }
-  .evt-line { position: absolute; left: 50%; width: 1px; height: var(--lh); background: var(--c); opacity: .5; z-index: 2; }
-  .evt.up .evt-line { bottom: 50%; transform: translateX(-50%); }
-  .evt.dn .evt-line { top: 50%; transform: translateX(-50%); }
-  .evt-card {
-    position: absolute; left: 50%; transform: translateX(-50%);
-    display: block;
-    min-width: 92px; max-width: 140px;
-    background: var(--card); border: 1px solid var(--c);
-    padding: 6px 9px; text-align: center;
-    box-shadow: 2px 2px 0 rgba(0,0,0,.06);
-    transition: box-shadow .2s, transform .2s;
-    z-index: 4;
-  }
-  a.evt:hover .evt-card { box-shadow: 4px 4px 0 rgba(0,0,0,.1); }
-  .evt.up .evt-card { bottom: calc(50% + var(--lh) + 2px); }
-  .evt.dn .evt-card { top: calc(50% + var(--lh) + 2px); }
-  .evt-year { display: block; font-family: var(--f-mono); font-size: 9px; color: var(--c); letter-spacing: .06em; margin-bottom: 2px; }
-  .evt-title { display: block; font-family: var(--f-mincho); font-size: 11.5px; font-weight: 600; color: var(--ink); line-height: 1.4; }
-  .evt-era { display: block; font-size: 9px; color: var(--ink-3); margin-top: 3px; }
-  .evt.dim .evt-dot { width: 8px; height: 8px; opacity: .45; }
-  .evt.dim .evt-card, .evt.dim .evt-line { opacity: .45; }
-  .evt.dim:hover .evt-dot, .evt.dim:hover .evt-card { opacity: 1; }
 
-  /* ---------- 記事 ---------- */
-  .sec-articles { padding: clamp(80px, 11vw, 140px) 0 0; }
-  .articles-grid {
-    display: grid;
+  /* ── 入口 ── */
+  .gates { padding-block: clamp(32px, 5vw, 56px); border-top: 1px solid var(--rule); }
+  .gates-grid {
+    display: grid; gap: 12px; margin-top: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+  .gate {
+    display: grid; gap: 7px; align-content: start;
+    padding: 18px 20px; border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--card); text-decoration: none;
+    transition: border-color .2s, transform .2s var(--ease-out);
+  }
+  .gate:hover { border-color: var(--ink-3); transform: translateY(-3px); }
+  .gate .n { font-family: var(--f-mincho); font-size: var(--fs-base); color: var(--ink); }
+  .gate .d { font-size: var(--fs-xs); color: var(--ink-3); line-height: 1.85; }
+  .gate .c { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+
+  /* ── 主題 ── */
+  .themes-sec { padding-block: clamp(32px, 5vw, 56px) clamp(56px, 8vw, 96px); border-top: 1px solid var(--rule); }
+  .themes-grid {
+    display: grid; gap: 12px; margin-top: 16px;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
   }
-
-  /* ---------- 設計原則 ---------- */
-  .sec-principles { padding: clamp(80px, 11vw, 140px) 0 0; }
-  .principles {
-    display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
-    border-block: 1px solid var(--rule);
-    background: var(--rule-2);
+  .theme-card {
+    display: grid; gap: 8px; align-content: start;
+    padding: 20px; border: 1px solid var(--rule-2); border-radius: 3px;
+    background: var(--card); text-decoration: none;
+    transition: border-color .2s, transform .2s var(--ease-out);
   }
-  @media (max-width: 820px) { .principles { grid-template-columns: 1fr; } }
-  .pr {
-    background: var(--paper);
-    padding: 34px 30px 36px;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-  .pr-num {
-    font-family: var(--f-mincho); font-size: 15px; font-weight: 700;
-    color: var(--paper);
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--ink);
-    display: inline-flex; align-items: center; justify-content: center;
-  }
-  .pr h3 { font-family: var(--f-mincho); font-size: 18px; font-weight: 700; letter-spacing: .04em; }
-  .pr p { font-size: 13.5px; line-height: 2; color: var(--ink-3); text-wrap: pretty; }
-  .principles-link { margin-top: 22px; font-size: 13px; }
-  .principles-link a { color: var(--ink-3); }
-  .principles-link a:hover { color: var(--ink); }
+  .theme-card:hover { border-color: var(--tc); transform: translateY(-3px); }
+  .theme-card .bar { display: block; width: 32px; height: 3px; background: var(--tc); border-radius: 2px; }
+  .theme-card .n { font-family: var(--f-mincho); font-size: var(--fs-lg); color: var(--ink); }
+  .theme-card .l { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.9; }
+  .theme-card .s { font-size: var(--fs-xs); color: var(--ink-4); line-height: 1.75; }
 </style>
-
-<script>
-  function initTop() {
-    // 年表：初期位置は最も新しい時代（右端）／ドラッグでスクロール
-    const tl = document.getElementById('tlScroll');
-    if (!tl) return;
-    tl.scrollLeft = tl.scrollWidth;
-    let drag = false, startX = 0, sl = 0, moved = false;
-    tl.addEventListener('pointerdown', (e) => { drag = true; moved = false; startX = e.clientX; sl = tl.scrollLeft; });
-    addEventListener('pointerup', () => { drag = false; });
-    tl.addEventListener('pointermove', (e) => {
-      if (!drag) return;
-      const dx = e.clientX - startX;
-      if (Math.abs(dx) > 4) moved = true;
-      tl.scrollLeft = sl - dx;
-    });
-    // ドラッグ後の誤クリック抑止
-    tl.addEventListener('click', (e) => { if (moved) e.preventDefault(); }, true);
-  }
-  initTop();
-  document.addEventListener('astro:page-load', initTop);
-</script>

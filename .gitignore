@@ -22,3 +22,6 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# OCR 索引ツールの出力（他人の著作物の全文を含むため追跡しない）
+tools/out/

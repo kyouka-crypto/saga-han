@@ -7,11 +7,16 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build && pagefind --site dist && node tools/check-publish.mjs",
     "preview": "astro preview",
+    "check": "node tools/check-publish.mjs",
+    "ocr:build": "node tools/index-ocr.mjs build",
+    "ocr:find": "node tools/index-ocr.mjs find",
+    "ocr:vocab": "node tools/index-ocr.mjs vocab",
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
     "astro": "^6.2.1"
   },
   "devDependencies": {

@@ -1,14 +1,18 @@
 ---
 title: "今山合戦 — 鍋島直茂の夜襲と龍造寺体制の転換点"
 subtitleEn: "The Battle of Imayama, 1570"
-era: ryuzoji
+periods:
+  - ryuzoji
+theme: gunji
+kind: B
 year: "1570"
 sortYear: 1570
 summary: "元亀元年（1570）、大友氏2万の大軍が肥前に進攻した際、鍋島直茂が夜襲によって撃退した合戦。龍造寺体制下での鍋島氏の軍事的地位を決定的に高め、龍造寺隆信の肥前制覇への道を開いた転換点。"
 tags: ["合戦", "鍋島直茂", "龍造寺隆信", "大友氏"]
 confidence: ai
-sources:
-  - "『佐賀藩の総合研究』第1章「佐賀藩成立前史」・第2章「竜造寺領国の成立と終焉」（研究ノート経由）"
+sourceRefs:
+  - src: sogo-kenkyu
+    note: "第1章「佐賀藩成立前史」・第2章「龍造寺領国の成立と終焉」。研究ノート経由のため未照合。"
 created: "2026-05-09"
 updated: "2026-07-12"
 related: ["sanbu-agechi"]

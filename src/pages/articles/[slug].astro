@@ -1,9 +1,13 @@
 ---
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import EraChip from '../../components/EraChip.astro';
+import PeriodChip from '../../components/PeriodChip.astro';
+import ThemeChip from '../../components/ThemeChip.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
-import { eraById, PARTS, CONFIDENCE } from '../../data/eras';
+import SourceRefs from '../../components/SourceRefs.astro';
+import { periodById } from '../../data/periods';
+import { themeById } from '../../data/themes';
+import { CONFIDENCE } from '../../data/confidence';
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles');
@@ -17,9 +21,11 @@ const { article } = Astro.props;
 const { Content, headings } = await render(article);
 
 const data = article.data;
-const era = eraById(data.era);
-const part = PARTS.find((p) => p.id === era.part)!;
+/** 代表の時代（複数期にまたがる制度記事は最初の期を代表とする） */
+const period = periodById(data.periods[0]);
+const theme = themeById(data.theme);
 const conf = CONFIDENCE[data.confidence];
+const KIND = { A: '主題記事', B: '記事', C: '小記事' } as const;
 
 // 読了時間（日本語 約550字/分）
 const charCount = article.body?.replace(/\s/g, '').length ?? 0;
@@ -35,26 +41,42 @@ const prev = idx > 0 ? all[idx - 1] : null;
 const next = idx < all.length - 1 ? all[idx + 1] : null;
 
 // 関連記事：frontmatter 指定 → 不足分は同時代で補完
-const relatedSpecified = all.filter((a) => data.related.includes(a.id));
+const relatedIds = new Set(data.related.map((r) => r.id));
+const relatedSpecified = all.filter((a) => relatedIds.has(a.id));
+// 不足分は「同じ主題」→「同じ時代」の順で補う
 const relatedFallback = all.filter(
-  (a) => a.id !== article.id && a.data.era === data.era && !data.related.includes(a.id)
+  (a) =>
+    a.id !== article.id &&
+    !relatedIds.has(a.id) &&
+    (a.data.theme === data.theme || a.data.periods.some((x) => data.periods.includes(x)))
 );
 const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
 ---
 
-<Base title={data.title} description={data.summary} eraColor={`var(${era.color})`}>
+<Base
+  title={data.title}
+  description={data.summary}
+  eraColor={`var(${period.colorVar})`}
+  published={data.created}
+  modified={data.updated}
+>
   <div class="progress-bar" aria-hidden="true"><i id="progressFill"></i></div>
 
   <div class="inner">
     <nav class="breadcrumb" aria-label="パンくず">
       <a href="/">トップ</a><span class="sep">/</span>
-      <a href={`/era/${era.id}/`}>{part.num} {part.title}</a><span class="sep">/</span>
-      <a href={`/era/${era.id}/`}>{era.name}</a><span class="sep">/</span>
+      <a href={`/period/${period.id}/`}>{period.name}</a><span class="sep">/</span>
+      <a href={`/theme/${theme.id}/`}>{theme.name}</a><span class="sep">/</span>
       <span aria-current="page">{data.title}</span>
     </nav>
   </div>
 
-  <div class="article-grid inner" data-pagefind-body>
+  <div
+    class="article-grid inner"
+    data-pagefind-body
+    data-pagefind-filter={`種別:記事`}
+    data-pagefind-meta={`period:${period.name}, theme:${theme.name}`}
+  >
     <!-- 左：目次サイドバー -->
     <aside class="article-toc" aria-label="目次">
       <div class="toc-sticky">
@@ -71,9 +93,10 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
           <li><a href="#sources" data-toc="sources"><span class="toc-num">§</span>出典・参考文献</a></li>
         </ol>
         <div class="toc-era">
-          <p class="en-label">ERA</p>
-          <EraChip eraId={era.id} showPeriod />
-          <p class="toc-layer">LAYER {String(era.layer).padStart(2, '0')}</p>
+          <p class="en-label">時代と主題</p>
+          {data.periods.map((id) => <PeriodChip id={id} />)}
+          <ThemeChip id={data.theme} />
+          <p class="toc-layer">{KIND[data.kind]}</p>
         </div>
       </div>
     </aside>
@@ -81,13 +104,14 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
     <!-- 中央：本文 -->
     <div class="article-main" id="articleMain">
       <header class="article-header">
-        <p class="article-layer en-label" style={`color:var(${era.color})`}>
-          LAYER {String(era.layer).padStart(2, '0')} · {era.name} {data.year && `· ${data.year}`}
+        <p class="article-layer en-label" style={`color:var(${period.colorVar})`}>
+          {period.name} · {theme.name} {data.year && `· ${data.year}`}
         </p>
         <h1 class="article-title">{data.title}</h1>
         {data.subtitleEn && <p class="article-subtitle">{data.subtitleEn}</p>}
         <div class="article-tags">
-          <EraChip eraId={era.id} />
+          {data.periods.map((id) => <PeriodChip id={id} span={false} />)}
+          <ThemeChip id={data.theme} />
           {data.tags.map((t) => <span class="tag">{t}</span>)}
         </div>
         <div class="article-meta">
@@ -95,7 +119,7 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
           <span>初版 <time class="num">{data.created}</time></span>
           <span>最終更新 <time class="num">{data.updated}</time></span>
           <span>約<span class="num">{charCount.toLocaleString()}</span>字 · <span class="num">{readMin}</span>分</span>
-          <span>出典 <span class="num">{data.sources.length}</span>件</span>
+          <span>出典 <span class="num">{data.sourceRefs.length}</span>件</span>
         </div>
       </header>
 
@@ -103,28 +127,41 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
         <Content />
       </div>
 
-      <!-- 出典 -->
-      <section class="sources" id="sources" aria-label="出典・参考文献">
-        <p class="en-label">SOURCES / 出典・参考文献</p>
-        <ol>
-          {data.sources.map((s, i) => (
-            <li id={`src-${i + 1}`}><span class="src-num">[{i + 1}]</span>{s}</li>
+      <!-- 諸説のあるもの -->
+      {data.disputes.length > 0 && (
+        <section class="disputes" aria-label="諸説">
+          <p class="en-label">諸説のあるもの</p>
+          {data.disputes.map((d) => (
+            <div class="dispute">
+              <p class="dispute-label">{d.label}</p>
+              <ul>
+                {d.positions.map((pos) => (
+                  <li><span class="by">{pos.by}</span>{pos.claim}</li>
+                ))}
+              </ul>
+            </div>
           ))}
-        </ol>
+          <p class="disputes-note">本アーカイブはどちらか一方を採らず、両論を併記します。</p>
+        </section>
+      )}
+
+      <!-- 出典 -->
+      <div id="sources">
+        <SourceRefs refs={data.sourceRefs} title="出典・参考文献" />
         <p class="sources-note">{conf.desc}。誤りの指摘は歓迎します（→ <a href="/about/">このサイトについて</a>）。</p>
-      </section>
+      </div>
 
       <!-- 前後の記事（時系列） -->
       <nav class="pn" aria-label="時系列の前後の記事">
         {prev ? (
-          <a class="pn-item pn-prev" href={`/articles/${prev.id}/`} style={`--ec:var(${eraById(prev.data.era).color})`}>
+          <a class="pn-item pn-prev" href={`/articles/${prev.id}/`} style={`--ec:var(${periodById(prev.data.periods[0]).colorVar})`}>
             <span class="en-label">← 時系列で前</span>
             <span class="pn-title">{prev.data.title}</span>
             <span class="pn-year num">{prev.data.year}</span>
           </a>
         ) : <span class="pn-item pn-empty"></span>}
         {next ? (
-          <a class="pn-item pn-next" href={`/articles/${next.id}/`} style={`--ec:var(${eraById(next.data.era).color})`}>
+          <a class="pn-item pn-next" href={`/articles/${next.id}/`} style={`--ec:var(${periodById(next.data.periods[0]).colorVar})`}>
             <span class="en-label">時系列で次 →</span>
             <span class="pn-title">{next.data.title}</span>
             <span class="pn-year num">{next.data.year}</span>
@@ -149,6 +186,21 @@ const related = [...relatedSpecified, ...relatedFallback].slice(0, 3);
 </Base>
 
 <style>
+  .disputes {
+    margin-top: clamp(32px, 5vw, 56px); padding: 20px 22px;
+    border: 1px solid var(--rule); border-radius: 3px; background: var(--paper-2);
+  }
+  .dispute { margin-top: 12px; }
+  .dispute-label { font-family: var(--f-mincho); font-size: var(--fs-sm); color: var(--ink); }
+  .dispute ul { list-style: none; margin-top: 8px; display: grid; gap: 6px; }
+  .dispute li { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.9; }
+  .dispute .by {
+    display: inline-block; margin-right: 10px; padding: 1px 8px;
+    border: 1px solid var(--rule); border-radius: 999px;
+    font-size: 10px; color: var(--ink-4);
+  }
+  .disputes-note { margin-top: 14px; font-size: var(--fs-xs); color: var(--ink-4); }
+
   .article-grid {
     display: grid;
     grid-template-columns: 220px minmax(0, 720px) 250px;

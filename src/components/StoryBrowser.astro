@@ -1,0 +1,226 @@
+---
+/**
+ * 画像駆動の探索UI
+ *
+ * 日本遺産ポータル（japan-heritage.bunka.go.jp）の box_sto と同じ体験
+ * ——サムネイルを選ぶと主パネルが差し替わる——を、jQuery 等に依存せず実装したもの。
+ *
+ * ・JavaScript 無効でも成立する（主パネルは最初の1件が出ており、サムネイルは記事への通常リンク）
+ * ・写真がまだ無い記事には、時代色から作った幾何パターンを充てる。
+ *   偽の写真を置くのではなく「まだ無い」ことが分かる見た目にする。
+ */
+import { periodById } from '../data/periods';
+import type { Article } from '../lib/archive';
+
+interface Props {
+  articles: Article[];
+  title?: string;
+  en?: string;
+  lede?: string;
+}
+
+const { articles, title = '記事を見わたす', en = 'BROWSE', lede } = Astro.props;
+
+const items = articles.map((a, i) => {
+  const p = periodById(a.data.periods[0]);
+  return {
+    id: a.id,
+    href: `/articles/${a.id}/`,
+    no: String(i + 1).padStart(3, '0'),
+    title: a.data.title,
+    summary: a.data.summary,
+    year: a.data.year ?? String(a.data.sortYear),
+    periodName: p.name,
+    colorVar: p.colorVar,
+    hero: a.data.hero,
+    seed: [...a.id].reduce((n, ch) => (n * 31 + ch.charCodeAt(0)) % 997, 7),
+  };
+});
+---
+
+{items.length > 0 && (
+  <section class="sto">
+    <div class="sto-head">
+      <p class="en-label">{en}</p>
+      <h2>{title}</h2>
+      {lede && <p class="lede">{lede}</p>}
+    </div>
+
+    <div class="sto-body">
+      <!-- 主パネル：選ばれた1件 -->
+      <div class="sto-main" id="stoMain">
+        {items.map((it, i) => (
+          <article class:list={['sto-panel', i === 0 && 'is-open']} data-panel={it.id}>
+            <a class="sto-visual" href={it.href} style={`--ec: var(${it.colorVar})`} tabindex="-1" aria-hidden="true">
+              {it.hero ? (
+                <img src={it.hero.src} alt="" loading="lazy" decoding="async" />
+              ) : (
+                <svg viewBox="0 0 120 68" role="presentation" class="ph">
+                  <defs>
+                    <pattern id={`ph-${it.id}`} width="8" height="8" patternUnits="userSpaceOnUse"
+                             patternTransform={`rotate(${it.seed % 90})`}>
+                      <line x1="0" y1="0" x2="0" y2="8" stroke="currentColor" stroke-width="1.1" opacity=".5" />
+                    </pattern>
+                  </defs>
+                  <rect width="120" height="68" fill="currentColor" opacity=".08" />
+                  <rect width="120" height="68" fill={`url(#ph-${it.id})`} opacity=".5" />
+                  <text x="60" y="38" text-anchor="middle" class="ph-no">{it.no}</text>
+                </svg>
+              )}
+            </a>
+            <div class="sto-txt">
+              <p class="sto-meta">
+                <span class="no">{it.no}</span>
+                <span class="pd" style={`--ec: var(${it.colorVar})`}><i></i>{it.periodName}</span>
+                <span class="yr">{it.year}</span>
+              </p>
+              <h3><a href={it.href}>{it.title}</a></h3>
+              <p class="sto-sum">{it.summary}</p>
+              <p class="sto-lnk"><a href={it.href}>この記事を読む</a></p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- サムネイル：気になるものを選ぶ -->
+      <div class="sto-list">
+        <p class="sto-hint">気になるものを選んでください</p>
+        <ul>
+          {items.map((it, i) => (
+            <li>
+              <a
+                class:list={['thumb', i === 0 && 'is-current']}
+                href={it.href}
+                data-thumb={it.id}
+                style={`--ec: var(${it.colorVar})`}
+              >
+                <span class="thumb-img">
+                  {it.hero ? (
+                    <img src={it.hero.src} alt="" loading="lazy" decoding="async" />
+                  ) : (
+                    <svg viewBox="0 0 60 40" role="presentation">
+                      <rect width="60" height="40" fill="currentColor" opacity=".1" />
+                      <rect x="0" y={40 - (it.seed % 26) - 6} width="60" height={(it.seed % 26) + 6}
+                            fill="currentColor" opacity=".28" />
+                    </svg>
+                  )}
+                </span>
+                <span class="thumb-txt">
+                  <span class="thumb-no">{it.no}</span>
+                  <span class="thumb-title">{it.title}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .sto { margin-block: clamp(48px, 7vw, 96px); }
+  .sto-head { margin-bottom: 28px; max-width: 46em; }
+  .sto-head h2 { font-family: var(--f-mincho); font-size: var(--fs-h2); font-weight: 700; margin-bottom: 10px; }
+  .sto-head .lede { color: var(--ink-3); font-size: var(--fs-sm); line-height: 1.95; }
+
+  .sto-body { display: grid; gap: 24px; }
+  @media (min-width: 900px) {
+    .sto-body { grid-template-columns: minmax(0, 1.55fr) minmax(280px, 1fr); gap: 32px; align-items: start; }
+  }
+
+  /* ── 主パネル ── */
+  .sto-panel { display: none; }
+  .sto-panel.is-open { display: block; }
+  /* JS 無効時は全件を縦に並べる（読める状態を保証する） */
+  :global(html:not(.js)) .sto-panel { display: block; margin-bottom: 40px; }
+
+  .sto-visual {
+    display: block; overflow: hidden; border-radius: 3px;
+    border: 1px solid var(--rule-2); background: var(--card);
+    color: var(--ec);
+  }
+  .sto-visual img, .sto-visual svg { display: block; width: 100%; height: auto; }
+  .ph-no {
+    font-family: var(--f-mono); font-size: 11px; fill: currentColor; opacity: .55;
+  }
+
+  .sto-txt { padding-top: 16px; }
+  .sto-meta {
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    font-size: var(--fs-xs); color: var(--ink-4); margin-bottom: 10px;
+  }
+  .sto-meta .no { font-family: var(--f-mono); letter-spacing: .08em; }
+  .sto-meta .pd { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-3); }
+  .sto-meta .pd i { width: 6px; height: 6px; border-radius: 50%; background: var(--ec); }
+  .sto-meta .yr { font-family: var(--f-mono); }
+
+  .sto-txt h3 { font-family: var(--f-mincho); font-size: var(--fs-lg); font-weight: 700; line-height: 1.55; }
+  .sto-txt h3 a { color: inherit; text-decoration: none; }
+  .sto-txt h3 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .sto-sum { margin-top: 12px; color: var(--ink-2); font-size: var(--fs-sm); line-height: 2; }
+  .sto-lnk { margin-top: 14px; }
+  .sto-lnk a {
+    display: inline-block; padding-bottom: 2px;
+    border-bottom: 1px solid var(--rule);
+    color: var(--ink-2); text-decoration: none; font-size: var(--fs-sm);
+    transition: border-color .2s, color .2s;
+  }
+  .sto-lnk a:hover { color: var(--ink); border-color: currentColor; }
+
+  /* ── サムネイル ── */
+  .sto-hint { font-size: var(--fs-xs); color: var(--ink-4); margin-bottom: 10px; letter-spacing: .04em; }
+  .sto-list ul { list-style: none; display: grid; gap: 4px; max-height: 520px; overflow-y: auto; padding-right: 4px; }
+  @media (max-width: 899px) {
+    .sto-list ul { max-height: none; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+  }
+
+  .thumb {
+    display: grid; grid-template-columns: 72px minmax(0, 1fr); gap: 12px; align-items: center;
+    padding: 6px; border: 1px solid transparent; border-radius: 3px;
+    color: var(--ink-2); text-decoration: none;
+    transition: background .18s, border-color .18s;
+  }
+  .thumb:hover { background: var(--paper-2); }
+  .thumb.is-current { border-color: var(--ec); background: var(--paper-2); }
+  @media (max-width: 899px) { .thumb { grid-template-columns: 1fr; } }
+
+  .thumb-img { display: block; overflow: hidden; border-radius: 2px; color: var(--ec); background: var(--card); }
+  .thumb-img img, .thumb-img svg { display: block; width: 100%; height: auto; }
+  .thumb-txt { display: grid; gap: 2px; min-width: 0; }
+  .thumb-no { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+  .thumb-title {
+    font-size: var(--fs-xs); line-height: 1.6;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+</style>
+
+<script>
+  function initStoryBrowser() {
+    document.documentElement.classList.add('js');
+    const main = document.getElementById('stoMain');
+    if (!main) return;
+    const panels = [...main.querySelectorAll<HTMLElement>('.sto-panel')];
+    const thumbs = [...document.querySelectorAll<HTMLAnchorElement>('.thumb[data-thumb]')];
+    if (!panels.length || !thumbs.length) return;
+
+    const show = (id: string) => {
+      for (const p of panels) p.classList.toggle('is-open', p.dataset.panel === id);
+      for (const t of thumbs) t.classList.toggle('is-current', t.dataset.thumb === id);
+    };
+
+    for (const t of thumbs) {
+      // クリックは差し替え。Ctrl/⌘クリックや中クリックは通常のリンクとして通す。
+      t.addEventListener('click', (ev) => {
+        if (ev.metaKey || ev.ctrlKey || ev.shiftKey || (ev as MouseEvent).button !== 0) return;
+        ev.preventDefault();
+        show(t.dataset.thumb!);
+      });
+      // キーボードでフォーカスを移しただけでも中身が追随する
+      t.addEventListener('focus', () => show(t.dataset.thumb!));
+    }
+  }
+
+  initStoryBrowser();
+  document.addEventListener('astro:page-load', initStoryBrowser);
+</script>

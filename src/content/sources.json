@@ -1,0 +1,80 @@
+[
+  {
+    "id": "sagashishi-1",
+    "title": "佐賀市史",
+    "volume": "第1巻（地理的環境・原始・古代・中世編）",
+    "author": "佐賀市史編さん委員会 編",
+    "publisher": "佐賀市",
+    "year": 1977,
+    "url": "https://dl.ndl.go.jp/pid/9769997",
+    "accessed": "2026-02-05",
+    "kind": "自治体史",
+    "hasOcr": true,
+    "ocrPages": 833,
+    "note": "国立国会図書館デジタルコレクション。前史（少弐・龍造寺）の記述を含む。"
+  },
+  {
+    "id": "sagashishi-2",
+    "title": "佐賀市史",
+    "volume": "第2巻（近世編）",
+    "author": "佐賀市史編さん委員会 編",
+    "publisher": "佐賀市",
+    "year": 1977,
+    "url": "https://dl.ndl.go.jp/pid/9769998",
+    "accessed": "2026-02-12",
+    "kind": "自治体史",
+    "hasOcr": true,
+    "ocrPages": 667,
+    "note": "本サイトの中核となる出典。家格序列・番方役方・藩機構の基本記述。藩主の代数は勝茂を初代として数える（九代斉直・十代直正）。"
+  },
+  {
+    "id": "sagashishi-3",
+    "title": "佐賀市史",
+    "volume": "第3巻（近代編 明治期）",
+    "author": "佐賀市史編さん委員会 編",
+    "publisher": "佐賀市",
+    "year": 1978,
+    "url": "https://dl.ndl.go.jp/pid/9770424",
+    "accessed": "2026-09-18",
+    "kind": "自治体史",
+    "hasOcr": true,
+    "ocrPages": 839,
+    "note": "廃藩置県以降。「余波」期の出典。"
+  },
+  {
+    "id": "sogo-kenkyu",
+    "title": "佐賀藩の総合研究：藩制の成立と構造",
+    "author": "藤野保 編",
+    "publisher": "吉川弘文館",
+    "year": 1981,
+    "url": "https://dl.ndl.go.jp/pid/9574646",
+    "accessed": "2026-02-12",
+    "kind": "研究書",
+    "hasOcr": true,
+    "ocrPages": 1039,
+    "note": "藩制の成立と構造に関する基本研究。藩主の代数は直茂を初代として数え、『佐賀市史』と1つずれる（一〇代斉直・一一代直正）。"
+  },
+  {
+    "id": "zoku-sogo-kenkyu",
+    "title": "続 佐賀藩の総合研究：藩政改革と明治維新",
+    "author": "藤野保 編",
+    "publisher": "吉川弘文館",
+    "year": 1987,
+    "url": "https://dl.ndl.go.jp/pid/9576234",
+    "accessed": "2026-02-12",
+    "kind": "研究書",
+    "hasOcr": true,
+    "ocrPages": 1085,
+    "note": "直正の藩政改革以降。幕末維新期の基本研究。"
+  },
+  {
+    "id": "tenminutes-meiji",
+    "title": "テンミニッツ・アカデミー「明治維新シリーズ」講義",
+    "author": "島田晴雄",
+    "publisher": "テンミニッツ・アカデミー",
+    "year": 2020,
+    "kind": "web",
+    "hasOcr": false,
+    "note": "動画講義。二次的な概説であり、一次文献による裏取りが必要。"
+  }
+]

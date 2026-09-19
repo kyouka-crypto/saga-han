@@ -1,5 +1,6 @@
 ---
-import { ERAS } from '../data/eras';
+import { PERIODS } from '../data/periods';
+import { THEMES } from '../data/themes';
 const path = Astro.url.pathname;
 const isActive = (href: string) =>
   href === '/' ? path === '/' : path.startsWith(href);
@@ -8,8 +9,8 @@ const isActive = (href: string) =>
 <header class="gnav-wrap">
   <nav class="gnav inner" aria-label="グローバルナビゲーション">
     <a class="gnav-logo" href="/">
-      佐賀通史アーカイブ
-      <span>SAGA HISTORICAL ARCHIVE</span>
+      佐賀藩アーカイブ
+      <span>SAGA DOMAIN ARCHIVE</span>
     </a>
 
     <button class="gnav-burger" id="gnavBurger" aria-expanded="false" aria-controls="gnavMenu" aria-label="メニュー">
@@ -21,25 +22,40 @@ const isActive = (href: string) =>
         <li><a href="/" aria-current={path === '/' ? 'page' : undefined} class:list={{ active: path === '/' }}>トップ</a></li>
         <li class="has-mega">
           <button class="gnav-era-trigger" id="megaTrigger" aria-expanded="false" aria-controls="megaMenu">
-            時代
+            時代と主題
             <svg width="10" height="10" viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 3.5l3 3 3-3"/></svg>
           </button>
           <div class="mega" id="megaMenu">
             <div class="mega-inner">
-              <p class="mega-lede en-label">LAYER 0 — 9 / 大地の形成から現代まで</p>
+              <p class="mega-lede en-label">時代軸 — 前史から廃藩、そしてその余波まで</p>
               <div class="mega-grid">
-                {ERAS.map((era) => (
-                  <a class="mega-era" href={`/era/${era.id}/`} style={`--ec:var(${era.color})`}>
+                {PERIODS.map((p) => (
+                  <a class="mega-era" href={`/period/${p.id}/`} style={`--ec:var(${p.colorVar})`}>
                     <i></i>
-                    <span class="mn">{era.name}</span>
-                    <span class="mp">{era.period}</span>
+                    <span class="mn">{p.name}</span>
+                    <span class="mp">{p.span}</span>
                   </a>
                 ))}
               </div>
+              <p class="mega-lede en-label mega-lede-2">主題軸 — 時代を横断して追う</p>
+              <div class="mega-grid mega-grid-theme">
+                {THEMES.map((th) => (
+                  <a class="mega-era" href={`/theme/${th.id}/`} style={`--ec:var(${th.colorVar})`}>
+                    <i class="sq"></i>
+                    <span class="mn">{th.name}</span>
+                    <span class="mp">{th.scope.split('、')[0]} ほか</span>
+                  </a>
+                ))}
+              </div>
+              <p class="mega-foot">
+                <a href="/matrix/">48マスの俯瞰マトリクスで見る →</a>
+              </p>
             </div>
           </div>
         </li>
         <li><a href="/timeline/" class:list={{ active: isActive('/timeline') }}>年表</a></li>
+        <li><a href="/people/" class:list={{ active: isActive('/people') || isActive('/houses') || isActive('/offices') }}>人物と家</a></li>
+        <li><a href="/sources/" class:list={{ active: isActive('/sources') || isActive('/glossary') }}>出典</a></li>
         <li><a href="/search/" class:list={{ active: isActive('/search') }} class="gnav-search">
           <svg width="14" height="14" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l3.5 3.5"/></svg>
           検索
@@ -58,6 +74,13 @@ const isActive = (href: string) =>
 <div class="gnav-spacer" aria-hidden="true"></div>
 
 <style>
+  .mega-lede-2 { margin-top: 22px; }
+  .mega-grid-theme { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+  .mega-era i.sq { border-radius: 2px; }
+  .mega-foot { margin-top: 20px; padding-top: 14px; border-top: 1px solid var(--rule-2); }
+  .mega-foot a { font-size: var(--fs-sm); color: var(--ink-2); text-decoration: none; }
+  .mega-foot a:hover { color: var(--ink); text-decoration: underline; text-underline-offset: 4px; }
+
   .gnav-wrap {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     background: color-mix(in srgb, #16130e 88%, transparent);

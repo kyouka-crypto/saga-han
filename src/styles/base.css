@@ -1,0 +1,116 @@
+/* --------------------------------------------------------------------------
+   2. Reset & base
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 96px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--f-sans);
+  font-size: var(--fs-base);
+  font-weight: 400;
+  line-height: 1.9;
+  letter-spacing: .015em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+/* 和紙の紙肌（極薄ノイズ） */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: .5;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.42 0 0 0 0 0.36 0 0 0 0.05 0'/%3E%3C/filter%3E%3Crect width='240' height='240' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body > * { position: relative; z-index: 1; }
+
+::selection { background: color-mix(in srgb, var(--era) 24%, transparent); }
+
+img, svg { max-width: 100%; height: auto; display: block; }
+
+a { color: inherit; }
+
+button {
+  font: inherit; color: inherit; background: none; border: none; cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--era);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Layout utilities
+   -------------------------------------------------------------------------- */
+.inner        { max-width: 1200px; margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+.inner-narrow { max-width: 880px;  margin-inline: auto; padding-inline: clamp(20px, 4vw, 48px); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed; top: -60px; left: 16px; z-index: 200;
+  padding: 10px 18px; background: var(--ink); color: var(--paper);
+  font-size: var(--fs-sm); text-decoration: none;
+  transition: top .2s;
+}
+.skip-link:focus { top: 12px; }
+
+/* 縦書きラベル */
+.v-text {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  letter-spacing: .32em;
+  font-family: var(--f-mincho);
+}
+
+/* 欧文小ラベル（アーカイブ調） */
+.en-label {
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* セクション見出し */
+.section-head { margin-bottom: clamp(36px, 5vw, 56px); }
+.section-head .en-label { display: block; margin-bottom: 12px; }
+.section-head h2 {
+  font-family: var(--f-mincho);
+  font-size: var(--fs-h1);
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: .04em;
+  font-feature-settings: "palt";
+}
+.section-head .lede {
+  margin-top: 14px;
+  max-width: 34em;
+  font-size: 14.5px;
+  color: var(--ink-3);
+  text-wrap: pretty;
+}
+

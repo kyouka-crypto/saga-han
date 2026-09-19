@@ -1,15 +1,21 @@
 ---
 title: "与と備の二重軍制 — 軍事と政治の分化プロセス"
 subtitleEn: "The Dual Military System of Kumi and Sonae"
-era: edo
+periods:
+  - seiritsu
+  - kakuritsu
+theme: gunji
+kind: B
 year: "1621"
 sortYear: 1621
 summary: "佐賀藩の軍事編成は、藩主直属の小規模戦闘単位「与（組）」と、有力一門が独自に編成する大規模軍事集団「備」の二層構造を持つ。元和7年の軍制改革による大与頭兼担の解除は、政治機構と軍事機構の分化、軍事指揮権の藩主への一元化を意味した。"
 tags: ["軍制", "家臣団", "元和7年軍制改革", "鍋島勝茂"]
 confidence: ai
-sources:
-  - "『佐賀藩の総合研究』第2章（研究ノート経由）"
-  - "「定置条々」元和4年・22条（軍役規定の典拠として同書所引）"
+sourceRefs:
+  - src: sogo-kenkyu
+    note: "第2章。研究ノート経由のため未照合。"
+  - src: sogo-kenkyu
+    note: "「定置条々」元和4年・22条（軍役規定の典拠として同書所引）。"
 created: "2026-05-09"
 updated: "2026-07-12"
 related: ["sanbu-agechi", "ukeyakusho"]

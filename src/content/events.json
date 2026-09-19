@@ -1,0 +1,395 @@
+[
+ {
+  "id": "imayama-1570",
+  "year": 1570,
+  "title": "今山合戦",
+  "period": "ryuzoji",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "元亀元年",
+  "summary": "鍋島直茂の夜襲により大友軍を破る。龍造寺体制の転換点。",
+  "article": "imayama-1570"
+ },
+ {
+  "id": "okitanawate-1584",
+  "year": 1584,
+  "title": "沖田畷の戦い — 龍造寺隆信戦死",
+  "period": "ryuzoji",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "天正十二年",
+  "summary": "島津・有馬連合軍に大敗し隆信が討たれる。龍造寺氏の勢力が急速に後退した。"
+ },
+ {
+  "id": "takafusa-1607",
+  "year": 1607,
+  "title": "龍造寺高房・政家の没",
+  "period": "ryuzoji",
+  "themes": [
+   "seido"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "慶長十二年",
+  "summary": "龍造寺宗家の当主が相次いで没し、鍋島氏への権力移行が決定的になる。"
+ },
+ {
+  "id": "agechi-1",
+  "year": 1610,
+  "title": "第一次上地（全家臣対象）",
+  "period": "seiritsu",
+  "themes": [
+   "kashin",
+   "zaisei"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "慶長十五年",
+  "summary": "名古屋城普請役による財政危機を直接の契機とする知行地没収。",
+  "article": "sanbu-agechi"
+ },
+ {
+  "id": "teakiyari-1620",
+  "year": 1620,
+  "title": "手明鑓の成立",
+  "period": "seiritsu",
+  "themes": [
+   "kashin"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "sourced",
+  "wareki": "元和六年",
+  "summary": "勝茂が50石未満の侍200人の平時の役を免じて知行を没収し、代わりに切米15石を一律支給した。戦時には鑓一本をもって奉公すると定められた。",
+  "sourceRefs": [
+   {
+    "src": "sagashishi-2",
+    "pages": "24"
+   }
+  ]
+ },
+ {
+  "id": "agechi-2",
+  "year": 1621,
+  "title": "第二次上地（龍造寺四家対象）",
+  "period": "seiritsu",
+  "themes": [
+   "kashin",
+   "zaisei"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "元和七年",
+  "summary": "龍造寺一門の知行を削り、鍋島宗家の蔵入地を拡大した。",
+  "article": "sanbu-agechi"
+ },
+ {
+  "id": "kumi-sonae",
+  "year": 1621,
+  "title": "与と備による軍制の整備",
+  "period": "seiritsu",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "ai",
+  "wareki": "元和七年",
+  "article": "kumi-to-sonae"
+ },
+ {
+  "id": "shimabara-1637",
+  "year": 1637,
+  "title": "島原の乱",
+  "period": "seiritsu",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "寛永十四年",
+  "summary": "佐賀藩も動員される。以後の長崎警備賦課につながった。"
+ },
+ {
+  "id": "nagasaki-goban-1642",
+  "year": 1642,
+  "title": "長崎警備（長崎御番役）を課される",
+  "period": "seiritsu",
+  "themes": [
+   "gunji",
+   "zaisei"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "sourced",
+  "wareki": "寛永十九年",
+  "summary": "島原の乱後、幕府から特殊軍役として課された。以後、福岡藩と一年交代で長崎の警備にあたる。藩財政を長く圧迫し続けた。",
+  "sourceRefs": [
+   {
+    "src": "sogo-kenkyu",
+    "pages": "21"
+   }
+  ]
+ },
+ {
+  "id": "nagasaki-bansho-1649",
+  "year": 1649,
+  "title": "長崎港口の戸町に長崎番所を設置",
+  "period": "seiritsu",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "sourced",
+  "wareki": "慶安二年",
+  "summary": "勝茂晩年。深堀を知行所とする深堀鍋島氏が独自に遠見番を置いた。",
+  "sourceRefs": [
+   {
+    "src": "sogo-kenkyu",
+    "pages": "21-22"
+   }
+  ]
+ },
+ {
+  "id": "mitsushige-1657",
+  "year": 1657,
+  "title": "光茂の襲封",
+  "period": "kakuritsu",
+  "themes": [
+   "seido"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "ai",
+  "wareki": "明暦三年"
+ },
+ {
+  "id": "nagasaki-kitei-1658",
+  "year": 1658,
+  "title": "光茂、七ヵ条の長崎警備規定を定める",
+  "period": "kakuritsu",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "sourced",
+  "wareki": "明暦四年",
+  "summary": "「御代始条目」の発布に先立つ。光茂は「長崎御番ハ在陣同然」と認識していた。",
+  "sourceRefs": [
+   {
+    "src": "sogo-kenkyu",
+    "pages": "22"
+   }
+  ]
+ },
+ {
+  "id": "yodaihajime",
+  "year": 1658,
+  "title": "「御代始条目」の発布",
+  "period": "kakuritsu",
+  "themes": [
+   "seido"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "sourced",
+  "wareki": "明暦四年",
+  "summary": "宛人は三家・親類（白石鍋島・川久保神代・久保田村田）・龍造寺一門（諫早・武雄・多久・須古）。第一条に長崎警備を規定した。",
+  "sourceRefs": [
+   {
+    "src": "sogo-kenkyu",
+    "pages": "23"
+   }
+  ]
+ },
+ {
+  "id": "hagakure-1716",
+  "year": 1716,
+  "title": "『葉隠』の成立",
+  "period": "kakuritsu",
+  "themes": [
+   "bunka"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "享保元年頃",
+  "summary": "山本常朝の談話を田代陣基が筆録したもの。成立年には幅がある。"
+ },
+ {
+  "id": "zaisei-1751",
+  "year": 1751,
+  "title": "宝暦元年の藩財政記録",
+  "period": "mosaku",
+  "themes": [
+   "zaisei"
+  ],
+  "scope": "han",
+  "weight": 2,
+  "confidence": "ai",
+  "wareki": "宝暦元年",
+  "summary": "借銀が収入の過半を占める慢性的赤字財政の姿を示す。",
+  "article": "ukeyakusho"
+ },
+ {
+  "id": "kodokan-1781",
+  "year": 1781,
+  "title": "藩校弘道館の設立",
+  "period": "mosaku",
+  "themes": [
+   "bunka"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "sourced",
+  "wareki": "天明元年",
+  "summary": "九代藩主鍋島治茂が自ら『弘道館記』を草したといわれる。設立の目的を「明五教之倫、弘先王之道」により「励士風、敦風俗」とした。",
+  "sourceRefs": [
+   {
+    "src": "sagashishi-2",
+    "pages": "111"
+   }
+  ]
+ },
+ {
+  "id": "naomasa-1830",
+  "year": 1830,
+  "title": "鍋島直正の襲封",
+  "period": "naomasa",
+  "themes": [
+   "seido"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "天保元年",
+  "summary": "藩政改革の起点。"
+ },
+ {
+  "id": "hansharo-1850",
+  "year": 1850,
+  "title": "築地反射炉の建設",
+  "period": "naomasa",
+  "themes": [
+   "sangyo",
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "嘉永三年",
+  "summary": "日本初の実用反射炉とされる。鉄製大砲の鋳造を目指した。"
+ },
+ {
+  "id": "seirenkata-1852",
+  "year": 1852,
+  "title": "精煉方の設置",
+  "period": "naomasa",
+  "themes": [
+   "bunka",
+   "sangyo"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "嘉永五年",
+  "summary": "理化学研究機関。蒸気機関・電信・写真などの研究を行った。"
+ },
+ {
+  "id": "mietsu-1858",
+  "year": 1858,
+  "title": "三重津海軍所の設置",
+  "period": "naomasa",
+  "themes": [
+   "gunji",
+   "sangyo"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "安政五年",
+  "summary": "藩の海軍教育と艦船修理の拠点。のちに蒸気船「凌風丸」を建造した。"
+ },
+ {
+  "id": "boshin-1868",
+  "year": 1868,
+  "title": "戊辰戦争に参加",
+  "period": "ishin",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "慶応四年",
+  "summary": "アームストロング砲を擁して新政府軍の主力の一翼を担った。"
+ },
+ {
+  "id": "hanseki-1869",
+  "year": 1869,
+  "title": "版籍奉還",
+  "period": "ishin",
+  "themes": [
+   "seido"
+  ],
+  "scope": "national",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "明治二年"
+ },
+ {
+  "id": "haihan-1871",
+  "year": 1871,
+  "title": "廃藩置県 — 佐賀藩の消滅",
+  "period": "ishin",
+  "themes": [
+   "seido"
+  ],
+  "scope": "national",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "明治四年"
+ },
+ {
+  "id": "saga-no-ran-1874",
+  "year": 1874,
+  "title": "佐賀の乱",
+  "period": "yoha",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "han",
+  "weight": 3,
+  "confidence": "ai",
+  "wareki": "明治七年",
+  "summary": "江藤新平らによる士族反乱。以後の士族反乱の先駆となった。",
+  "article": "saga-no-ran-1874"
+ },
+ {
+  "id": "seinan-1877",
+  "year": 1877,
+  "title": "西南戦争",
+  "period": "yoha",
+  "themes": [
+   "gunji"
+  ],
+  "scope": "national",
+  "weight": 2,
+  "confidence": "ai",
+  "wareki": "明治十年"
+ }
+]

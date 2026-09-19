@@ -1,0 +1,25 @@
+---
+import { periodById } from '../data/periods';
+
+interface Props {
+  id: string;
+  /** 期間ラベルも出す */
+  span?: boolean;
+  /** リンクにしない */
+  static?: boolean;
+}
+
+const { id, span = true, static: isStatic = false } = Astro.props;
+const p = periodById(id);
+const Tag = isStatic ? 'span' : 'a';
+---
+
+<Tag
+  class="era-chip"
+  href={isStatic ? undefined : `/period/${p.id}/`}
+  style={`--ec: var(${p.colorVar})`}
+>
+  <i></i>
+  <span>{p.name}</span>
+  {span && <span class="period">{p.span}</span>}
+</Tag>

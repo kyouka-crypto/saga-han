@@ -1,0 +1,126 @@
+[
+  {
+    "id": "saga-jo",
+    "name": "佐賀城",
+    "reading": "さがじょう",
+    "kind": "城",
+    "gun": "佐賀郡",
+    "lat": 33.2436,
+    "lng": 130.2985,
+    "modern": "佐賀県佐賀市城内",
+    "summary": "佐賀藩の藩庁。鍋島氏の居城。",
+    "confidence": "ai"
+  },
+  {
+    "id": "ogi-jinya",
+    "name": "小城陣屋",
+    "reading": "おぎじんや",
+    "kind": "陣屋",
+    "gun": "小城郡",
+    "modern": "佐賀県小城市",
+    "summary": "小城藩の陣屋。延宝八年、家臣団の小城移住にともなう屋敷割が行われた。",
+    "confidence": "ai",
+    "sourceRefs": [{ "src": "sogo-kenkyu", "pages": "290", "note": "延宝八年の屋敷割。" }]
+  },
+  {
+    "id": "hasuike-jo",
+    "name": "蓮池城跡",
+    "reading": "はすいけじょうあと",
+    "kind": "遺構",
+    "gun": "佐賀郡",
+    "modern": "佐賀県佐賀市蓮池町",
+    "summary": "蓮池藩の拠点。",
+    "confidence": "ai",
+    "sourceRefs": [{ "src": "sagashishi-2", "pages": "99" }]
+  },
+  {
+    "id": "kashima-jinya",
+    "name": "鹿島陣屋",
+    "reading": "かしまじんや",
+    "kind": "陣屋",
+    "gun": "藤津郡",
+    "modern": "佐賀県鹿島市",
+    "summary": "鹿島藩の陣屋。",
+    "confidence": "ai"
+  },
+  {
+    "id": "nagasaki-bansho-tomachi",
+    "name": "長崎番所（戸町）",
+    "reading": "ながさきばんしょ（とまち）",
+    "kind": "その他",
+    "modern": "長崎県長崎市",
+    "summary": "慶安二年、勝茂晩年に長崎港口の戸町へ設置された。長崎警備の拠点。",
+    "confidence": "sourced",
+    "sourceRefs": [{ "src": "sogo-kenkyu", "pages": "21" }]
+  },
+  {
+    "id": "fukahori",
+    "name": "深堀",
+    "reading": "ふかほり",
+    "kind": "その他",
+    "modern": "長崎県長崎市深堀町",
+    "summary": "深堀鍋島氏の知行所。独自に遠見番を置いて長崎警備にあたった。",
+    "confidence": "sourced",
+    "sourceRefs": [{ "src": "sogo-kenkyu", "pages": "21-22" }]
+  },
+  {
+    "id": "tomi-yama-toomi",
+    "name": "遠見番（五ヵ所）",
+    "reading": "とおみばん",
+    "kind": "その他",
+    "summary": "香焼島・沖島・伊王島・高島・縞津の五ヵ所に設置された遠見番。OCR の島名には誤認識の疑いがあり、原本での確認を要する。",
+    "confidence": "note",
+    "sourceRefs": [{ "src": "sogo-kenkyu", "pages": "22", "note": "OCR は「香蝶島」と読めるが誤認識の可能性が高い。" }]
+  },
+  {
+    "id": "kodokan",
+    "name": "弘道館",
+    "reading": "こうどうかん",
+    "kind": "その他",
+    "gun": "佐賀郡",
+    "modern": "佐賀県佐賀市",
+    "summary": "天明元年に治茂が設立した藩校。",
+    "confidence": "sourced",
+    "sourceRefs": [{ "src": "zoku-sogo-kenkyu", "pages": "111" }]
+  },
+  {
+    "id": "tsukiji-hansharo",
+    "name": "築地反射炉跡",
+    "reading": "ついじはんしゃろあと",
+    "kind": "遺構",
+    "modern": "佐賀県佐賀市長瀬町",
+    "summary": "嘉永三年に築かれた反射炉。鉄製大砲の鋳造を目指した。座標は未登録。",
+    "confidence": "ai"
+  },
+  {
+    "id": "mietsu",
+    "name": "三重津海軍所跡",
+    "reading": "みえつかいぐんしょあと",
+    "kind": "海軍所",
+    "modern": "佐賀県佐賀市川副町・諸富町",
+    "summary": "安政五年設置。藩の海軍教育と艦船修理の拠点。座標は未登録。",
+    "confidence": "ai"
+  },
+  {
+    "id": "arita",
+    "name": "有田",
+    "reading": "ありた",
+    "kind": "窯",
+    "gun": "松浦郡",
+    "lat": 33.206,
+    "lng": 129.888,
+    "modern": "佐賀県西松浦郡有田町",
+    "summary": "磁器生産の中心地。藩の重要な財源であった。座標は概略値。",
+    "confidence": "ai"
+  },
+  {
+    "id": "taku-seibyo",
+    "name": "多久聖廟",
+    "reading": "たくせいびょう",
+    "kind": "寺社",
+    "gun": "小城郡",
+    "modern": "佐賀県多久市",
+    "summary": "多久家による孔子廟。座標は未登録。",
+    "confidence": "ai"
+  }
+]

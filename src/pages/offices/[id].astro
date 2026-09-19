@@ -1,0 +1,110 @@
+---
+import Base from '../../layouts/Base.astro';
+import ConfidenceBadge from '../../components/ConfidenceBadge.astro';
+import SourceRefs from '../../components/SourceRefs.astro';
+import PeriodChip from '../../components/PeriodChip.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+import { allArticles } from '../../lib/archive';
+import { HOUSE_RANKS } from '../../data/houseRanks';
+
+export async function getStaticPaths() {
+  const offices = await getCollection('offices');
+  return offices.map((o) => ({ params: { id: o.id }, props: { office: o } }));
+}
+
+const { office } = Astro.props;
+const d = office.data;
+const { Content } = await render(office);
+
+const parent = d.parent ? await getEntry('offices', d.parent.id) : null;
+const children = (await getCollection('offices')).filter((o) => o.data.parent?.id === office.id);
+const related = (await allArticles()).filter((a) => a.data.offices.some((o) => o.id === office.id));
+const ranks = d.eligibleRanks.map((r) => HOUSE_RANKS.find((x) => x.id === r)).filter(Boolean);
+---
+
+<Base title={d.name} description={d.summary}>
+  <article class="inner-narrow ent" data-pagefind-body data-pagefind-filter="種別:役職・機関">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/offices/">役職と機関</a><span class="sep">/</span>
+      {parent && <><a href={`/offices/${parent.id}/`}>{parent.data.name}</a><span class="sep">/</span></>}
+      <span aria-current="page">{d.name}</span>
+    </nav>
+
+    <header class="ent-head">
+      <h1>{d.name}<span class="rd">{d.reading}</span></h1>
+      <p class="ent-meta">
+        <span class="tag">{d.branch}</span>
+        {d.seats && <span class="tag">{d.seats}</span>}
+        <ConfidenceBadge level={d.confidence} />
+      </p>
+      {d.periods.length > 0 && (
+        <p class="ent-chips">{d.periods.map((p) => <PeriodChip id={p} span={false} />)}</p>
+      )}
+    </header>
+
+    <p class="ent-summary">{d.summary}</p>
+
+    <dl class="ent-facts">
+      {d.duties.length > 0 && (
+        <div><dt>職掌</dt><dd>{d.duties.join('・')}</dd></div>
+      )}
+      {parent && (
+        <div><dt>上位</dt><dd><a href={`/offices/${parent.id}/`}>{parent.data.name}</a></dd></div>
+      )}
+      {children.length > 0 && (
+        <div>
+          <dt>下位</dt>
+          <dd class="links">{children.map((c) => <a href={`/offices/${c.id}/`}>{c.data.name}</a>)}</dd>
+        </div>
+      )}
+      {ranks.length > 0 && (
+        <div><dt>就任の家格</dt><dd>{ranks.map((r) => r!.name).join('・')}</dd></div>
+      )}
+    </dl>
+
+    <div class="prose ent-body"><Content /></div>
+
+    {related.length > 0 && (
+      <section class="ent-related">
+        <p class="en-label">この機関に関わる記事</p>
+        <div class="ent-related-grid">
+          {related.map((a, i) => <ArticleCard article={a} cue={i} />)}
+        </div>
+      </section>
+    )}
+
+    <SourceRefs refs={d.sourceRefs} />
+  </article>
+</Base>
+
+<style>
+  .ent { padding-block: clamp(28px, 5vw, 56px) clamp(48px, 7vw, 88px); }
+  .ent-head { margin-top: 10px; }
+  .ent-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; line-height: 1.3; }
+  .ent-head h1 .rd {
+    display: block; font-family: var(--f-sans); font-size: var(--fs-sm);
+    font-weight: 400; color: var(--ink-4); margin-top: 6px; letter-spacing: .06em;
+  }
+  .ent-meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 14px; }
+  .ent-meta .tag {
+    padding: 3px 10px; border: 1px solid var(--rule); border-radius: 999px;
+    font-size: var(--fs-xs); color: var(--ink-3);
+  }
+  .ent-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .ent-summary {
+    margin-top: 28px; font-size: var(--fs-lg); line-height: 1.95;
+    font-family: var(--f-mincho); color: var(--ink);
+  }
+  .ent-facts { margin-top: 24px; display: grid; gap: 10px; }
+  .ent-facts > div { display: grid; grid-template-columns: 7em minmax(0, 1fr); gap: 12px; font-size: var(--fs-sm); }
+  .ent-facts dt { color: var(--ink-4); font-size: var(--fs-xs); padding-top: 2px; }
+  .ent-facts dd.links { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ent-body { margin-top: 28px; }
+  .ent-related { margin-top: clamp(36px, 5vw, 56px); }
+  .ent-related-grid {
+    display: grid; gap: 14px; margin-top: 14px;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+</style>

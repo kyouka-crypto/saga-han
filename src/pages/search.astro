@@ -2,12 +2,12 @@
 import Base from '../layouts/Base.astro';
 ---
 
-<Base title="検索" description="佐賀通史アーカイブの全文検索。">
+<Base title="検索" description="佐賀藩アーカイブの全文検索。記事・人物・家・役職・用語・地名・年表を横断する。">
   <div class="inner-narrow">
     <header class="search-head">
       <p class="en-label">FULL-TEXT SEARCH / 全文検索</p>
       <h1>アーカイブを検索</h1>
-      <p class="search-lede">記事タイトル・本文・出典を横断検索します（Pagefind による静的全文検索）。</p>
+      <p class="search-lede">記事だけでなく、人物・家・役職と機関・用語・地名・年表も横断して探せます。左の「種別」で絞り込めます。</p>
     </header>
 
     <div id="pagefind-ui"></div>
@@ -72,9 +72,13 @@ import Base from '../layouts/Base.astro';
           element: '#pagefind-ui',
           showSubResults: true,
           showImages: false,
+          showEmptyFilters: false,
+          excerptLength: 24,
           translations: {
             placeholder: '例：三部上地 / 鍋島直茂 / 請役所',
-            zero_results: '「[SEARCH_TERM]」に一致する記事はありません',
+            zero_results: '「[SEARCH_TERM]」に一致するものはありません',
+            filters_label: '種別で絞る',
+            clear_search: 'クリア',
           },
         });
       };

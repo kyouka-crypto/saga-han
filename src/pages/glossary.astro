@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import ConfidenceBadge from '../components/ConfidenceBadge.astro';
+import { getCollection } from 'astro:content';
+import { THEMES } from '../data/themes';
+
+const terms = (await getCollection('terms')).sort((a, b) =>
+  a.data.reading.localeCompare(b.data.reading, 'ja')
+);
+---
+
+<Base
+  title="用語集"
+  description="佐賀藩の制度・身分・財政・軍事にかかわる用語の一覧。"
+>
+  <section class="inner gl-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <a href="/sources/">出典</a><span class="sep">/</span>
+      <span aria-current="page">用語集</span>
+    </nav>
+    <h1>用語集</h1>
+    <p class="gl-lede">
+      {terms.length}語。読み仮名の五十音順に並べています。
+      定義はいずれも短く、詳しくはそれぞれの記事で扱います。
+    </p>
+  </section>
+
+  <section class="inner gl-filter" id="glFilter" hidden>
+    <div class="gl-chips">
+      <button type="button" class="gl-chip is-on" data-theme="all">すべて</button>
+      {THEMES.map((t) => (
+        <button type="button" class="gl-chip" data-theme={t.id} style={`--tc: var(${t.colorVar})`}>
+          <i></i>{t.name}
+        </button>
+      ))}
+    </div>
+    <label class="gl-search">
+      <span class="sr-only">用語を絞り込む</span>
+      <input type="search" id="glSearch" placeholder="用語・読みで絞り込む" autocomplete="off" />
+    </label>
+    <p class="gl-count" id="glCount"></p>
+  </section>
+
+  <section class="inner gl-body" data-pagefind-body data-pagefind-filter="種別:用語">
+    <dl class="gl-list" id="glList">
+      {terms.map((t) => (
+        <div
+          class="gl-item"
+          id={`t-${t.data.id}`}
+          data-themes={t.data.themes.join(' ')}
+          data-key={`${t.data.term} ${t.data.reading}`}
+        >
+          <dt>
+            <span class="tm">{t.data.term}</span>
+            <span class="rd">{t.data.reading}</span>
+          </dt>
+          <dd>
+            <p class="df">{t.data.definition}</p>
+            <p class="mt">
+              {t.data.themes.map((th) => {
+                const x = THEMES.find((y) => y.id === th)!;
+                return (
+                  <a class="gl-theme" href={`/theme/${x.id}/`} style={`--tc: var(${x.colorVar})`}>
+                    <i></i>{x.name}
+                  </a>
+                );
+              })}
+              {t.data.article && (
+                <a class="gl-more" href={`/articles/${t.data.article.id}/`}>記事を読む</a>
+              )}
+              <ConfidenceBadge level={t.data.confidence} />
+            </p>
+          </dd>
+        </div>
+      ))}
+    </dl>
+  </section>
+</Base>
+
+<style>
+  .gl-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .gl-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .gl-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+
+  .gl-filter { padding-block: clamp(20px, 3vw, 32px) 0; display: grid; gap: 12px; }
+  .gl-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+  .gl-chip {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 13px; border: 1px solid var(--rule); border-radius: 999px;
+    background: var(--card); color: var(--ink-3);
+    font-family: inherit; font-size: var(--fs-xs); cursor: pointer;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .gl-chip i { width: 7px; height: 7px; border-radius: 2px; background: var(--tc, var(--ink-4)); }
+  .gl-chip.is-on { border-color: var(--ink-3); color: var(--ink); background: var(--paper-2); }
+
+  .gl-search input {
+    width: min(320px, 100%); padding: 9px 13px;
+    border: 1px solid var(--rule); border-radius: 3px;
+    background: var(--card); color: var(--ink);
+    font-family: inherit; font-size: var(--fs-sm);
+  }
+  .gl-search input:focus-visible { outline: 2px solid var(--era); outline-offset: 1px; }
+  .gl-count { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4); }
+
+  .gl-body { padding-block: clamp(24px, 4vw, 40px) clamp(48px, 7vw, 88px); }
+  .gl-list { display: grid; gap: 2px; }
+  .gl-item {
+    display: grid; grid-template-columns: minmax(9em, 13em) minmax(0, 1fr); gap: 16px;
+    padding: 16px 10px; border-bottom: 1px solid var(--rule-2);
+    scroll-margin-top: 110px;
+  }
+  .gl-item[hidden] { display: none; }
+  .gl-item dt .tm { display: block; font-family: var(--f-mincho); font-size: var(--fs-base); color: var(--ink); }
+  .gl-item dt .rd { display: block; font-size: 10px; color: var(--ink-4); margin-top: 3px; }
+  .gl-item .df { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95; }
+  .gl-item .mt { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .gl-theme {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; color: var(--ink-4); text-decoration: none;
+    padding: 2px 8px; border: 1px solid var(--rule-2); border-radius: 999px;
+  }
+  .gl-theme i { width: 6px; height: 6px; border-radius: 2px; background: var(--tc); }
+  .gl-more { font-size: 10px; color: var(--ink-3); }
+
+  @media (max-width: 600px) { .gl-item { grid-template-columns: 1fr; gap: 6px; } }
+</style>
+
+<script>
+  function initGlossary() {
+    const filter = document.getElementById('glFilter');
+    const list = document.getElementById('glList');
+    const count = document.getElementById('glCount');
+    const search = document.getElementById('glSearch') as HTMLInputElement | null;
+    if (!filter || !list || !count || !search) return;
+
+    filter.hidden = false;
+    const items = [...list.querySelectorAll<HTMLElement>('.gl-item')];
+    const chips = [...filter.querySelectorAll<HTMLButtonElement>('.gl-chip')];
+    let theme = 'all';
+
+    const apply = () => {
+      const q = search.value.trim();
+      let n = 0;
+      for (const it of items) {
+        const themes = (it.dataset.themes ?? '').split(' ').filter(Boolean);
+        const okTheme = theme === 'all' || themes.includes(theme);
+        const okQuery = !q || (it.dataset.key ?? '').includes(q);
+        const show = okTheme && okQuery;
+        it.hidden = !show;
+        if (show) n++;
+      }
+      count.textContent = n === items.length ? `${n}語` : `${n}語 / 全${items.length}語`;
+    };
+
+    for (const c of chips) {
+      c.addEventListener('click', () => {
+        theme = c.dataset.theme!;
+        for (const x of chips) x.classList.toggle('is-on', x === c);
+        apply();
+      });
+    }
+    search.addEventListener('input', apply);
+    apply();
+  }
+
+  initGlossary();
+  document.addEventListener('astro:page-load', initGlossary);
+</script>

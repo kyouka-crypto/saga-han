@@ -1,0 +1,267 @@
+---
+/**
+ * 俯瞰マトリクス — 8期 × 6系統 = 48セル
+ *
+ * このサイトの中心的なナビゲーション。
+ *  - 読者には「制度を通史で追う」「一時代を全方位で見る」の二つの入口を同時に与える
+ *  - 制作者には空白セル＝未執筆が一目で見える進捗盤になる
+ *
+ * JavaScript 無しでも成立する（セルはアンカーリンク、下に全セルの一覧がある）。
+ * JS が有効なら、ページ遷移せずその場で中身が入れ替わる。
+ */
+import { PERIODS } from '../data/periods';
+import { THEMES } from '../data/themes';
+import { buildMatrix, type Article } from '../lib/archive';
+
+interface Props {
+  articles: Article[];
+  /** 見出しを出すか */
+  heading?: boolean;
+}
+
+const { articles, heading = true } = Astro.props;
+const { rows, themeTotals, max, total } = buildMatrix(articles);
+const cellId = (p: string, t: string) => `cell-${p}-${t}`;
+---
+
+<section class="matrix-wrap">
+  {heading && (
+    <div class="matrix-head">
+      <p class="en-label">THE MATRIX</p>
+      <h2>時代 × 主題で俯瞰する</h2>
+      <p class="lede">
+        縦は佐賀藩の8つの時代、横は6つの主題。交点をクリックすると、その組み合わせの記事が出ます。
+        <strong>薄いマスは、まだ書かれていないところ</strong>です。
+      </p>
+    </div>
+  )}
+
+  <div class="matrix-scroll">
+    <table class="matrix" aria-describedby="matrix-desc">
+      <caption id="matrix-desc" class="sr-only">
+        佐賀藩の8つの時代と6つの主題の交点ごとの記事本数。全{total}本。
+      </caption>
+      <thead>
+        <tr>
+          <th scope="col" class="corner"><span class="sr-only">時代</span></th>
+          {THEMES.map((t) => (
+            <th scope="col" class="th-theme" style={`--tc: var(${t.colorVar})`}>
+              <a href={`/theme/${t.id}/`}>
+                <span class="th-name">{t.name}</span>
+                <span class="th-n">{themeTotals.get(t.id)}</span>
+              </a>
+            </th>
+          ))}
+          <th scope="col" class="th-total">計</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((row) => (
+          <tr>
+            <th scope="row" class="th-period" style={`--ec: var(${row.period.colorVar})`}>
+              <a href={`/period/${row.period.id}/`}>
+                <i></i>
+                <span class="th-name">{row.period.name}</span>
+                <span class="th-span">{row.period.span}</span>
+              </a>
+            </th>
+            {row.cells.map((c) => (
+              <td
+                class:list={['cell', c.count === 0 && 'is-empty']}
+                style={`--ec: var(${c.period.colorVar}); --d: ${c.count / max}`}
+              >
+                {c.count > 0 ? (
+                  <a
+                    href={`#${cellId(c.period.id, c.theme.id)}`}
+                    data-cell={cellId(c.period.id, c.theme.id)}
+                    aria-label={`${c.period.name} × ${c.theme.name}：${c.count}本`}
+                  >
+                    <span class="n">{c.count}</span>
+                  </a>
+                ) : (
+                  <span class="n" aria-label={`${c.period.name} × ${c.theme.name}：未執筆`}>·</span>
+                )}
+              </td>
+            ))}
+            <td class="td-total">{row.count}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- セルの中身。JS 無効時はそのまま一覧として機能する -->
+  <div class="matrix-panels" id="matrixPanels">
+    {rows.flatMap((row) =>
+      row.cells
+        .filter((c) => c.count > 0)
+        .map((c) => (
+          <div class="panel" id={cellId(c.period.id, c.theme.id)} tabindex="-1">
+            <p class="panel-head">
+              <span style={`--ec: var(${c.period.colorVar})`}><i></i>{c.period.name}</span>
+              <span class="x">×</span>
+              <span style={`--tc: var(${c.theme.colorVar})`}><i class="sq"></i>{c.theme.name}</span>
+            </p>
+            <ul class="panel-list">
+              {c.articles.map((a) => (
+                <li>
+                  <a href={`/articles/${a.id}/`}>
+                    <span class="y">{a.data.year ?? a.data.sortYear}</span>
+                    <span class="t">{a.data.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
+    )}
+  </div>
+</section>
+
+<style>
+  .matrix-wrap { margin-block: clamp(40px, 6vw, 80px); }
+  .matrix-head { margin-bottom: 28px; max-width: 46em; }
+  .matrix-head h2 { font-family: var(--f-mincho); font-size: var(--fs-h2); font-weight: 700; margin-bottom: 10px; }
+  .matrix-head .lede { color: var(--ink-3); font-size: var(--fs-sm); line-height: 1.95; }
+
+  .matrix-scroll { overflow-x: auto; }
+  .matrix {
+    width: 100%;
+    min-width: 640px;
+    border-collapse: separate;
+    border-spacing: 3px;
+    font-size: var(--fs-sm);
+  }
+
+  .corner { width: 1%; }
+
+  .th-theme { padding: 0; vertical-align: bottom; }
+  .th-theme a {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 10px 4px 8px;
+    border-bottom: 2px solid var(--tc);
+    color: var(--ink-2); text-decoration: none;
+    transition: color .2s;
+  }
+  .th-theme a:hover { color: var(--tc); }
+  .th-theme .th-name { font-size: var(--fs-xs); letter-spacing: .04em; line-height: 1.4; text-align: center; }
+  .th-theme .th-n { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+
+  .th-period { padding: 0; text-align: left; white-space: nowrap; }
+  .th-period a {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 14px 8px 10px;
+    border-right: 2px solid var(--ec);
+    color: var(--ink-2); text-decoration: none; font-weight: 400;
+    transition: color .2s;
+  }
+  .th-period a:hover { color: var(--ec); }
+  .th-period i { width: 7px; height: 7px; border-radius: 50%; background: var(--ec); flex: none; }
+  .th-period .th-name { font-size: var(--fs-sm); }
+  .th-period .th-span { font-family: var(--f-mono); font-size: 10px; color: var(--ink-4); }
+
+  .cell { padding: 0; text-align: center; }
+  .cell a, .cell > .n {
+    display: grid; place-items: center;
+    min-height: 44px;
+    background: color-mix(in srgb, var(--ec) calc(var(--d) * 72%), var(--card));
+    border: 1px solid var(--rule-2);
+    border-radius: 2px;
+    color: var(--ink); text-decoration: none;
+    font-family: var(--f-mono); font-size: var(--fs-sm);
+    transition: transform .18s var(--ease-out), box-shadow .18s var(--ease-out);
+  }
+  .cell a:hover, .cell a:focus-visible {
+    transform: scale(1.06);
+    box-shadow: var(--shadow);
+    outline: none;
+  }
+  /* 濃いセルは文字色を反転させて可読性を確保する */
+  .cell a { color: color-mix(in srgb, var(--ink) calc(100% - var(--d) * 70%), var(--paper)); }
+  .cell.is-empty > .n { color: var(--ink-4); background: var(--paper-2); }
+  .cell.is-current a { box-shadow: 0 0 0 2px var(--ec); }
+
+  .td-total, .th-total {
+    font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-3);
+    text-align: center; padding-inline: 8px;
+  }
+
+  /* ── セルの中身 ── */
+  .matrix-panels { margin-top: 24px; }
+  .panel {
+    padding: 18px 20px;
+    border: 1px solid var(--rule-2);
+    border-radius: 3px;
+    background: var(--card);
+    margin-bottom: 10px;
+    scroll-margin-top: 110px;
+  }
+  .panel:focus { outline: none; }
+  .panel-head {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    font-size: var(--fs-sm); color: var(--ink-2); margin-bottom: 12px;
+  }
+  .panel-head span { display: inline-flex; align-items: center; gap: 6px; }
+  .panel-head i { width: 7px; height: 7px; border-radius: 50%; background: var(--ec); }
+  .panel-head i.sq { border-radius: 2px; background: var(--tc); }
+  .panel-head .x { color: var(--ink-4); font-family: var(--f-mono); }
+
+  .panel-list { list-style: none; display: grid; gap: 2px; }
+  .panel-list a {
+    display: flex; gap: 14px; align-items: baseline;
+    padding: 7px 8px; border-radius: 2px;
+    color: var(--ink); text-decoration: none;
+    transition: background .18s;
+  }
+  .panel-list a:hover { background: var(--paper-2); }
+  .panel-list .y { font-family: var(--f-mono); font-size: var(--fs-xs); color: var(--ink-4); flex: none; width: 5.5em; }
+  .panel-list .t { font-size: var(--fs-sm); }
+
+  /* JS が有効なときだけ、選択したセル以外を畳む */
+  :global(html.js) .matrix-panels[data-mode='single'] .panel { display: none; }
+  :global(html.js) .matrix-panels[data-mode='single'] .panel.is-open { display: block; }
+
+  @media (max-width: 640px) {
+    .th-period .th-span { display: none; }
+  }
+</style>
+
+<script>
+  function initMatrix() {
+    document.documentElement.classList.add('js');
+    const panels = document.getElementById('matrixPanels');
+    if (!panels) return;
+
+    const all = [...panels.querySelectorAll<HTMLElement>('.panel')];
+    const cells = [...document.querySelectorAll<HTMLAnchorElement>('.cell a[data-cell]')];
+    if (!all.length || !cells.length) return;
+
+    panels.dataset.mode = 'single';
+
+    const open = (id: string, focus: boolean) => {
+      for (const p of all) p.classList.toggle('is-open', p.id === id);
+      for (const c of cells) c.parentElement?.classList.toggle('is-current', c.dataset.cell === id);
+      if (focus) {
+        const el = document.getElementById(id);
+        el?.focus({ preventScroll: true });
+        el?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    };
+
+    for (const c of cells) {
+      c.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        const id = c.dataset.cell!;
+        history.replaceState(null, '', `#${id}`);
+        open(id, true);
+      });
+    }
+
+    // 初期表示：URL のハッシュ、無ければ最初のセル
+    const fromHash = location.hash.slice(1);
+    open(all.some((p) => p.id === fromHash) ? fromHash : all[0].id, false);
+  }
+
+  initMatrix();
+  document.addEventListener('astro:page-load', initMatrix);
+</script>

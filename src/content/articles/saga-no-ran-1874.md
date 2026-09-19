@@ -1,14 +1,18 @@
 ---
 title: "佐賀の乱 — 江藤新平と士族反乱の始まり"
 subtitleEn: "The Saga Rebellion of 1874"
-era: bakumatsu
+periods:
+  - yoha
+theme: gunji
+kind: B
 year: "1874"
 sortYear: 1874
 summary: "明治六年政変後、佐賀県で起きた士族の反乱。前参議・江藤新平が鎮撫のため帰郷したところ首謀者に祭り上げられ、大久保利通が三権全権を行使して迅速処断した。江藤の梟首は西郷隆盛・薩摩への見せしめの意味を持ち、佐賀（肥前勢力）の政治的影響力を決定的に削いだ。"
 tags: ["士族反乱", "江藤新平", "大久保利通", "明治六年政変"]
 confidence: ai
-sources:
-  - "島田晴雄「テンミニッツ・アカデミー 明治維新シリーズ」講義（研究ノート経由）"
+sourceRefs:
+  - src: tenminutes-meiji
+    note: "島田晴雄「明治維新シリーズ」講義。研究ノート経由。一次文献による裏取りが未了。"
 created: "2026-05-05"
 updated: "2026-07-12"
 related: []

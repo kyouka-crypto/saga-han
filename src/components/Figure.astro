@@ -1,0 +1,111 @@
+---
+/**
+ * 図版 — キャプション・出典・ライセンスを必須にした唯一の図版コンポーネント。
+ *
+ * 一般公開サイトなので、出所の書かれていない図版を載せてしまう事故を
+ * 「省略できない設計」で防ぐ。画像を出すときは必ずこれを通す。
+ *
+ * 使い方は2通り：
+ *   1. 画像:  <Figure src="/img/x.jpg" alt="…" caption="…" credit="…" license="…" />
+ *   2. 自作図: <Figure caption="…" credit="本サイト作成" license="CC BY 4.0">
+ *                <svg>…</svg>  ← スロットに図を書く
+ *              </Figure>
+ */
+interface Props {
+  /** 画像のパス。自作 SVG などをスロットで渡す場合は省略する */
+  src?: string;
+  /** 画像の代替テキスト。src があるときは必須 */
+  alt?: string;
+  /** 図版の説明。何を示した図なのかを書く */
+  caption: string;
+  /** 出所。「本サイト作成」「国立国会図書館デジタルコレクション」など */
+  credit: string;
+  /** 利用条件。「パブリックドメイン」「著者撮影」など */
+  license: string;
+  /** 数値の出所（書籍の図表から読み取った場合はここに書く） */
+  dataSource?: string;
+  /** 図番号（本文から参照するとき） */
+  no?: string;
+  /** 本文の幅を超えて大きく見せる */
+  wide?: boolean;
+}
+
+const { src, alt, caption, credit, license, dataSource, no, wide = false } = Astro.props;
+
+if (src && !alt) {
+  throw new Error(`Figure: src を渡すときは alt が必要です（caption: ${caption}）`);
+}
+---
+
+<figure class:list={['fig', wide && 'fig-wide']}>
+  <div class="fig-body">
+    {src ? <img src={src} alt={alt} loading="lazy" decoding="async" /> : <slot />}
+  </div>
+  <figcaption>
+    <p class="fig-cap">
+      {no && <span class="fig-no">図{no}</span>}
+      {caption}
+    </p>
+    <p class="fig-meta">
+      <span class="fig-credit">{credit}</span>
+      <span class="fig-sep">／</span>
+      <span class="fig-license">{license}</span>
+      {dataSource && (
+        <>
+          <span class="fig-sep">／</span>
+          <span class="fig-data">数値の出所：{dataSource}</span>
+        </>
+      )}
+    </p>
+  </figcaption>
+</figure>
+
+<style>
+  .fig {
+    margin-block: clamp(28px, 4vw, 48px);
+  }
+  .fig-body {
+    background: var(--card);
+    border: 1px solid var(--rule-2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .fig-body :global(img),
+  .fig-body :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .fig-wide {
+    /* prose の幅を超えて広げる。はみ出しは親側の overflow で抑える */
+    width: min(var(--w-wide), 100vw - var(--gutter) * 2);
+    margin-inline: calc(50% - min(var(--w-wide), 100vw - var(--gutter) * 2) / 2);
+  }
+  figcaption {
+    margin-top: 10px;
+    font-size: var(--fs-sm);
+    line-height: 1.75;
+  }
+  .fig-cap {
+    color: var(--ink-2);
+  }
+  .fig-no {
+    display: inline-block;
+    margin-right: 8px;
+    padding: 1px 7px;
+    border: 1px solid var(--rule);
+    border-radius: 2px;
+    font-family: var(--f-mono);
+    font-size: var(--fs-xs);
+    color: var(--ink-3);
+  }
+  .fig-meta {
+    margin-top: 4px;
+    font-size: var(--fs-xs);
+    color: var(--ink-4);
+    letter-spacing: .03em;
+  }
+  .fig-sep {
+    margin-inline: 6px;
+  }
+</style>

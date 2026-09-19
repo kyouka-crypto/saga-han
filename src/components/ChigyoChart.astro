@@ -1,0 +1,126 @@
+---
+/**
+ * 知行高の推移 — ビルド時に SVG を生成する。JavaScript は 0KB。
+ *
+ * 記録が残らない年は点と点を結ばず、破線で「わからない区間」として示す。
+ * 連続した折れ線にしてしまうと、無いデータをあるように見せてしまうため。
+ */
+import type { House } from '../lib/archive';
+
+interface Props {
+  houses: House[];
+}
+
+const { houses } = Astro.props;
+
+const series = houses
+  .map((h) => ({
+    id: h.id,
+    name: h.data.name,
+    points: [...h.data.chigyo].sort((a, b) => a.year - b.year),
+  }))
+  .filter((s) => s.points.length > 0);
+
+const years = series.flatMap((s) => s.points.map((p) => p.year));
+const kokus = series.flatMap((s) => s.points.map((p) => p.koku));
+
+const x0 = Math.min(...years) - 15;
+const x1 = Math.max(...years) + 15;
+const y1 = Math.ceil(Math.max(...kokus) / 20000) * 20000;
+
+const W = 760;
+const H = 340;
+const PAD = { t: 20, r: 20, b: 44, l: 64 };
+
+const sx = (y: number) => PAD.l + ((y - x0) / (x1 - x0)) * (W - PAD.l - PAD.r);
+const sy = (k: number) => H - PAD.b - (k / y1) * (H - PAD.t - PAD.b);
+
+const yTicks = Array.from({ length: y1 / 20000 + 1 }, (_, i) => i * 20000);
+const xTicks = Array.from(
+  { length: Math.floor((x1 - x0) / 50) + 1 },
+  (_, i) => Math.ceil(x0 / 50) * 50 + i * 50
+).filter((t) => t >= x0 && t <= x1);
+
+/** 線の色。時代色ではなく系列色として順に割り当てる */
+const LINE_VARS = ['--c-seiritsu', '--c-kakuritsu', '--c-naomasa', '--c-ryuzoji', '--c-mosaku', '--c-yoha'];
+---
+
+<figure class="cg">
+  <div class="cg-body">
+    <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-labelledby="cg-title cg-desc">
+      <title id="cg-title">支藩の知行高の推移</title>
+      <desc id="cg-desc">
+        {series
+          .map((s) => `${s.name}：${s.points.map((p) => `${p.year}年 ${p.koku.toLocaleString()}石`).join('、')}`)
+          .join('。')}
+      </desc>
+
+      <!-- 目盛り -->
+      {yTicks.map((k) => (
+        <>
+          <line x1={PAD.l} y1={sy(k)} x2={W - PAD.r} y2={sy(k)} class="grid" />
+          <text x={PAD.l - 10} y={sy(k) + 4} text-anchor="end" class="tick">
+            {k === 0 ? '0' : `${k / 10000}万`}
+          </text>
+        </>
+      ))}
+      {xTicks.map((t) => (
+        <text x={sx(t)} y={H - PAD.b + 20} text-anchor="middle" class="tick">{t}</text>
+      ))}
+      <text x={PAD.l - 10} y={PAD.t - 6} text-anchor="end" class="unit">石</text>
+
+      <!-- 系列 -->
+      {series.map((s, i) => {
+        const v = LINE_VARS[i % LINE_VARS.length];
+        const d = s.points.map((p, j) => `${j === 0 ? 'M' : 'L'}${sx(p.year)},${sy(p.koku)}`).join(' ');
+        return (
+          <g style={`--lc: var(${v})`}>
+            <path d={d} class="line" />
+            {s.points.map((p) => (
+              <>
+                <circle cx={sx(p.year)} cy={sy(p.koku)} r="4" class="dot" />
+                <text x={sx(p.year)} y={sy(p.koku) - 11} text-anchor="middle" class="val">
+                  {p.koku.toLocaleString()}
+                </text>
+              </>
+            ))}
+            <text
+              x={sx(s.points[s.points.length - 1].year) + 8}
+              y={sy(s.points[s.points.length - 1].koku) + 4}
+              class="label"
+            >{s.name}</text>
+          </g>
+        );
+      })}
+    </svg>
+  </div>
+
+  <figcaption>
+    <p class="cg-cap">
+      支藩の知行高。点のある年だけが記録の残っている年で、点と点のあいだの線は
+      <strong>変化の経路を示すものではありません</strong>。
+    </p>
+    <p class="cg-meta">
+      本サイト作成 ／ 数値の出所：『佐賀藩の総合研究』p.283、p.470、『佐賀市史』第2巻 p.16
+    </p>
+  </figcaption>
+</figure>
+
+<style>
+  .cg { margin-block: 20px; }
+  .cg-body { overflow-x: auto; }
+  .cg svg { display: block; width: 100%; min-width: 560px; height: auto; }
+
+  .grid { stroke: var(--rule-2); stroke-width: 1; }
+  .tick { fill: var(--ink-4); font-family: var(--f-mono); font-size: 10px; }
+  .unit { fill: var(--ink-4); font-family: var(--f-mono); font-size: 9px; }
+
+  .line { fill: none; stroke: var(--lc); stroke-width: 1.6; stroke-dasharray: 5 4; opacity: .75; }
+  .dot { fill: var(--lc); }
+  .val { fill: var(--ink-3); font-family: var(--f-mono); font-size: 9.5px; }
+  .label { fill: var(--lc); font-size: 11px; }
+
+  figcaption { margin-top: 12px; }
+  .cg-cap { font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.9; }
+  .cg-meta { margin-top: 4px; font-size: var(--fs-xs); color: var(--ink-4); }
+</style>

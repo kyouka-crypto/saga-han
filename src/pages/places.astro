@@ -1,0 +1,113 @@
+---
+import Base from '../layouts/Base.astro';
+import ConfidenceBadge from '../components/ConfidenceBadge.astro';
+import { getCollection } from 'astro:content';
+
+const places = await getCollection('places');
+const mapped = places.filter((p) => p.data.lat != null && p.data.lng != null);
+const unmapped = places.filter((p) => p.data.lat == null || p.data.lng == null);
+
+/** 佐賀周辺の外接矩形。地図ライブラリは使わず、座標を直接 SVG に写す */
+const lats = mapped.map((p) => p.data.lat!);
+const lngs = mapped.map((p) => p.data.lng!);
+const pad = 0.15;
+const minLat = Math.min(...lats) - pad, maxLat = Math.max(...lats) + pad;
+const minLng = Math.min(...lngs) - pad, maxLng = Math.max(...lngs) + pad;
+const W = 720, H = 420;
+const px = (lng: number) => ((lng - minLng) / (maxLng - minLng)) * W;
+const py = (lat: number) => H - ((lat - minLat) / (maxLat - minLat)) * H;
+---
+
+<Base title="地名" description="佐賀藩にかかわる城・陣屋・遺構・窯などの地名。">
+  <section class="inner pl-head">
+    <nav class="breadcrumb" aria-label="パンくず">
+      <a href="/">トップ</a><span class="sep">/</span>
+      <span aria-current="page">地名</span>
+    </nav>
+    <h1>地名</h1>
+    <p class="pl-lede">
+      {places.length}件。城・陣屋・遺構・窯・海軍所など、藩にかかわる場所を集めています。
+    </p>
+  </section>
+
+  {mapped.length > 0 && (
+    <section class="inner pl-map-sec">
+      <p class="en-label">座標の判明しているもの（{mapped.length}件）</p>
+      <p class="pl-note">
+        背景の地図はまだありません。ここに出ているのは<strong>点の相対的な位置関係だけ</strong>です。
+        海岸線や郡境を重ねるのは、干拓による海岸線変遷のデータを整えてからになります。
+      </p>
+      <div class="pl-map">
+        <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="地名の位置関係図">
+          <rect width={W} height={H} class="bg" />
+          {mapped.map((p) => (
+            <g class="pin">
+              <circle cx={px(p.data.lng!)} cy={py(p.data.lat!)} r="6" />
+              <text x={px(p.data.lng!) + 11} y={py(p.data.lat!) + 4}>{p.data.name}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+    </section>
+  )}
+
+  <section class="inner pl-body" data-pagefind-body data-pagefind-filter="種別:地名">
+    <p class="en-label">一覧</p>
+    <ul class="pl-list">
+      {places.map((p) => (
+        <li id={`p-${p.data.id}`}>
+          <div class="hd">
+            <span class="nm">{p.data.name}</span>
+            <span class="rd">{p.data.reading}</span>
+            <span class="kd">{p.data.kind}</span>
+            {p.data.gun && <span class="gn">{p.data.gun}</span>}
+            <ConfidenceBadge level={p.data.confidence} />
+          </div>
+          {p.data.summary && <p class="sm">{p.data.summary}</p>}
+          <p class="mt">
+            {p.data.modern && <span>現在地：{p.data.modern}</span>}
+            {p.data.lat != null
+              ? <span class="num">{p.data.lat.toFixed(4)}, {p.data.lng!.toFixed(4)}</span>
+              : <span class="no-coord">座標未登録</span>}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    {unmapped.length > 0 && (
+      <p class="pl-todo">
+        {unmapped.length}件は座標が未登録です。推定値で埋めず、空のままにしています。
+      </p>
+    )}
+  </section>
+</Base>
+
+<style>
+  .pl-head { padding-block: clamp(28px, 5vw, 56px) 0; }
+  .pl-head h1 { font-family: var(--f-mincho); font-size: var(--fs-h1); font-weight: 800; margin-top: 8px; }
+  .pl-lede { margin-top: 16px; max-width: 46em; line-height: 2.05; color: var(--ink-2); }
+
+  .pl-map-sec { padding-block: clamp(28px, 4vw, 44px); }
+  .pl-note { margin-top: 10px; max-width: 46em; font-size: var(--fs-sm); color: var(--ink-3); line-height: 1.95; }
+  .pl-map { margin-top: 16px; overflow-x: auto; }
+  .pl-map svg { display: block; width: 100%; min-width: 520px; height: auto; }
+  .bg { fill: var(--paper-2); }
+  .pin circle { fill: var(--era); opacity: .8; }
+  .pin text { fill: var(--ink-2); font-size: 12px; }
+
+  .pl-body { padding-block: clamp(24px, 4vw, 40px) clamp(48px, 7vw, 88px); border-top: 1px solid var(--rule); }
+  .pl-list { list-style: none; display: grid; gap: 2px; margin-top: 14px; }
+  .pl-list li { padding: 15px 10px; border-bottom: 1px solid var(--rule-2); scroll-margin-top: 110px; }
+  .pl-list .hd { display: flex; flex-wrap: wrap; gap: 9px; align-items: baseline; }
+  .pl-list .nm { font-family: var(--f-mincho); font-size: var(--fs-base); color: var(--ink); }
+  .pl-list .rd { font-size: 10px; color: var(--ink-4); }
+  .pl-list .kd, .pl-list .gn {
+    font-size: 10px; color: var(--ink-4);
+    padding: 1px 7px; border: 1px solid var(--rule); border-radius: 999px;
+  }
+  .pl-list .sm { margin-top: 7px; font-size: var(--fs-sm); color: var(--ink-2); line-height: 1.95; }
+  .pl-list .mt { margin-top: 6px; display: flex; flex-wrap: wrap; gap: 14px; font-size: var(--fs-xs); color: var(--ink-4); }
+  .pl-list .num { font-family: var(--f-mono); }
+  .no-coord { color: var(--conf-note-fg); }
+  .pl-todo { margin-top: 20px; font-size: var(--fs-sm); color: var(--ink-4); }
+</style>
